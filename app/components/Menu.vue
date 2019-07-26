@@ -37,8 +37,6 @@
             </StackLayout >
             
         </ScrollView>
-          
-       
     </StackLayout> 
   </Page>
 </template>
