@@ -3,8 +3,6 @@
       <ActionBar title="Scan" class="action-bar">
         <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BackMenu"/>
       </ActionBar>
-
-
     <StackLayout backgroundColor="#3c495e">
     <ScrollView sdkExampleTitle sdkToggleNavButton>
         <StackLayout>
