@@ -31,12 +31,18 @@
                     <Label class="text-center" text="nameDevice" dock="left" width="80%" height="auto"  fontSize="20" color="white" />
                     <button text="Sound"   fontSize="12"></button>
                 </DockLayout>
-                <GridLayout rows="50,auto,*" columns="auto, auto,*" >
+                
+                <GridLayout rows="50,auto,*" columns="auto, auto,*" backgroundColor="green">
                     <button text="Add Item" @tap="GotoApp" fontSize="18" row="1" col="2" ></button>
                 </GridLayout>
             </StackLayout >
-            
         </ScrollView>
+
+        <GridLayout rows="*" columns="*" backgroundColor="yellow" >
+            <DockLayout stretchLastChild="false" >
+                    <SegmentedBar :items="segmentedBarItems" v-model="selectedBarIndex" dock="bottom" width="100%"  />
+            </DockLayout>
+         </GridLayout>
     </StackLayout> 
   </Page>
 </template>
