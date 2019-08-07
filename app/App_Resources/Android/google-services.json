@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "100736626193",
+    "firebase_url": "https://bemo-c5ae7.firebaseio.com",
+    "project_id": "bemo-c5ae7",
+    "storage_bucket": "bemo-c5ae7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100736626193:android:7623d25cdc6b34e9",
+        "android_client_info": {
+          "package_name": "org.nativescript.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100736626193-jcdv7js8sflhvhbos2rq27rikp268bbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8zvdiedqck5B2mj9QM878VkZgFjApVQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100736626193-jcdv7js8sflhvhbos2rq27rikp268bbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,9 +5,22 @@
            <StackLayout>
                 <Button text="enable Location" @tap="enableLocationTap"/>
                 <Button text="Get Current Location" @tap="GetLocationTap"/>
-                <!-- <Button row="2" text="start monitoring" @tap="buttonStartTap"/>
-                <Button row="3" text="stop monitoring" @tap="buttonStopTap"/> -->
+                <StackLayout>
+                <Label :text="'latitude = ' + currentLocaton.latitude"  />
+                <Label :text="'longitude = ' + currentLocaton.longitude" />
+                </StackLayout>
+
+                <!-- <GridLayout rows="1,*" columns="*">
+                   <MapView :zoom="zoom" 
+                    :latitude="location.latitude" 
+                    :longitude ="location.longitude" 
+                    v-if="allowExecution"
+                     @mapReady="mapReady" 
+                    @coordinateLongPress="locationSelected"
+                    />
+                </GridLayout> -->
             </StackLayout>
+            
         </ScrollView>
     </Page>
 </template>
@@ -16,8 +29,38 @@
 //const geolocation = require("nativescript-geolocation");
 import * as geolocation from "nativescript-geolocation";
 import { isEnabled, enableLocationRequest, getCurrentLocation } from "nativescript-geolocation";
+// import * as permissions from 'nativescript-permissions'
+// import * as platform from 'platform'
     // const watchId;
     export default {
+         data() {
+            return {
+                    currentLocaton: [],
+                    // latitude: [],
+                    // longitude: [],
+                    // zoom: 15,
+                    // allowExecution: false,
+                    // mapView: null,
+                    // API_KEY = "AIzaSyAVz73yW1RCrbjdPp3Fas4bmi42UWImnIg"
+            };
+        },
+        // created: function() {
+        //     /* dont run the android permissions routine for iOS */
+        //     if (platform.isIOS) {
+        //         this.allowExecution = true;
+        //         return;
+        //     }
+        //     /* list of permissions needed */
+        //     let permissionsNeeded = [
+        //         android.Manifest.permission.ACCESS_FINE_LOCATION,
+        //         android.Manifest.permission.ACCESS_COARSE_LOCATION
+        //     ];
+        //     /* showing up permissions dialog */
+        //     permissions
+        //         .requestPermissions(permissionsNeeded, "Give it to me!")
+        //         .then(() => this.allowExecution = true)
+        //         .catch(() => this.allowExecution = false);
+        // },
         methods: {
             enableLocationTap: function() {
                 geolocation.isEnabled().then(function (isEnabled) {
@@ -34,15 +77,21 @@ import { isEnabled, enableLocationRequest, getCurrentLocation } from "nativescri
             },
            GetLocationTap : function(){
             const location = geolocation.getCurrentLocation({
-            desiredAccuracy: 3,timeout: 20000}).then(function(loc) {
+            desiredAccuracy: 3,timeout: 20000}).then((loc) => {
                 if (loc) {
                     console.log("latitude is: " + loc.latitude);
                     console.log("longitude is: " + loc.longitude);
-                    //this.currentGeoLocation.latitude.push(loc.latitude)
+                    // this.latitude.push(loc.latitude);
+                    // this.longitude.push(loc.longitude);
+                    this.currentLocaton = {latitude:loc.latitude,longitude:loc.longitude}
+                    //console.log("this.locations: " + this.locations);
+                    
                 }
+                    
                 }, function(e){
                     console.log("Error getLocaton: " + e.message);
             });
+                   
             },
             // buttonStartTap: function(){
             //     watchId = geolocation.watchLocation(
@@ -61,25 +110,17 @@ import { isEnabled, enableLocationRequest, getCurrentLocation } from "nativescri
             //         geolocation.clearWatch(watchId);
             //     }
             // }
+            //  mapReady: function(args){
+            //         this.mapView = args.object
+            // },
 
 
         },
-
-        data() {
-            return {
-                currentGeoLocation: {
-                    latitude: null,
-                    longitude: null,
-                    altitude: null,
-                    direction: null
-                }
-            };
-        }
     };
 </script>
 
 <style scoped>
-    .home-panel {
+  .home-panel {
         vertical-align: center;
         font-size: 20;
         margin: 15;
