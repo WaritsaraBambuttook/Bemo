@@ -33,8 +33,8 @@ import bluetooth, { isBluetoothEnabled } from "nativescript-bluetooth";
 import * as BluetoothService from "../BluetoothService";
 import { log } from "util";
 import { truncateSync } from 'fs';
-
 import { setInterval, clearInterval } from "tns-core-modules/timer"
+const firebase = require("nativescript-plugin-firebase");
 // const timerModule = require("tns-core-modules/timer");
 // import { clearTimeout } from 'timers';
 //import { setTimeout } from 'timers';
@@ -59,18 +59,17 @@ export default {
             const found = this.devices.some(el => el.uuid === device.uuid);
                     console.log(this.devices)
                   if (!found) {
-                    this.devices.push(device) 
-                            
-                  } else {
+                    this.devices.push(device)           
+                  }
+                  else {
                     this.devices.map(d=>{
                       if (device.uuid == d.uuid) {
                         d.distance = device.distance
                       }
                     })
                   } 
-          
           })
-        
+       
         
     },
 
@@ -94,7 +93,17 @@ export default {
     }
 
 
-    } 
+    },
+    // mounted() {
+    //   const user = firebase.firestore.collection("user");
+    //   if(this.devices.uuid == "66:AF:30:B7:74:37"){
+    //     user.add(this.devices.uuid).then(function (doc) {
+    //     console.log("loc id ...." + doc.id);
+    //   })
+    //   }
+      
+      
+    // },
 };
 </script>
 

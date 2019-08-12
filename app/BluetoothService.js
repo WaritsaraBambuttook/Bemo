@@ -1,4 +1,5 @@
 import * as bluetooth from "nativescript-bluetooth";
+const firebase = require("nativescript-plugin-firebase");
 const StartScan = function (callback) {
    
     console.log("start scan .....")
@@ -7,7 +8,14 @@ const StartScan = function (callback) {
             console.log('start scan. . .')
             console.log('device found with data' + JSON.stringify(peripheral))
             const distance = calculateDistance(peripheral.RSSI).toFixed(2);
-            
+            const user = firebase.firestore.collection("user");
+                if(peripheral.UUID === "66:AF:30:B7:74:37"){
+                    user.add({
+                        id : peripheral.UUID
+                    }).then(function (doc) {
+                    console.log("found id ...." + doc.id);
+                    })
+                }
               callback({
                 uuid: peripheral.UUID,
                 distance

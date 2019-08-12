@@ -1,7 +1,8 @@
 import Vue from 'nativescript-vue'
-// import Menu from './components/Menu'
+//import Menu from './components/Menu'
 //import map from './components/map'
-import fb from './components/firebase'
+//import fb from './components/firebase'
+import app from './components/App'
 import store from './store';
 import VueDevtools from 'nativescript-vue-devtools'
 //import * as platform from 'platform'
@@ -42,5 +43,5 @@ Vue.config.silent = (TNS_ENV === 'production')
 
 new Vue({
   store,
-  render: h => h('frame', [h(fb)])
+  render: h => h('frame', [h(app)])
 }).$start()
