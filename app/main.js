@@ -1,8 +1,8 @@
 import Vue from 'nativescript-vue'
 //import Menu from './components/Menu'
-//import map from './components/map'
+import map from './components/map'
 //import fb from './components/firebase'
-import app from './components/App'
+//import app from './components/App'
 import store from './store';
 import VueDevtools from 'nativescript-vue-devtools'
 //import * as platform from 'platform'
@@ -23,8 +23,8 @@ firebase.init({
 );
 
 //import { MapViewBase } from 'nativescript-google-maps-sdk/map-view-common';
-Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
-//Vue.registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView)
+//Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
+Vue.registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView)
 // if(application.ios) {
 //   GMSServices.provideAPIKey("AIzaSyAVz73yW1RCrbjdPp3Fas4bmi42UWImnIg");
 // }
@@ -43,5 +43,5 @@ Vue.config.silent = (TNS_ENV === 'production')
 
 new Vue({
   store,
-  render: h => h('frame', [h(app)])
+  render: h => h('frame', [h(map)])
 }).$start()

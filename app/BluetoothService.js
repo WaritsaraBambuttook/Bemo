@@ -1,4 +1,5 @@
 import * as bluetooth from "nativescript-bluetooth";
+import * as geolocation from "nativescript-geolocation";
 const firebase = require("nativescript-plugin-firebase");
 const StartScan = function (callback) {
    
@@ -8,15 +9,40 @@ const StartScan = function (callback) {
             console.log('start scan. . .')
             console.log('device found with data' + JSON.stringify(peripheral))
             const distance = calculateDistance(peripheral.RSSI).toFixed(2);
-            const user = firebase.firestore.collection("user");
-                if(peripheral.UUID === "66:AF:30:B7:74:37"){
-                    user.add({
-                        id : peripheral.UUID
-                    }).then(function (doc) {
-                    console.log("found id ...." + doc.id);
-                    })
-                }
-              callback({
+            const scan = firebase.firestore.collection("scan");
+            //location
+                geolocation.isEnabled().then(function (isEnabled) {
+                    console.log("Enable.....?" + isEnabled);
+                if (!isEnabled) {
+                    geolocation.enableLocationRequest().then(function () {
+                    }, function (e) {
+                        console.log("Error: " + (e.message || e));
+                    });
+                    }
+                }, function (e) {
+                    console.log("Error is: " + (e.message || e));
+                });
+                geolocation.getCurrentLocation({
+                    desiredAccuracy: 3,timeout: 20000}).then((loc) => {
+                     if (loc) {
+                        var lat = loc.latitude;
+                        var long =loc.longitude;
+                       //firebase
+                        if(peripheral.UUID === "7C:FF:E8:51:84:1C"){
+                            scan.add({
+                                id : peripheral.UUID,
+                                distance : distance,
+                                location : firebase.firestore.GeoPoint(lat,long),
+                                time : firebase.firestore.FieldValue.serverTimestamp()
+                            }).then(function (doc) {
+                            console.log("found id ...." + doc.id);
+                            })
+                        }
+                    }    
+                    }, function(e){
+                        console.log("Error getLocaton: " + e.message);
+                });
+                callback({
                 uuid: peripheral.UUID,
                 distance
             })  
