@@ -10,7 +10,7 @@
                     hideCompass="true"
                     zoomLevel="12"
                     showUserLocation="false"
-                    disableZoom="false"
+                    disableZoom="true"
                     disableRotation="false"
                     disableScroll="false"
                     disableTilt="false"
@@ -30,17 +30,17 @@ import * as geolocation from "nativescript-geolocation";
             };
         },
         mounted() {
-            // geolocation.isEnabled().then(function (isEnabled) {
-            //         console.log("Enable.....?" + isEnabled);
-            //     if (!isEnabled) {
-            //         geolocation.enableLocationRequest().then(function () {
-            //         }, function (e) {
-            //             console.log("Error: " + (e.message || e));
-            //         });
-            //         }
-            //     }, function (e) {
-            //         console.log("Error is: " + (e.message || e));
-            //     });
+            geolocation.isEnabled().then(function (isEnabled) {
+                    console.log("Enable.....?" + isEnabled);
+                if (!isEnabled) {
+                    geolocation.enableLocationRequest().then(function () {
+                    }, function (e) {
+                        console.log("Error: " + (e.message || e));
+                    });
+                    }
+                }, function (e) {
+                    console.log("Error is: " + (e.message || e));
+                });
                 geolocation.getCurrentLocation({
                     desiredAccuracy: 3,timeout: 20000}).then((loc) => {
                      if (loc) {
