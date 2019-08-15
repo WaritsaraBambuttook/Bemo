@@ -23,7 +23,8 @@
         </StackLayout>
         
         <ScrollView>
-            <StackLayout>
+            <GridLayout rows="*" columns="*">
+                 <StackLayout>
                 <FlexboxLayout flexDirection="column" margin="10">
                     <Label text="Edit" height="auto" fontSize="20" />
                 </FlexboxLayout>
@@ -32,13 +33,15 @@
                     <button text="Sound"   fontSize="12"></button>
                 </DockLayout>
                 
-                <GridLayout rows="50,auto,*" columns="auto, auto,*" backgroundColor="green">
+                <GridLayout rows="50,auto,*" columns="auto, auto,*" >
                     <button text="Add Item" @tap="GotoApp" fontSize="18" row="1" col="2" ></button>
                 </GridLayout>
             </StackLayout >
+            </GridLayout>
+           
         </ScrollView>
 
-        <GridLayout rows="*" columns="*" backgroundColor="yellow" >
+        <GridLayout rows="*" columns="*"  >
             <DockLayout stretchLastChild="false" >
                     <SegmentedBar :items="segmentedBarItems" v-model="selectedBarIndex" dock="bottom" width="100%"  />
             </DockLayout>

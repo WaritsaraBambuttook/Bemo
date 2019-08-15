@@ -4,7 +4,7 @@
         <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BackMenu"/>
       </ActionBar>
       
-    <StackLayout backgroundColor="#3c495e">
+    <StackLayout>
     <ScrollView sdkExampleTitle sdkToggleNavButton>
         <StackLayout>
             <FlexboxLayout flexDirection="column" backgroundColor="#3c495e">
@@ -12,13 +12,19 @@
               <Label v-for="device in devices" :key="device.uuid" class="showID" id="showID" height="70" backgroundColor="#43b883"
               >Device UUID: {{device.uuid}} Distance:{{device.distance}}</Label>
             </FlexboxLayout>
-            <DockLayout stretchLastChild="false" backgroundColor="#3c495e" >
+            <DockLayout stretchLastChild="false" >
               <!-- <Button   class="btn" text="Checkpermission" dock="bottom" @tap="checkpermission"/> -->
               <Button  v-if="!scanning"  class="btn" text="StartScan" dock="bottom" @tap="startScan"/>
               <Button  v-if="scanning"  class="btn1" text="StopScan" dock="bottom"  @tap="stopScan"/>
             </DockLayout>
-            <DockLayout stretchLastChild="false" backgroundColor="#333333">
+            <DockLayout stretchLastChild="false" >
               <Button   class="btn" text="Checkpermission" dock="bottom" @tap="checkpermission"/>
+            </DockLayout>
+            <DockLayout stretchLastChild="false" >
+              <Button   class="btn" text="detail scan" dock="bottom" @tap="gotoFirebasePage"/>
+            </DockLayout>
+             <DockLayout stretchLastChild="false">
+              <Button   class="btn" text="map" dock="bottom" @tap="gotomap"/>
             </DockLayout>
         </StackLayout>
     </ScrollView>
@@ -34,7 +40,10 @@ import * as BluetoothService from "../BluetoothService";
 import { log } from "util";
 import { truncateSync } from 'fs';
 import { setInterval, clearInterval } from "tns-core-modules/timer"
+import { functions } from 'nativescript-plugin-firebase';
 const firebase = require("nativescript-plugin-firebase");
+import firebasePage from "./firebase";
+import map from "./map"
 // const timerModule = require("tns-core-modules/timer");
 // import { clearTimeout } from 'timers';
 //import { setTimeout } from 'timers';
@@ -84,12 +93,22 @@ export default {
               console.log("Enabled? " + enabled);
           }
       )
-    },
+    },  
+     gotoFirebasePage: function(){
+           console.log("go to firebase page");
+           this.$navigateTo(firebasePage);
+           
+       } ,
+       gotomap:function(){
+         console.log("go to map");
+           this.$navigateTo(map);
+       },
     BackMenu:function(){
       console.log("Back to menu");
       this.$navigateBack();
       
-    }
+    },
+  
 
 
     },

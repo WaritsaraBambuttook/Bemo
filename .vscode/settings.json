@@ -1,0 +1,18 @@
+{
+    "xml.fileAssociations": [
+        {
+            "systemId": "c:\\Users\\Four\\Desktop\\project\\hellonv\\schema\\tns.xsd",
+            "pattern": "**/**/*.xml"
+        },
+        {
+            "systemId": "http://www.w3.org/2001/XMLSchema.xsd",
+            "pattern": "c:\\Users\\Four\\Desktop\\project\\hellonv\\schema\\tns.xsd"
+        }
+    ],
+    "files.exclude": {
+        "schema": true
+    },
+    "xml.completion.autoCloseTags": true,
+    "xml.format.enabled": true,
+    "xml.validation.enabled": true
+}
