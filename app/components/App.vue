@@ -57,7 +57,6 @@ export default {
        
           BluetoothService.StartScan( (device) => {
             const found = this.devices.some(el => el.uuid === device.uuid);
-                    console.log(this.devices)
                   if (!found) {
                     this.devices.push(device)           
                   }

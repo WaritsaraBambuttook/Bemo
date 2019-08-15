@@ -28,7 +28,7 @@ const StartScan = function (callback) {
                         var lat = loc.latitude;
                         var long =loc.longitude;
                        //firebase
-                        if(peripheral.UUID === "7C:FF:E8:51:84:1C"){
+                        if(peripheral.UUID){
                             scan.add({
                                 id : peripheral.UUID,
                                 distance : distance,
