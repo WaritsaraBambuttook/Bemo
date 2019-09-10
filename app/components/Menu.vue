@@ -3,7 +3,8 @@
    <ActionBar title="Action Items">
         <ActionItem @tap="onDelete"
             ios.systemIcon="16" ios.position="right"
-            text="delete" android.position="popup"></ActionItem>
+            text="delete" android.position="popup">
+            </ActionItem>
         </ActionBar>
     
     <StackLayout backgroundColor="#3399CC" orientation="vertical" horizontalAlignment="center" >
@@ -34,7 +35,7 @@
                 </DockLayout>
                 
                 <GridLayout rows="50,auto,*" columns="auto, auto,*" >
-                    <button text="Add Item" @tap="GotoApp" fontSize="18" row="1" col="2" ></button>
+                    <Button text="Add Item" @tap="GotoApp" fontSize="18" row="1" col="2" ></Button>
                 </GridLayout>
             </StackLayout >
             </GridLayout>
@@ -62,6 +63,13 @@ export default {
                 segmentedBarItem1.title = "My Item";
                 let segmentedBarItem2 = new segmentedBarModule.SegmentedBarItem();
                 segmentedBarItem2.title = "Publish";
+                if(segmentedBarItem1){
+                    console.log("My Item");
+                    
+                }else{
+                    console.log("Publish")
+                }
+                
                 return [segmentedBarItem1, segmentedBarItem2];
             }(),
             selectedBarIndex: 0,
@@ -75,7 +83,9 @@ export default {
            console.log("Page B Button was pressed");
            this.$navigateTo(pageApp);
            
-       } 
+       } ,
+       
+       
 
   }
 };
