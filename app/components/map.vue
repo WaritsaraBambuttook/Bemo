@@ -6,40 +6,60 @@
     <ScrollView>
       <StackLayout>
         <GridLayout rows="*" columns="*">
-           <DockLayout width="100%" height="7%" backgroundColor="black" stretchLastChild="false">
-                <Label class="text-center" text="search around me" color="white" dock="left" width="80%" height="50" fontSize="25" margin="5"/>
-                <Switch checked="false" class="m-15"  dock="right" color="white" backgroundColor="white"/>
-            </DockLayout>
+          <DockLayout width="100%" height="7%" backgroundColor="black" stretchLastChild="false">
+            <Label
+              class="text-center"
+              text="search around me"
+              color="white"
+              dock="left"
+              width="80%"
+              height="50"
+              fontSize="25"
+              margin="5"
+            />
+            <Switch
+              checked="false"
+              class="m-15"
+              dock="right"
+              color="white"
+              backgroundColor="white"
+            />
+          </DockLayout>
         </GridLayout>
 
         <GridLayout rows="50,auto,*" columns="auto,auto,*" margin="5">
-           <Label row="0" col="0" text="Name :" height="auto" fontSize="20" />
-            <Label  row="1" col="0" text="ID :" height="auto" fontSize="20" />
-             <Label  row="2" col="0" :text="'Location : lat=' + latitude+' lng=' + longitude" height="auto" fontSize="20" />
+          <Label row="0" col="0" text="Name :" height="auto" fontSize="20" />
+          <Label row="1" col="0" text="ID :" height="auto" fontSize="20" />
+          <Label
+            row="2"
+            col="0"
+            :text="'Location : lat=' + latitude+' lng=' + longitude"
+            height="auto"
+            fontSize="20"
+          />
         </GridLayout>
-        
+
         <ContentView height="400" width="400">
           <GridLayout>
-          <Mapbox
-            accessToken="pk.eyJ1Ijoid2FyaXRzYXJhYiIsImEiOiJjanpheGRnaGcwMXhoM3BvM2x1cDVoYWN5In0.4NvZ0yvjJula01d6qqXkOw"
-            mapStyle="traffic_day"
-            :latitude="latitude"
-            :longitude="longitude"
-            hideCompass="true"
-            showUserLocation="false"
-            disableZoom="false"
-            disableRotation="false"
-            disableScroll="false"
-            disableTilt="false"
-            @mapReady="onMapReady($event)"
-          ></Mapbox>
-        </GridLayout>
+            <Mapbox
+              accessToken="pk.eyJ1Ijoid2FyaXRzYXJhYiIsImEiOiJjanpheGRnaGcwMXhoM3BvM2x1cDVoYWN5In0.4NvZ0yvjJula01d6qqXkOw"
+              mapStyle="traffic_day"
+              :latitude="latitude"
+              :longitude="longitude"
+              hideCompass="true"
+              showUserLocation="false"
+              disableZoom="false"
+              disableRotation="false"
+              disableScroll="false"
+              disableTilt="false"
+              @mapReady="onMapReady($event)"
+            ></Mapbox>
+          </GridLayout>
         </ContentView>
 
         <GridLayout rows="auto,auto" columns="*,*" margin="10">
-            <button text="Find Item"  fontSize="20" row="0" col="0" ></button>
-            <button text="Delect"  fontSize="20" row="0" col="1" ></button>
-
+          <button text="Find Item" fontSize="20" row="0" col="0"></button>
+          <button text="Delect" fontSize="20" row="0" col="1"></button>
         </GridLayout>
       </StackLayout>
     </ScrollView>
@@ -49,13 +69,16 @@
 import * as geolocation from "nativescript-geolocation";
 import { functions } from "nativescript-plugin-firebase";
 var mapbox = require("nativescript-mapbox");
+import { MapboxMarker, Mapbox } from "nativescript-mapbox";
+const firebase = require("nativescript-plugin-firebase");
 export default {
   data() {
     return {
       latitude: [],
       longitude: [],
       center: null,
-      zoom: null
+      zoom: null,
+      
     };
   },
   mounted() {
@@ -74,6 +97,7 @@ export default {
         console.log("Error is: " + (e.message || e));
       }
     );
+
   },
   methods: {
     onMapReady: function(args) {
@@ -91,11 +115,12 @@ export default {
               lng: this.longitude[0]
             };
             this.zoom = {
-              level: 16,
+              level: 12,
               animated: false
             };
             args.map.setZoomLevel(this.zoom);
             args.map.setCenter(this.center);
+           
             args.map.addMarkers([
               {
                 lat: this.latitude,
@@ -103,6 +128,13 @@ export default {
                 animated: false,
                 title: "location",
                 subtitle: this.latitude + "," + this.longitude
+              },
+              {
+                lat: "7.8948179",
+                lng: "98.3504102",
+                animated: false,
+                title: "PSu",
+                subtitle: "PSU"
               }
             ]);
           }
@@ -111,6 +143,7 @@ export default {
           console.log(err);
         });
     },
+
     BacktoScanpage: function() {
       console.log("Back to Scan page");
       this.$navigateBack();

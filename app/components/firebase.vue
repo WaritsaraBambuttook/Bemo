@@ -3,8 +3,7 @@
     <ActionBar title="Detail">
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoScanpage" />
     </ActionBar>
-    <ScrollView backgroundColor="pink">
-        
+    <ScrollView backgroundColor="pink">  
       <StackLayout>
         <Label
           v-for="detail in details"
