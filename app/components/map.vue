@@ -78,7 +78,11 @@ export default {
       longitude: [],
       center: null,
       zoom: null,
-      
+      // tagID: [],
+      // distance: [],
+      // location: [],
+      // time: []
+      datailData: []
     };
   },
   mounted() {
@@ -97,10 +101,56 @@ export default {
         console.log("Error is: " + (e.message || e));
       }
     );
+    //ดึงข้อมูลscan
+    // const scan = firebase.firestore.collection("scan");
+    // scan.get({ source: "server" }).then(querySnapshot => {
+    //   querySnapshot.forEach(doc => {
+    //     // console.log(`${doc.data().tagID} => ${JSON.stringify(doc.data())}`);
+    //     // this.tagID.push(doc.data().id);
+    //     // this.distance.push(doc.data().distance);
+    //     // this.location.push(doc.data().location);
+    //     // this.time.push(doc.data().time);
 
+    //     const dataInFirebase = {
+    //       lat: doc.data().location.latitude,
+    //       lng: doc.data().location.longitude,
+    //       animated: false,
+    //       title: doc.data().tagID,
+    //       subtitle: "time >> " + doc.data().time + "distance >> " + doc.data().distance
+    //     };
+    //     // console.log(dataInFirebase);
+    //     this.onMapReady.args.map.addMarkers([dataInFirebase])
+    //     //this.datailData.push(dataInFirebase);
+    //     //console.log(this.datailData)
+    //     // this.details.push({
+    //     //   tagID: doc.data().id,
+    //     //   distance: doc.data().distance,
+    //     //   location: doc.data().location,
+    //     //   time: doc.data().time
+    //     // });
+    //     //console.log(this.details);
+    //   });
+    // });
   },
   methods: {
     onMapReady: function(args) {
+      const scan = firebase.firestore.collection("scan");
+      scan.get({ source: "server" }).then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          const dataInFirebase = {
+            lat: doc.data().location.latitude,
+            lng: doc.data().location.longitude,
+            animated: false,
+            title: doc.data().tagID,
+            subtitle:
+              "time >> " +
+              doc.data().time +
+              "distance >> " +
+              doc.data().distance
+          };
+          console.log(dataInFirebase);
+        });
+      });
       geolocation
         .getCurrentLocation({
           desiredAccuracy: 3,
@@ -115,13 +165,28 @@ export default {
               lng: this.longitude[0]
             };
             this.zoom = {
-              level: 12,
+              level: 14,
               animated: false
             };
             args.map.setZoomLevel(this.zoom);
             args.map.setCenter(this.center);
-           
-            args.map.addMarkers([
+            const scan = firebase.firestore.collection("scan");
+            scan.get({ source: "server" }).then(querySnapshot => {
+              querySnapshot.forEach(doc => {
+                const dataInFirebase = {
+                  lat: doc.data().location.latitude,
+                  lng: doc.data().location.longitude,
+                  animated: false,
+                  title: doc.data().tagID,
+                  subtitle:
+                    "time >> " +
+                    doc.data().time +
+                    "distance >> " +
+                    doc.data().distance
+                };
+                console.log(dataInFirebase);
+                args.map.addMarkers([
+                  dataInFirebase,
               {
                 lat: this.latitude,
                 lng: this.longitude,
@@ -129,20 +194,61 @@ export default {
                 title: "location",
                 subtitle: this.latitude + "," + this.longitude
               },
-              {
-                lat: "7.8948179",
-                lng: "98.3504102",
-                animated: false,
-                title: "PSu",
-                subtitle: "PSU"
-              }
+
+              // {
+              //     lat: doc.data().location.latitude,
+              //     lng: doc.data().location.longitude,
+              //     animated: false,
+              //     title: doc.data().tagID,
+              //     subtitle:
+              //       "time >> " +
+              //       doc.data().time +
+              //       "distance >> " +
+              //       doc.data().distance
+              // }
             ]);
+                
+              });
+            });
+            // args.map.addMarkers([
+            //   {
+            //     lat: this.latitude,
+            //     lng: this.longitude,
+            //     animated: false,
+            //     title: "location",
+            //     subtitle: this.latitude + "," + this.longitude
+            //   }
+
+            //   // this.datailData,
+            //   // {
+            //   //   lat: this.location.latitude,
+            //   //   lng: this.location.longitude,
+            //   //   animated: false,
+            //   //   title: this.tagID,
+            //   //   subtitle: "time >>"+this.time + "distance >>" + this.distance
+            //   // }
+            // ]);
           }
         })
         .catch(err => {
           console.log(err);
         });
     },
+
+    // detailFB : async () => {
+    //   const fb = 0
+    //   for (let index = 0; index < this.tagID.length; index++) {
+    //     fb = {
+    //             lat: this.location.latitude[i],
+    //             lng: this.location.longitude[i],
+    //             animated: false,
+    //             title: this.tagID[i],
+    //             subtitle: "time >>"+this.time[i] + "distance >>" + this.distance[i]
+    //     }
+    //     console.log(fb);
+    //   }
+
+    // },
 
     BacktoScanpage: function() {
       console.log("Back to Scan page");
