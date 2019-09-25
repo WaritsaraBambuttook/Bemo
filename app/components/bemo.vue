@@ -2,41 +2,45 @@
   <Page class="page">
     <ActionBar title="Action Items" />
     <StackLayout>
-      <SegmentedBar>
-        <SegmentedBarItem title="scan" />
-        <SegmentedBarItem title="map" />
+      <SegmentedBar @selectedIndexChange="indexChange" row="0">
+        <SegmentedBarItem title="my device" />
+        <SegmentedBarItem title="Scan" />
+        <SegmentedBarItem title="Map" />
+        <!-- <SegmentedBarItem title="detail" /> -->
       </SegmentedBar>
-      <GridLayout rows="*,60">
-      
-      <ScrollView row="0">
-        <StackLayout class="home-panel">
-          <!--Add your page content here-->
-          <Label textWrap="true" text="Play with NativeScript!" class="h2 description-label" />
-          <Label
-            textWrap="true"
-            text="Write code in the editor or drag and drop components to build a NativeScript mobile application."
-            class="h2 description-label"
-          />
-          <Label textWrap="true" text="Scan the QR " class="h2 description-label" />
-        </StackLayout>
-      </ScrollView>
-    </GridLayout>
+      <GridLayout rows="*">
+        <ScrollView row="1">
+          <StackLayout class="home-panel">
+            <component v-bind:is="component"></component>
+          </StackLayout>
+        </ScrollView>
+      </GridLayout>
     </StackLayout>
-    
   </Page>
 </template>
-
 <script>
- var segmentedBarModule = require("tns-core-modules/ui/segmented-bar");
+var segmentedBarModule = require("tns-core-modules/ui/segmented-bar");
+import map from "./map.vue";
+import scan from "./App.vue";
+import myDevice from "./Menu";
+import { Observable } from "tns-core-modules/ui/page/page";
 export default {
+  components: {
+    c0: myDevice,
+    c1: scan,
+    c2: map
+  },
   data() {
     return {
-     
+      component: "c0"
     };
   },
   methods: {
-   
-
+    indexChange: function(args) {
+      let newIndex = args.value;
+      this.component = "c" + newIndex;
+      console.log("Current tab index: " + this.component);
+    }
   }
 };
 </script>

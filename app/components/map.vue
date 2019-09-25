@@ -1,69 +1,63 @@
 <template>
-  <Page class="page">
+  <!-- <Page class="page">
     <ActionBar class="action-bar" title="Vue Mapbox Example">
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoScanpage" />
-    </ActionBar>
-    <ScrollView>
-      <StackLayout>
-        <GridLayout rows="*" columns="*">
-          <DockLayout width="100%" height="7%" backgroundColor="black" stretchLastChild="false">
-            <Label
-              class="text-center"
-              text="search around me"
-              color="white"
-              dock="left"
-              width="80%"
-              height="50"
-              fontSize="25"
-              margin="5"
-            />
-            <Switch
-              checked="false"
-              class="m-15"
-              dock="right"
-              color="white"
-              backgroundColor="white"
-            />
-          </DockLayout>
-        </GridLayout>
-
-        <GridLayout rows="50,auto,*" columns="auto,auto,*" margin="5">
-          <Label row="0" col="0" text="Name :" height="auto" fontSize="20" />
-          <Label row="1" col="0" text="ID :" height="auto" fontSize="20" />
+  </ActionBar>-->
+  <ScrollView>
+    <StackLayout>
+      <!-- <GridLayout rows="*" columns="*">
+        <DockLayout width="100%" height="7%" backgroundColor="black" stretchLastChild="false">
           <Label
-            row="2"
-            col="0"
-            :text="'Location : lat=' + latitude+' lng=' + longitude"
-            height="auto"
-            fontSize="20"
+            class="text-center"
+            text="search around me"
+            color="white"
+            dock="left"
+            width="80%"
+            height="50"
+            fontSize="25"
+            margin="5"
           />
-        </GridLayout>
+          <Switch checked="false" class="m-15" dock="right" color="white" backgroundColor="white" />
+        </DockLayout>
+      </GridLayout>-->
 
-        <ContentView height="400" width="400">
-          <GridLayout>
-            <Mapbox
-              accessToken="pk.eyJ1Ijoid2FyaXRzYXJhYiIsImEiOiJjanpheGRnaGcwMXhoM3BvM2x1cDVoYWN5In0.4NvZ0yvjJula01d6qqXkOw"
-              mapStyle="traffic_day"
-              :latitude="latitude"
-              :longitude="longitude"
-              hideCompass="true"
-              showUserLocation="false"
-              disableZoom="false"
-              disableRotation="false"
-              disableScroll="false"
-              disableTilt="false"
-              @mapReady="onMapReady($event)"
-            ></Mapbox>
-          </GridLayout>
-        </ContentView>
+      <GridLayout rows="50,auto,*" columns="auto,auto,*" margin="5">
+        <!-- <Label row="0" col="0" text="Name :" height="auto" fontSize="20" />
+        <Label row="1" col="0" text="ID :" height="auto" fontSize="20" />-->
+        <Label
+          row="2"
+          col="0"
+          :text="'Location : lat=' + latitude+' lng=' + longitude"
+          height="auto"
+          fontSize="20"
+        />
+      </GridLayout>
 
-        <GridLayout rows="auto,auto" columns="*,*" margin="10">
-          <button text="Find Item" fontSize="20" row="0" col="0"></button>
-          <button text="Delect" fontSize="20" row="0" col="1"></button>
+      <ContentView height="400" width="400">
+        <GridLayout>
+          <Mapbox
+            accessToken="pk.eyJ1Ijoid2FyaXRzYXJhYiIsImEiOiJjanpheGRnaGcwMXhoM3BvM2x1cDVoYWN5In0.4NvZ0yvjJula01d6qqXkOw"
+            mapStyle="traffic_day"
+            :latitude="latitude"
+            :longitude="longitude"
+            hideCompass="true"
+            showUserLocation="false"
+            disableZoom="false"
+            disableRotation="false"
+            disableScroll="false"
+            disableTilt="false"
+            @mapReady="onMapReady($event)"
+          ></Mapbox>
         </GridLayout>
-      </StackLayout>
-    </ScrollView>
-  </Page>
+      </ContentView>
+
+      <GridLayout rows="auto,auto" columns="*,*" margin="10">
+        <button text="Find Item" fontSize="20" row="0" col="0"></button>
+        <button text="Delect" fontSize="20" row="0" col="1"></button>
+      </GridLayout>
+    </StackLayout>
+  </ScrollView>
+  <!-- </Page> -->
 </template>
 <script>
 import * as geolocation from "nativescript-geolocation";
@@ -99,23 +93,23 @@ export default {
   },
   methods: {
     onMapReady: function(args) {
-      const scan = firebase.firestore.collection("scan");
-      scan.get({ source: "server" }).then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const dataInFirebase = {
-            lat: doc.data().location.latitude,
-            lng: doc.data().location.longitude,
-            animated: false,
-            title: doc.data().tagID,
-            subtitle:
-              "time >> " +
-              doc.data().time +
-              "distance >> " +
-              doc.data().distance
-          };
-          console.log(dataInFirebase);
-        });
-      });
+      // const scan = firebase.firestore.collection("scan");
+      // scan.get({ source: "server" }).then(querySnapshot => {
+      //   querySnapshot.forEach(doc => {
+      //     const dataInFirebase = {
+      //       lat: doc.data().location.latitude,
+      //       lng: doc.data().location.longitude,
+      //       animated: false,
+      //       title: doc.data().tagID,
+      //       subtitle:
+      //         "time >> " +
+      //         doc.data().time +
+      //         "distance >> " +
+      //         doc.data().distance
+      //     };
+      //     // console.log(dataInFirebase);
+      //   });
+      // });
       geolocation
         .getCurrentLocation({
           desiredAccuracy: 3,
@@ -135,6 +129,7 @@ export default {
             };
             args.map.setZoomLevel(this.zoom);
             args.map.setCenter(this.center);
+
             const scan = firebase.firestore.collection("scan");
             scan.get({ source: "server" }).then(querySnapshot => {
               querySnapshot.forEach(doc => {
@@ -148,10 +143,8 @@ export default {
                     doc.data().time +
                     "distance >> " +
                     doc.data().distance,
-                    iconPath: "./img/placeholder.png"
-                  
+                  iconPath: "./img/placeholder.png"
                 };
-                console.log(dataInFirebase);
                 args.map.addMarkers([
                   dataInFirebase,
                   {
@@ -164,6 +157,15 @@ export default {
                 ]);
               });
             });
+            args.map.addMarkers([
+              {
+                lat: this.latitude,
+                lng: this.longitude,
+                animated: false,
+                title: "location",
+                subtitle: this.latitude + "," + this.longitude
+              }
+            ]);
           }
         })
         .catch(err => {
@@ -171,7 +173,7 @@ export default {
         });
     },
     BacktoScanpage: function() {
-      console.log("Back to Scan page");
+      // console.log("Back to Scan page");
       this.$navigateBack();
     }
   }

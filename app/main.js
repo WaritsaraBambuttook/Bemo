@@ -1,8 +1,9 @@
 import Vue from 'nativescript-vue'
 //import Menu from './components/Menu'
- import map from './components/map'
+ //import map from './components/map'
 //import fb from './components/firebase'
 //import pageApp from './components/App'
+import bemo from './components/bemo'
 import store from './store';
 import VueDevtools from 'nativescript-vue-devtools'
 //import * as platform from 'platform'
@@ -44,6 +45,6 @@ Vue.config.silent = (TNS_ENV === 'production')
 
 new Vue({
   store,
-  render: h => h('frame', [h(map)])
+  render: h => h('frame', [h(bemo)])
 }).$start()
 
