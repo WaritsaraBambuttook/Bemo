@@ -18,12 +18,13 @@
             backgroundColor="#43b883"
           >Device UUID: {{device.uuid}} Distance:{{device.distance}}</Label>
         </FlexboxLayout>
+
         <DockLayout stretchLastChild="false">
           <!-- <Button   class="btn" text="Checkpermission" dock="bottom" @tap="checkpermission"/> -->
           <Button v-if="!scanning" class="btn" text="StartScan" dock="bottom" @tap="startScan" />
           <Button v-if="scanning" class="btn1" text="StopScan" dock="bottom" @tap="stopScan" />
         </DockLayout>
-        <DockLayout stretchLastChild="false">
+        <!-- <DockLayout stretchLastChild="false">
           <Button class="btn" text="Checkpermission" dock="bottom" @tap="checkpermission" />
         </DockLayout>
         <DockLayout stretchLastChild="false">
@@ -31,7 +32,7 @@
         </DockLayout>
         <DockLayout stretchLastChild="false">
           <Button class="btn" text="map" dock="bottom" @tap="gotomap" />
-        </DockLayout>
+        </DockLayout>-->
       </StackLayout>
     </ScrollView>
   </StackLayout>
@@ -77,20 +78,20 @@ export default {
     stopScan: async function() {
       await BluetoothService.stopScan();
       this.scanning = false;
-    },
-
-    checkpermission: async function() {
-      bluetooth.isBluetoothEnabled().then(function(enabled) {});
-    },
-    gotoFirebasePage: function() {
-      this.$navigateTo(firebasePage);
-    },
-    gotomap: function() {
-      this.$navigateTo(map);
-    },
-    BackMenu: function() {
-      this.$navigateBack();
     }
+
+    // checkpermission: async function() {
+    //   bluetooth.isBluetoothEnabled().then(function(enabled) {});
+    // }
+    // gotoFirebasePage: function() {
+    //   this.$navigateTo(firebasePage);
+    // },
+    // gotomap: function() {
+    //   this.$navigateTo(map);
+    // },
+    // BackMenu: function() {
+    //   this.$navigateBack();
+    // }
   }
   // mounted() {
   //   const user = firebase.firestore.collection("user");

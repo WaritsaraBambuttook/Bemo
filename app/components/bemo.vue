@@ -1,6 +1,13 @@
 <template>
   <Page class="page">
-    <ActionBar title="Action Items" />
+    <ActionBar title="Bemo">
+      <ActionItem
+        ios.systemIcon="16"
+        ios.position="right"
+        android.systemIcon="../img/1.jpg"
+        android.position="actionBar"
+      />
+    </ActionBar>
     <StackLayout>
       <SegmentedBar @selectedIndexChange="indexChange" row="0">
         <SegmentedBarItem title="my device" />
@@ -10,7 +17,7 @@
       </SegmentedBar>
       <GridLayout rows="*">
         <ScrollView row="1">
-          <StackLayout class="home-panel">
+          <StackLayout>
             <component v-bind:is="component"></component>
           </StackLayout>
         </ScrollView>
@@ -24,6 +31,7 @@ import map from "./map.vue";
 import scan from "./App.vue";
 import myDevice from "./Menu";
 import { Observable } from "tns-core-modules/ui/page/page";
+
 export default {
   components: {
     c0: myDevice,

@@ -1,8 +1,17 @@
 import * as bluetooth from "nativescript-bluetooth";
 import * as geolocation from "nativescript-geolocation";
 const firebase = require("nativescript-plugin-firebase");
+var dialogs = require("tns-core-modules/ui/dialogs");
 const StartScan = function(callback) {
   console.log("start scan .....");
+  bluetooth.isBluetoothEnabled().then(function(enabled) {
+    console.log(enabled);
+    if (enabled == false) {
+      dialogs.alert("Open Bluetooth").then(function() {
+        console.log("Dialog closed!");
+      });
+    }
+  });
   bluetooth.startScanning({
     onDiscovered: peripheral => {
       console.log("start scan. . .");
