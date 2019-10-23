@@ -2,11 +2,13 @@ import Vue from "nativescript-vue";
 //import Menu from './components/Menu'
 //import map from './components/map'
 //import fb from './components/firebase'
-//import pageApp from './components/App'
 import bemo from "./components/bemo";
-import store from "./store";
+// import sideDrawer from "./components/sideDrawer";
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
+// import NSVueGlobalDrawer from "nativescript-vue-global-drawer";
+
+// Vue.use(NSVueGlobalDrawer);
 
 firebase.init({}).then(
   function() {
@@ -30,17 +32,17 @@ Vue.registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 //   GMSServices.provideAPIKey("AIzaSyAVz73yW1RCrbjdPp3Fas4bmi42UWImnIg")
 // }
 
+Vue.registerElement(
+  "RadSideDrawer",
+  () => require("nativescript-ui-sidedrawer").RadSideDrawer
+);
+
 if (TNS_ENV !== "production") {
   Vue.use(VueDevtools);
 }
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = TNS_ENV === "production";
-// Vue.registerElement(
-//   "RadSideDrawer",
-//   () => require("nativescript-ui-sidedrawer").RadSideDrawer
-// );
 
 new Vue({
-  store,
   render: h => h("frame", [h(bemo)])
 }).$start();
