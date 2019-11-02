@@ -7,14 +7,6 @@
         </StackLayout>
 
         <StackLayout row="1" col="0">
-          <!-- <Label
-            v-for="item in items"
-            :key="item.name"
-            textWrap="true"
-            height="50"
-            fontSize="24"
-            margin="10"
-          >Name : {{item.name}}</Label>/>-->
           <ListView for="item in items" class="list-group" @itemTap="onItemTap" fontSize="20">
             <v-template>
               <GridLayout class="list-group-item" rows="*" columns="*">
@@ -78,7 +70,7 @@ export default {
       .collection("item")
       .get({ source: "server" });
     query.forEach(doc => {
-      console.log(doc.data());
+      //console.log(doc.data());
       this.items.push(doc.data());
     });
   }

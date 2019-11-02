@@ -2,7 +2,21 @@
   <StackLayout>
     <ScrollView sdkExampleTitle sdkToggleNavButton>
       <StackLayout>
-        <FlexboxLayout flexDirection="column" backgroundColor="#3c495e">
+        <GridLayout rows="*,auto" columns="*,auto" margin="50">
+          <CircularProgressBar :size="size" :progress="progress" row="0" col="0" margin="10" />
+
+          <Button
+            class="btn"
+            text="StartScan"
+            dock="bottom"
+            @tap="startScan"
+            row="1"
+            col="0"
+            margin="20"
+          />
+        </GridLayout>
+
+        <!-- <FlexboxLayout flexDirection="column" backgroundColor="#3c495e">
           <Label v-if="scanning" backgroundColor="#FE0000">Scanning. . .</Label>
           <Label
             v-for="device in devices"
@@ -17,12 +31,13 @@
             alignContent="center"
             textAlignment="center"
           >Device UUID: {{device.uuid}} Distance:{{device.distance}}</Label>
-        </FlexboxLayout>
+        </FlexboxLayout>-->
 
-        <DockLayout stretchLastChild="false">
-          <Button v-if="!scanning" class="btn" text="StartScan" dock="bottom" @tap="startScan" />
-          <Button v-if="scanning" class="btn1" text="StopScan" dock="bottom" @tap="stopScan" />
-        </DockLayout>
+        <!-- <DockLayout stretchLastChild="false" row="1" col="0" margin="10">
+         <Button v-if="!scanning" class="btn" text="StartScan" dock="bottom" @tap="startScan" />
+         <Button v-if="scanning" class="btn1" text="StopScan" dock="bottom" @tap="stopScan" /> 
+          
+        </DockLayout>-->
       </StackLayout>
     </ScrollView>
   </StackLayout>
@@ -33,17 +48,18 @@ import bluetooth, { isBluetoothEnabled } from "nativescript-bluetooth";
 import * as BluetoothService from "../BluetoothService";
 import { log } from "util";
 import { truncateSync } from "fs";
-import { setInterval, clearInterval } from "tns-core-modules/timer";
-import { functions } from "nativescript-plugin-firebase";
-const firebase = require("nativescript-plugin-firebase");
-//var dialogs = require("tns-core-modules/ui/dialogs");
-//import firebasePage from "./firebase";
-import map from "./map";
+
+import CircularProgressBar from "./CircularProgressBar";
+import RadGauge from "nativescript-ui-gauge/vue";
+
+const progressModule = require("tns-core-modules/ui/progress");
+
 export default {
   data() {
     return {
       devices: [],
-      scanning: false
+      size: 250,
+      progress: 0
     };
   },
   methods: {
@@ -51,23 +67,35 @@ export default {
       this.scanning = true;
 
       BluetoothService.StartScan(device => {
-        const found = this.devices.some(el => el.uuid === device.uuid);
-        if (!found) {
-          this.devices.push(device);
-        } else {
-          this.devices.map(d => {
-            if (device.uuid == d.uuid) {
-              d.distance = device.distance;
-            }
-          });
-        }
-      });
-    },
+        console.log("............................" + device);
+        // setTimeout(function() {
+        //   this.progress = 100;
+        // }, 4000);
 
-    stopScan: async function() {
-      await BluetoothService.stopScan();
-      this.scanning = false;
+        //   const found = this.devices.some(el => el.uuid === device.uuid);
+        //   if (!found) {
+        //     this.devices.push(device);
+        //   } else {
+        //     this.devices.map(d => {
+        //       if (device.uuid == d.uuid) {
+        //         d.distance = device.distance;
+        //       }
+        //     });
+        //   }
+      });
     }
+
+    // stopScan: async function() {
+    //   await BluetoothService.stopScan();
+    //   this.scanning = false;
+    // },
+
+    // random(min = 50, max = 150) {
+    //   return Math.floor(Math.random() * (max - min + 1)) + min;
+    // }
+  },
+  components: {
+    CircularProgressBar
   }
 };
 </script>

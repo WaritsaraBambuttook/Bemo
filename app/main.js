@@ -6,10 +6,11 @@ import bemo from "./components/bemo";
 // import sideDrawer from "./components/sideDrawer";
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
+import RadGauge from "nativescript-ui-gauge/vue";
 // import NSVueGlobalDrawer from "nativescript-vue-global-drawer";
 
 // Vue.use(NSVueGlobalDrawer);
-
+Vue.use(RadGauge);
 firebase.init({}).then(
   function() {
     console.log("firebase.init done");
