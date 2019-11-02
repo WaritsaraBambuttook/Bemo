@@ -1,48 +1,22 @@
-<template lang="html">
-  <Page actionBarHidden="true">
-    <!-- <ActionBar>
+<template >
+  <Page>
+    <ActionBar>
       <StackLayout orientation="horizontal">
-        <Label text="Bemo" fontSize="24" verticalAlignment="center" width="80%" />
-        <Image class="btnImg" src="~/img/1.jpg" width="40" height="40" verticalAlignment="right" />
+        <Image
+          class="btnImg"
+          src="~/img/Bemo.png"
+          width="40"
+          height="40"
+          verticalAlignment="right"
+        />
+        <Label text="Menu" fontSize="24" verticalAlignment="center" />
       </StackLayout>
-    </ActionBar> -->
-       
-    <RadSideDrawer  ref="drawer">
-      <StackLayout ~drawerContent backgroundColor="beige" >
-       
-           <Label class="drawer-header" text="Drawer" />
-         
-            <Label class="drawer-item" text="Item 1" />
-           <Label class="drawer-item" text="Item 2"/>
-            <Label class="drawer-item" text="Item 3" />
-       
-          
-         
-         <Button class="drawer-close-button" text="CLOSE"  @tap="$refs.drawer.nativeView.closeDrawer()" />
-      </StackLayout>
-<GridLayout class="bg" ~mainContent rows="*" columns="*">
-  <Frame>
-    <Page>
-      <!-- <ActionBar>
-      <StackLayout orientation="horizontal">
-        <Label text="Bemo" fontSize="24" verticalAlignment="center" width="80%" />
-        <Image class="btnImg" src="~/img/1.jpg" width="40" height="40" verticalAlignment="right" />
-      </StackLayout>
-    </ActionBar> -->
-       <ActionBar>
-      <GridLayout width="100%" columns="auto,*">
-        <!-- <Image class="btnImg" src="~/img/1.jpg" width="40" height="40" verticalAlignment="right" col="0"  @tap="$refs.drawer.nativeView.showDrawer()"/> -->
-        <Label text="Menu" @tap="$refs.drawer.nativeView.showDrawer()" col="0"/>
-        <Label class="title" text="Bemo" col="1" />
-      </GridLayout>
     </ActionBar>
-
- <StackLayout>
+    <StackLayout>
       <SegmentedBar @selectedIndexChange="indexChange" row="0">
         <SegmentedBarItem title="device" />
         <SegmentedBarItem title="Scan" />
-        <SegmentedBarItem title="Map" />
-        <SegmentedBarItem title="Status" />
+        <SegmentedBarItem title="setting" />
         <!-- <SegmentedBarItem title="detail" /> -->
       </SegmentedBar>
       <GridLayout rows="*">
@@ -53,29 +27,21 @@
         </ScrollView>
       </GridLayout>
     </StackLayout>
-    </Page>
-  </Frame>
- 
-</GridLayout>
-    </RadSideDrawer>
-    
-    
   </Page>
 </template>
 <script>
 var segmentedBarModule = require("tns-core-modules/ui/segmented-bar");
-import map from "./map.vue";
-import scan from "./App.vue";
-import myDevice from "./Menu";
-import status from "./status";
+import scan from "./scanBLE";
+import myDevice from "./myDevices";
+import setting from "./setting";
 import { Observable } from "tns-core-modules/ui/page/page";
-
+import { functions } from "nativescript-plugin-firebase";
+import AddDevice from "./AddDevice";
 export default {
   components: {
     c0: myDevice,
     c1: scan,
-    c2: map,
-    c3: status
+    c2: setting
   },
   data() {
     return {
@@ -116,9 +82,9 @@ ActionBar {
   color: #ffffff;
 }
 
-.title {
+/* .title {
   text-align: left;
-  padding-left: 16;
+  padding-left: 50%;
 }
 
 .message {
@@ -147,5 +113,5 @@ ActionBar {
   padding: 8 16;
   color: #333333;
   font-size: 16;
-}
+} */
 </style>
