@@ -51,7 +51,7 @@ import { truncateSync } from "fs";
 
 import CircularProgressBar from "./CircularProgressBar";
 import RadGauge from "nativescript-ui-gauge/vue";
-
+const timerModule = require("tns-core-modules/timer");
 const progressModule = require("tns-core-modules/ui/progress");
 
 export default {
@@ -68,9 +68,17 @@ export default {
 
       BluetoothService.StartScan(device => {
         console.log("............................" + device);
-        // setTimeout(function() {
-        //   this.progress = 100;
-        // }, 4000);
+        let count = 0;
+
+        let id = timerModule.setInterval(() => {
+          this.progress = this.progress + 10;
+          count++;
+          console.log(this.progress);
+
+          if (this.progress >= 100) {
+            timerModule.clearInterval(id);
+          }
+        }, 1000);
 
         //   const found = this.devices.some(el => el.uuid === device.uuid);
         //   if (!found) {

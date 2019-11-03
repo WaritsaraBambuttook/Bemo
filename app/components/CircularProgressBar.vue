@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     height() {
-      return Math.min(this.size, 250);
+      return Math.min(this.size, 350);
     },
     value() {
       return Math.min(this.progress, 100);

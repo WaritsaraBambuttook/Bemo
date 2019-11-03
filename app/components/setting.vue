@@ -1,10 +1,14 @@
 <template>
-  <!-- <ActionBar title="Detail">
-      <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoScanpage" />
-  </ActionBar>-->
   <ScrollView backgroundColor="pink">
     <StackLayout>
-      <Label text="Status" textWrap="true" />
+      <GridLayout rows="*,auto" columns="*,*">
+        <StackLayout row="0" col="0">
+          <Image src="~/img/1.jpg" width="100" height="100" />
+        </StackLayout>
+        <StackLayout row="0" col="1">
+          <Label text="name" textWrap="true" />
+        </StackLayout>
+      </GridLayout>
     </StackLayout>
   </ScrollView>
 </template>
