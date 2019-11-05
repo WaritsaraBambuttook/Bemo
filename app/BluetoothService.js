@@ -21,6 +21,7 @@ const StartScan = function(callback) {
         console.log("device found with data" + JSON.stringify(peripheral));
         const distance = calculateDistance(peripheral.RSSI).toFixed(2);
         const scan = firebase.firestore.collection("scan");
+
         //location
         geolocation.isEnabled().then(
           function(isEnabled) {

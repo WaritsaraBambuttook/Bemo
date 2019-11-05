@@ -1,46 +1,20 @@
 <template>
-  <StackLayout>
-    <ScrollView sdkExampleTitle sdkToggleNavButton>
-      <StackLayout>
-        <GridLayout rows="*,auto" columns="*,auto" margin="50">
-          <CircularProgressBar :size="size" :progress="progress" row="0" col="0" margin="10" />
+  <ScrollView>
+    <StackLayout class="home-panel">
+      <CircularProgressBar :size="size" :progress="progress" :num="num" margin="10" />
 
-          <Button
-            class="btn"
-            text="StartScan"
-            dock="bottom"
-            @tap="startScan"
-            row="1"
-            col="0"
-            margin="20"
-          />
-        </GridLayout>
-
-        <!-- <FlexboxLayout flexDirection="column" backgroundColor="#3c495e">
-          <Label v-if="scanning" backgroundColor="#FE0000">Scanning. . .</Label>
-          <Label
-            v-for="device in devices"
-            :key="device.uuid"
-            class="showID"
-            id="showID"
-            height="50"
-            backgroundColor="#43b883"
-            margin="5"
-            fontSize="16"
-            borderWidth="3 5 3 5"
-            alignContent="center"
-            textAlignment="center"
-          >Device UUID: {{device.uuid}} Distance:{{device.distance}}</Label>
-        </FlexboxLayout>-->
-
-        <!-- <DockLayout stretchLastChild="false" row="1" col="0" margin="10">
-         <Button v-if="!scanning" class="btn" text="StartScan" dock="bottom" @tap="startScan" />
-         <Button v-if="scanning" class="btn1" text="StopScan" dock="bottom" @tap="stopScan" /> 
-          
-        </DockLayout>-->
-      </StackLayout>
-    </ScrollView>
-  </StackLayout>
+      <Button class="button" text="Start Scan" dock="bottom" @tap="startScan" margin="20" />
+    </StackLayout>
+  </ScrollView>
+  <!-- <ScrollView>
+    <StackLayout class="home-panel">
+      <CircularProgressBar size="50" progress="50" />
+      <StackLayout class="m-y-15" />
+      <CircularProgressBar size="100" progress="100" />
+      <StackLayout class="m-y-15" />
+      <CircularProgressBar size="200" progress="200" />
+    </StackLayout>
+  </ScrollView>-->
 </template>
 
 <script>
@@ -59,26 +33,33 @@ export default {
     return {
       devices: [],
       size: 250,
-      progress: 0
+      progress: 0,
+      num: []
     };
   },
   methods: {
     startScan: function() {
-      this.scanning = true;
+      this.num = 0;
+      this.devices = [];
+      let count = 0;
+      this.progress = 0;
+      let id = timerModule.setInterval(() => {
+        this.progress = this.progress + 25;
+        count++;
+        console.log(this.progress);
+
+        if (this.progress >= 100) {
+          timerModule.clearInterval(id);
+        }
+      }, 1000);
 
       BluetoothService.StartScan(device => {
         console.log("............................" + device);
-        let count = 0;
+        this.devices.push(device);
+        console.log(this.devices);
 
-        let id = timerModule.setInterval(() => {
-          this.progress = this.progress + 10;
-          count++;
-          console.log(this.progress);
-
-          if (this.progress >= 100) {
-            timerModule.clearInterval(id);
-          }
-        }, 1000);
+        this.num = this.devices.length;
+        console.log(">>>>>>>>>>>>>>>>>>>>>>" + this.num);
 
         //   const found = this.devices.some(el => el.uuid === device.uuid);
         //   if (!found) {
@@ -136,4 +117,16 @@ export default {
 /* .ShowUID {
   margin-top: 20px;
 } */
+.button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 50%;
+}
 </style>
