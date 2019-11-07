@@ -41,10 +41,10 @@
           </StackLayout>
         </GridLayout>
 
-        <GridLayout rows="auto,auto" columns="auto">
-          <Button class="button" text="Find" margin="10" col="0" row="0" />
-          <Button class="button" text="lost" margin="10" col="2" row="0" />
-        </GridLayout>
+        <StackLayout orientation="horizontal" margin="10" horizontalAlignment="center">
+          <Button class="button" text="Find" width="40%" />
+          <Button class="button" text="lost" width="40%" />
+        </StackLayout>
       </StackLayout>
     </ScrollView>
   </Page>
