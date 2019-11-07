@@ -57,6 +57,7 @@ import { MapboxMarker, Mapbox } from "nativescript-mapbox";
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
 export default {
+ 
   data() {
     return {
       latitude: [],

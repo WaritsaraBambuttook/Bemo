@@ -22,13 +22,14 @@
 <script>
 import { log } from "util";
 import add from "./AddDevice";
-// import detail_item from "./DetailPage"
+import detail_item from "./showMap";
 var firebase = require("nativescript-plugin-firebase");
 
 export default {
+  // name: items,
   data() {
     return {
-      items: [], selected: {}
+      items: [], 
     };
   },
   methods: {
@@ -38,16 +39,11 @@ export default {
     },
     onItemTap: function(event) {
       console.log("You tapped: " + this.$data.items[event.index].name);
-      // const selected = this.$data.items[event.index].name;
-      //       if (selected) {
-      //           this.selected  = selected ;
-      //       } else {
-                
-      //           this.$navigateTo(detail_item, {
-      //               props: { selected : selected  }
-      //           });
-      //       }
+      this.$navigateTo(detail_item,{props:{items:this.$data.items[event.index]}});
     }
+    
+      
+      
 
     // notify: function(message) {
     //   console.log("Title: " + message.title);

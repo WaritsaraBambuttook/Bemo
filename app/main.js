@@ -1,7 +1,7 @@
 import Vue from "nativescript-vue";
 //import Menu from './components/Menu'
-import map from "./components/showMap";
-//import bemo from "./components/bemo";
+// import map from "./components/showMap";
+import bemo from "./components/bemo";
 // import sideDrawer from "./components/sideDrawer";
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
@@ -44,5 +44,5 @@ if (TNS_ENV !== "production") {
 Vue.config.silent = TNS_ENV === "production";
 
 new Vue({
-  render: h => h("frame", [h(map)])
+  render: h => h("frame", [h(bemo)])
 }).$start();
