@@ -1,25 +1,20 @@
 <template>
   <StackLayout orientation="vertical" horizontalAlignment="center">
     <ScrollView>
-      <GridLayout rows="auto,100,*" columns="*,*,auto">
-        <StackLayout row="0" col="0">
-          <Label text="My Device" textWrap="true" height="50" fontSize="24" margin="10" />
-        </StackLayout>
-
-        <StackLayout row="1" col="0">
-          <ListView for="item in items" class="list-group" @itemTap="onItemTap" fontSize="20">
-            <v-template>
-              <GridLayout class="list-group-item" rows="*" columns="*">
-                <Label row="0" col="1" :text="item.name" />
-              </GridLayout>
-            </v-template>
-          </ListView>
-        </StackLayout>
-
-        <StackLayout orientation="horizontal" row="2" col="1" margin="10">
+    
+        <StackLayout>
+        <Label text="My Device" textWrap="true" height="50" fontSize="24" margin="10" />
+        <ListView class="list-group" for="item in items" @itemTap="onItemTap" height="500" rowHeight="50">
+          <v-template>
+            <FlexboxLayout flexDirection="row" class="list-group-item">
+              <Label :text="item.name" class="list-group-item-heading" style="width: 100%"/>
+              
+            </FlexboxLayout>
+          </v-template>
+        </ListView>
           <Button class="button" text="Add" @tap="addDevices" />
-        </StackLayout>
-      </GridLayout>
+      </StackLayout>
+     
     </ScrollView>
   </StackLayout>
 </template>
@@ -27,12 +22,13 @@
 <script>
 import { log } from "util";
 import add from "./AddDevice";
+// import detail_item from "./DetailPage"
 var firebase = require("nativescript-plugin-firebase");
 
 export default {
   data() {
     return {
-      items: []
+      items: [], selected: {}
     };
   },
   methods: {
@@ -42,6 +38,15 @@ export default {
     },
     onItemTap: function(event) {
       console.log("You tapped: " + this.$data.items[event.index].name);
+      // const selected = this.$data.items[event.index].name;
+      //       if (selected) {
+      //           this.selected  = selected ;
+      //       } else {
+                
+      //           this.$navigateTo(detail_item, {
+      //               props: { selected : selected  }
+      //           });
+      //       }
     }
 
     // notify: function(message) {
@@ -116,5 +121,9 @@ export default {
   font-size: 16px;
   margin: 4px 2px;
   border-radius: 50%;
+}
+.list-group{
+  border-color: #d3d3d3;
+  border-right-width: 2;
 }
 </style>
