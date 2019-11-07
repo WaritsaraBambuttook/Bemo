@@ -1,7 +1,6 @@
 import Vue from "nativescript-vue";
 //import Menu from './components/Menu'
-//import map from './components/map'
-//import fb from './components/firebase'
+//import map from "./components/showMap";
 import bemo from "./components/bemo";
 // import sideDrawer from "./components/sideDrawer";
 import VueDevtools from "nativescript-vue-devtools";
