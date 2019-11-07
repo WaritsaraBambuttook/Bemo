@@ -71,6 +71,9 @@ export default {
       map: null
     };
   },  
+  // mounted(){
+  //   console.log(stringify)
+  // },
   async created() {
     geolocation.isEnabled().then(
       function(isEnabled) {
@@ -130,7 +133,7 @@ export default {
         args.map.setZoomLevel(this.zoom);
         args.map.setCenter(this.center);
 
-        let data = "Bag";
+        let data = this.items.name;
 
         const qs = await firebase.firestore
           .collection("item")
