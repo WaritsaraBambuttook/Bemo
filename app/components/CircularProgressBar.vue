@@ -34,7 +34,16 @@
       </RadialScale>
     </RadRadialGauge>
     <Label
+      id="change"
       :text="text"
+      :color="textColor"
+      :fontSize="textSize"
+      class="m-x-50 m-y-50"
+      :marginTop="offset"
+    ></Label>
+    <Label
+      id="change"
+      :text="'Found '+num + ' devices'"
       :color="textColor"
       :fontSize="textSize"
       class="m-x-auto m-y-auto"
@@ -44,14 +53,16 @@
 </template>
 
 <script>
+import { getViewById } from "tns-core-modules/ui/page/page";
 export default {
   props: {
     size: { default: 100 },
     progress: { default: 0 },
     offset: { default: 0 },
     textColor: { default: "#bfbfc4" },
-    fillColor: { default: "#FDA458" },
-    fillBackgroundColor: { default: "#efeff4" }
+    fillColor: { default: "#b9f04a" },
+    fillBackgroundColor: { default: "#efeff4" },
+    num: { default: 0 }
   },
   computed: {
     height() {
@@ -67,6 +78,9 @@ export default {
       return;
       this.height / 3.5;
     }
+  },
+  methods: {
+    changeText: function() {}
   }
 };
 </script>
