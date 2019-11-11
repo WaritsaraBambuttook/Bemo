@@ -44,7 +44,7 @@
 
         <StackLayout orientation="horizontal" margin="10" horizontalAlignment="center">
           <Button class="button" text="Find" width="40%" />
-          <Button class="button" text="lost" width="40%" />
+          <Button class="button" text="lost" @tap="lost_item" width="40%" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -171,6 +171,21 @@ export default {
         // console.log(this.index);
         // console.log(args.map.object);
       }
+    },
+      lost_item: function() {
+      console.log(this.items.name);
+      
+      const lost = firebase.firestore.collection("lost");
+      lost
+        .add({
+          name: this.items.name,
+          email: this.items.email,
+          uuid: this.items.uuid
+        })
+        .then(doc => {
+          console.log("found lost item ...." + doc.id);
+        });
+     
     }
 
     // indexChange: function(args) {
