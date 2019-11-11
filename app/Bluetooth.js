@@ -14,9 +14,10 @@ const StartScan = function(callback) {
   console.log("start scan .....");
 
   bluetooth.startScanning({
+    seconds: 4,
     onDiscovered: peripheral => {
       console.log("start scan. . .");
-      console.log("device found with data" + JSON.stringify(peripheral));
+      // console.log("device found with data" + JSON.stringify(peripheral));
       const distance = calculateDistance(peripheral.RSSI).toFixed(2);
       callback({
         uuid: peripheral.UUID,
@@ -25,6 +26,7 @@ const StartScan = function(callback) {
     },
     skipPermissionCheck: true
   });
+  stopScan;
 };
 
 const calculateDistance = function calculateDistance(rssi) {
@@ -42,13 +44,12 @@ const calculateDistance = function calculateDistance(rssi) {
 };
 
 const stopScan = async () => {
-  console.log("stop scan!");
-  return await bluetooth.stopScanning();
+  bluetooth.stopScanning().then(function() {
+    console.log("scanning stopped >>>>>>>>>>");
+  });
 };
-
 export {
-  StartScan,
-  stopScan
+  StartScan
   //checkHasCoarse,
   //checkRequest
 };

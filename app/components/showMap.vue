@@ -1,15 +1,29 @@
 <template>
   <Page class="page">
-    <ActionBar class="action-bar" title="Vue Mapbox Example">
+    <ActionBar class="action-bar" title="Map">
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
     </ActionBar>
+    <!-- <ActionBar>
+      <StackLayout orientation="horizontal">
+        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
+        <Image
+          class="btnImg"
+          src="~/img/Bemo.png"
+          width="40"
+          height="40"
+          verticalAlignment="right"
+        />
+        <Label text="Add Devices" fontSize="24" verticalAlignment="center" />
+      </StackLayout>
+    </ActionBar>-->
+
     <ScrollView>
       <StackLayout>
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout col="0" row="0" margin="10">
             <GridLayout rows="*" columns="*">
               <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
-              <Label :text="this.items.name" textWrap="true"/>
+              <Label :text="this.items.name" textWrap="true" />
             </GridLayout>
           </StackLayout>
           <!-- <StackLayout col="1" row="1">
@@ -70,7 +84,7 @@ export default {
       // index: [],
       map: null
     };
-  },  
+  },
   // mounted(){
   //   console.log(stringify)
   // },

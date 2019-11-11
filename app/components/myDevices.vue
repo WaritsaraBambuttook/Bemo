@@ -1,27 +1,30 @@
 <template>
   <StackLayout orientation="vertical" horizontalAlignment="center">
     <ScrollView>
-    
-        <StackLayout>
+      <StackLayout>
         <Label text="My Device" textWrap="true" height="50" fontSize="24" margin="10" />
-        <ListView class="list-group" for="item in items" @itemTap="onItemTap" height="500" rowHeight="50">
+        <ListView
+          class="list-group"
+          for="item in items"
+          @itemTap="onItemTap"
+          height="500"
+          rowHeight="50"
+        >
           <v-template>
             <FlexboxLayout flexDirection="row" class="list-group-item">
-              <Label :text="item.name" class="list-group-item-heading" style="width: 100%"/>
-              
+              <Label :text="item.name" class="list-group-item-heading" style="width: 100%" />
             </FlexboxLayout>
           </v-template>
         </ListView>
-          <Button class="button" text="Add" @tap="addDevices" />
+        <Button class="button" text="Add" @tap="addDevices" />
       </StackLayout>
-     
     </ScrollView>
   </StackLayout>
 </template>
 
 <script>
 import { log } from "util";
-import add from "./AddDevice";
+import AddDevice from "./AddDevice";
 import detail_item from "./showMap";
 var firebase = require("nativescript-plugin-firebase");
 
@@ -29,21 +32,20 @@ export default {
   // name: items,
   data() {
     return {
-      items: [], 
+      items: []
     };
   },
   methods: {
     addDevices: function() {
-      this.$navigateTo(add);
+      this.$navigateTo(AddDevice);
       console.log("add");
     },
     onItemTap: function(event) {
       console.log("You tapped: " + this.$data.items[event.index].name);
-      this.$navigateTo(detail_item,{props:{items:this.$data.items[event.index]}});
+      this.$navigateTo(detail_item, {
+        props: { items: this.$data.items[event.index] }
+      });
     }
-    
-      
-      
 
     // notify: function(message) {
     //   console.log("Title: " + message.title);
@@ -118,7 +120,7 @@ export default {
   margin: 4px 2px;
   border-radius: 50%;
 }
-.list-group{
+.list-group {
   border-color: #d3d3d3;
   border-right-width: 2;
 }
