@@ -1,7 +1,6 @@
 import Vue from "nativescript-vue";
 //import map from "./components/showMap";
 import bemo from "./components/bemo";
-
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
 import RadGauge from "nativescript-ui-gauge/vue";

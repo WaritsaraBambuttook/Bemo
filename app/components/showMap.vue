@@ -8,7 +8,8 @@
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout col="0" row="0" margin="10">
             <GridLayout rows="*" columns="*">
-              <Label class="title" row="0" col="0" text="Search with UUID" />
+              <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
+              <Label :text="this.items.name" textWrap="true"/>
             </GridLayout>
           </StackLayout>
           <!-- <StackLayout col="1" row="1">
@@ -57,6 +58,7 @@ import { MapboxMarker, Mapbox } from "nativescript-mapbox";
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
 export default {
+  props: ["items"],
   data() {
     return {
       latitude: [],
@@ -68,7 +70,10 @@ export default {
       // index: [],
       map: null
     };
-  },
+  },  
+  // mounted(){
+  //   console.log(stringify)
+  // },
   async created() {
     geolocation.isEnabled().then(
       function(isEnabled) {
@@ -128,7 +133,7 @@ export default {
         args.map.setZoomLevel(this.zoom);
         args.map.setCenter(this.center);
 
-        let data = "Bag";
+        let data = this.items.name;
 
         const qs = await firebase.firestore
           .collection("item")
