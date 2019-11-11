@@ -1,14 +1,14 @@
 <template>
-  <ScrollView backgroundColor="pink">
+  <ScrollView>
     <StackLayout>
-      <GridLayout rows="*,auto" columns="*,*">
-        <StackLayout row="0" col="0">
-          <Image src="~/img/1.jpg" width="100" height="100" />
+      <StackLayout orientation="horizontal" margin="10">
+        <Image src="~/img/1.jpg" width="50%" height="50%" class="images" />
+
+        <StackLayout margin="20" horizontalAlignment="center">
+          <Label text="name" textWrap="true" class="size" margin="10" />
+          <Label text="emal" textWrap="true" class="size" margin="10" />
         </StackLayout>
-        <StackLayout row="0" col="1">
-          <Label text="name" textWrap="true" />
-        </StackLayout>
-      </GridLayout>
+      </StackLayout>
     </StackLayout>
   </ScrollView>
 </template>
@@ -30,5 +30,11 @@ export default {
 
 .description-label {
   margin-bottom: 15;
+}
+.images {
+  border-radius: 50%;
+}
+.size {
+  font-size: 20px;
 }
 </style>

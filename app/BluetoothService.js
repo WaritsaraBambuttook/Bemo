@@ -77,10 +77,12 @@ const StartScan = function(callback) {
     })
     .then(
       function() {
+        console.log("success");
+
         //dialog
-        dialogs.alert("scanning complete").then(function() {
-          console.log("Dialog closed!");
-        });
+        // dialogs.alert("scanning complete").then(function() {
+        //   console.log("Dialog closed!");
+        // });
       },
       function(err) {
         console.log("error while scanning: " + err);
