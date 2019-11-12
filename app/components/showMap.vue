@@ -20,11 +20,9 @@
     <ScrollView>
       <StackLayout>
         <GridLayout rows="auto,auto,*" columns="*">
-          <StackLayout col="0" row="0" margin="10">
-            <GridLayout rows="*" columns="*">
-              <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
-              <Label :text="this.items.name" textWrap="true" />
-            </GridLayout>
+          <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
+            <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
+            <Label :text="this.items.name" textWrap="true" />
           </StackLayout>
           <!-- <StackLayout col="1" row="1">
             <ListPicker
@@ -160,12 +158,9 @@ export default {
               lat: doc.data().location.latitude,
               lng: doc.data().location.longitude,
               animated: false,
-              title: doc.data().tagID,
-              subtitle:
-                "time >> " +
-                doc.data().time +
-                "distance >> " +
-                doc.data().distance,
+              title:
+                "Name : " + doc.data().name + "  UUID : " + doc.data().uuid,
+              subtitle: "time >> " + doc.data().time,
               iconPath: "./img/placeholder.png"
             };
             args.map.addMarkers([dataInFirebase]);
@@ -186,9 +181,9 @@ export default {
         // console.log(args.map.object);
       }
     },
-      lost_item: function() {
+    lost_item: function() {
       console.log(this.items.name);
-      
+
       const lost = firebase.firestore.collection("lost");
       lost
         .add({
@@ -199,7 +194,6 @@ export default {
         .then(doc => {
           console.log("found lost item ...." + doc.id);
         });
-     
     }
 
     // indexChange: function(args) {
@@ -276,5 +270,9 @@ export default {
 ActionBar {
   background-color: #53ba82;
   color: #ffffff;
+}
+.NameofItem {
+  margin: 20;
+  font-size: 24;
 }
 </style>
