@@ -18,7 +18,7 @@
         <StackLayout class="input-field" margin="10">
           <TextField class="name" hint="Name" v-model="name" />
           <TextField class="UUID" hint="UUID" v-model="UUID" />
-          <Label
+          <!-- <Label
             v-for="item in devices"
             :key="item.uuid"
             textWrap="true"
@@ -26,8 +26,28 @@
             height="50"
             class="item"
             backgroundColor="#43b883"
-          >UUID : {{item.uuid}} distance : {{item.distance}}</Label>
-          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" margin="5" />
+            @tap="selectItems($event)"
+          >UUID : {{item.uuid}} distance : {{item.distance}}</Label>-->
+
+          <ListView
+            class="list-group"
+            for="item in devices"
+            @itemTap="selectItems"
+            height="250"
+            rowHeight="50"
+            margin="10"
+          >
+            <v-template>
+              <FlexboxLayout flexDirection="row" class="list-group-item">
+                <Label
+                  :text="'UUID : '+item.uuid +' distance : ' + item.distance"
+                  class="list-group-item-heading"
+                  style="width: 100%"
+                />
+              </FlexboxLayout>
+            </v-template>
+          </ListView>
+          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" margin="10" />
         </StackLayout>
         <StackLayout margin="10">
           <Button text="Add Item" class="button" @tap="add_item"></Button>
@@ -61,6 +81,7 @@ export default {
       console.log("add item");
     },
     SelectUUID: function() {
+      this.devices = [];
       Bluetooth.StartScan(device => {
         // console.log("..........." + device.distance);
         if (device.distance <= 20) {
@@ -80,6 +101,13 @@ export default {
         //   });
         // }
       });
+    },
+    selectItems: function(args) {
+      console.log("UUID :" + args.index);
+      let data = this.devices[args.index].uuid;
+      console.log("data " + data);
+
+      this.UUID = data;
     }
   }
 };
