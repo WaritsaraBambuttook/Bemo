@@ -55,8 +55,8 @@
         </GridLayout>
 
         <StackLayout orientation="horizontal" margin="10" horizontalAlignment="center">
-          <Button class="button" text="Find" width="40%" />
-          <Button class="button" text="lost" @tap="lost_item" width="40%" />
+          <Button class="button" text="Find" width="40%" margin="10" />
+          <Button class="button" text="lost" @tap="lost_item" width="40%" margin="10" />
         </StackLayout>
       </StackLayout>
     </ScrollView>

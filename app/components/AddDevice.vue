@@ -65,13 +65,45 @@ import bluetooth, { isBluetoothEnabled } from "nativescript-bluetooth";
 import * as Bluetooth from "../Bluetooth";
 import myDevices from "./myDevices";
 import { device } from "tns-core-modules/platform/platform";
+import * as geolocation from "nativescript-geolocation";
+
 export default {
   data() {
     return {
       name: "",
       UUID: "",
-      devices: []
+      devices: [],
+      lat: [],
+      lng: []
     };
+  },
+  mounted() {
+    geolocation.isEnabled().then(
+      function(isEnabled) {
+        if (!isEnabled) {
+          geolocation.enableLocationRequest().then(
+            function() {},
+            function(e) {
+              console.log("Error: " + (e.message || e));
+            }
+          );
+        }
+      },
+      function(e) {
+        console.log("Error is: " + (e.message || e));
+      }
+    );
+    geolocation
+      .getCurrentLocation({
+        desiredAccuracy: 3,
+        timeout: 20000
+      })
+      .then(loc => {
+        this.lat = loc.latitude;
+        this.lng = loc.longitude;
+        console.log("lat " + this.lat);
+        console.log("lng " + this.lng);
+      });
   },
   methods: {
     Back: function() {

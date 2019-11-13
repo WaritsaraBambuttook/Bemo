@@ -53,7 +53,7 @@ const StartScan = function(callback) {
                 if (peripheral.UUID) {
                   scan
                     .add({
-                      tagID: peripheral.UUID,
+                      uuid: peripheral.UUID,
                       distance: distance,
                       location: firebase.firestore.GeoPoint(lat, long),
                       time: firebase.firestore.FieldValue.serverTimestamp()
