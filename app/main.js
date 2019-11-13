@@ -1,12 +1,15 @@
 import Vue from "nativescript-vue";
-//import map from "./components/showMap";
-import bemo from "./components/bemo";
+import noti from "./components/notification";
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
 import RadGauge from "nativescript-ui-gauge/vue";
 // import NSVueGlobalDrawer from "nativescript-vue-global-drawer";
-
 // Vue.use(NSVueGlobalDrawer);
+Vue.registerElement(
+  "CardView",
+  () => require("@nstudio/nativescript-cardview").CardView
+);
+
 Vue.use(RadGauge);
 firebase.init({}).then(
   function() {
@@ -42,5 +45,5 @@ if (TNS_ENV !== "production") {
 Vue.config.silent = TNS_ENV === "production";
 
 new Vue({
-  render: h => h("frame", [h(bemo)])
+  render: h => h("frame", [h(noti)])
 }).$start();
