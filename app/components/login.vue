@@ -29,8 +29,8 @@ import { login } from "nativescript-plugin-firebase";
                     
                 </GridLayout>
                 <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
-                <Button text="Sign Up With Google" @tap="signup" class="btn btn-primary m-t-20"></Button>
-                <!-- <Label *v-show="isLoggingIn" text="Forgot your password?" class="login-label" @tap="forgotPassword()"></Label> -->
+                <!-- <Button text="Sign Up With Google" @tap="signup" class="btn btn-primary m-t-20"></Button> -->
+                <Label text="New User Register" class="register" @tap="regis()"></Label>
             </StackLayout>
 
             
@@ -40,7 +40,7 @@ import { login } from "nativescript-plugin-firebase";
 <script>
 import bemo from "./bemo";
 var firebase = require("nativescript-plugin-firebase");
-
+import regis from "./regis";
 export default {
   name: "user",
   data() {
@@ -82,7 +82,10 @@ export default {
       );
 
     },
-    signup: function(){
+    regis: function(){
+        this.$navigateTo(regis);
+    }
+    // signup: function(){
 //         firebase.login({
 //         type: firebase.LoginType.GOOGLE,
 //         // Optional 
@@ -105,22 +108,22 @@ export default {
 //       }
 //   );
     
-    const provide = new firebase.auth.GoogleAuthProvider().addScope("email");
-    firebase.auth().signInWithPopup(provide).then(result =>{
-        let obj = {
-            google_id : result.additionalUserInfo.profile.id,
-            fullname : result.additionalUserInfo.profile.name,
-            email : result.additionalUserInfo.profile.email,
-            profile_image : result.additionalUserInfo.profile.picture,
-            user_type_id:1
+    // const provide = new firebase.auth.GoogleAuthProvider().addScope("email");
+    // firebase.auth().signInWithPopup(provide).then(result =>{
+    //     let obj = {
+    //         google_id : result.additionalUserInfo.profile.id,
+    //         fullname : result.additionalUserInfo.profile.name,
+    //         email : result.additionalUserInfo.profile.email,
+    //         profile_image : result.additionalUserInfo.profile.picture,
+    //         user_type_id:1
 
-        };
-        console.log(obj);
-    }).catch(err =>{
-        console.log(err);
-    })
+    //     };
+    //     console.log(obj);
+    // }).catch(err =>{
+    //     console.log(err);
+    // })
     
-    }
+    // }
   }
 };
 </script>
