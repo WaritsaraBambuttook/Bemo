@@ -29,16 +29,22 @@ import detail_item from "./showMap";
 var firebase = require("nativescript-plugin-firebase");
 
 export default {
-  // name: items,
+  // name: item,
+  // props: ['user'],
   data() {
     return {
-      items: []
+      // items: [],
+      // email: this.user.email
     };
   },
   methods: {
     addDevices: function() {
-      this.$navigateTo(AddDevice);
+      // const test = email;
+      // console.log(""+this.$email);
+      
+      this.$navigateTo(AddDevice);console.log("test");
       console.log("add");
+      
     },
     onItemTap: function(event) {
       console.log("You tapped: " + this.$data.items[event.index].name);
@@ -79,7 +85,8 @@ export default {
         this.items.push(doc.data());
       }
     });
-  }
+  },
+  
 
   // created() {
   //   firebase

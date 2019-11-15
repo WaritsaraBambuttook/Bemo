@@ -12,7 +12,7 @@
 
       <StackLayout margin="20">
         <Button text="Notification" class="button"></Button>
-        <Button text="Log out" class="button" />
+        <Button text="Log out" class="button" @tap="logout"/>
       </StackLayout>
     </StackLayout>
   </ScrollView>
@@ -23,7 +23,16 @@ export default {
     return {};
   },
 
-  methods: {}
+  methods: {
+    // logout: function(){
+  //     firebase.auth().signOut();
+  //   } 
+  //   .then(result => {
+  //     this.$navigateTo(login);
+  //  firebase.logout();
+  //   }
+    
+  }
 };
 </script>
 <style scoped>
