@@ -33,7 +33,7 @@ export default {
   // props: ['user'],
   data() {
     return {
-      // items: [],
+      items: [],
       // email: this.user.email
     };
   },
