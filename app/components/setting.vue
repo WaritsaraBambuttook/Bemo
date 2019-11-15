@@ -11,19 +11,24 @@
       </StackLayout>
 
       <StackLayout margin="20">
-        <Button text="Notification" class="button"></Button>
+        <Button text="Notification" class="button" @tap="notification"></Button>
         <Button text="Log out" class="button" />
       </StackLayout>
     </StackLayout>
   </ScrollView>
 </template>
 <script>
+import noti from "./notification";
 export default {
   data() {
     return {};
   },
 
-  methods: {}
+  methods: {
+    notification: function() {
+      this.$navigateTo(noti);
+    }
+  }
 };
 </script>
 <style scoped>

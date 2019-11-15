@@ -1,7 +1,7 @@
 <template>
   <Page class="page">
     <ActionBar class="action-bar" title="Notification">
-      <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
+      <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="Back" />
     </ActionBar>
 
     <ScrollView>
@@ -26,6 +26,7 @@
   </Page>
 </template>
 <script>
+import bemo from "./bemo";
 export default {
   data() {
     return {
@@ -43,7 +44,11 @@ export default {
       ]
     };
   },
-  methods: {}
+  methods: {
+    Back: function() {
+      this.$navigateTo(bemo);
+    }
+  }
 };
 </script>
 
