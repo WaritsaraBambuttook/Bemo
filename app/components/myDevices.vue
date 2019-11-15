@@ -73,7 +73,8 @@ export default {
       .collection("item")
       .get({ source: "server" });
     query.forEach(doc => {
-      let email = "four_nukiz@hotmail.com";
+      //ส่งค้า email มาใส่
+      let email = "a.a@email.com";
       if (email == doc.data().email) {
         //console.log(doc.data());
         this.items.push(doc.data());
