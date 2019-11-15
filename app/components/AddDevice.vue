@@ -66,6 +66,7 @@ import * as Bluetooth from "../Bluetooth";
 import myDevices from "./myDevices";
 import { device } from "tns-core-modules/platform/platform";
 import * as geolocation from "nativescript-geolocation";
+var dialogs = require("tns-core-modules/ui/dialogs");
 
 export default {
   data() {
@@ -111,6 +112,24 @@ export default {
     },
     add_item: function() {
       console.log("add item");
+      const addData = firebase.firestore.collection("item");
+
+      //ส่งค้า email มาใส่
+      let EmailOfUser = "a.a@email.com";
+      addData
+        .add({
+          email: EmailOfUser,
+          uuid: this.UUID,
+          name: this.name,
+          location: firebase.firestore.GeoPoint(this.lat, this.lng),
+          time: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(doc) {
+          console.log("found id ...." + doc.id);
+        });
+      dialogs.alert("Add Items success").then(function() {
+        console.log("Dialog closed!");
+      });
     },
     SelectUUID: function() {
       this.devices = [];

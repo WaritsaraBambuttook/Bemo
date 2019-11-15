@@ -18,20 +18,16 @@
   </ScrollView>
 </template>
 <script>
+import noti from "./notification";
 export default {
   data() {
     return {};
   },
 
   methods: {
-    // logout: function(){
-  //     firebase.auth().signOut();
-  //   } 
-  //   .then(result => {
-  //     this.$navigateTo(login);
-  //  firebase.logout();
-  //   }
-    
+    notification: function() {
+      this.$navigateTo(noti);
+    }
   }
 };
 </script>
