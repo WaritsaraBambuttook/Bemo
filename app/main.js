@@ -6,6 +6,7 @@ var firebase = require("nativescript-plugin-firebase");
 import RadGauge from "nativescript-ui-gauge/vue";
 // import NSVueGlobalDrawer from "nativescript-vue-global-drawer";
 // Vue.use(NSVueGlobalDrawer);
+// Test commit
 Vue.registerElement(
   "CardView",
   () => require("@nstudio/nativescript-cardview").CardView
@@ -14,7 +15,7 @@ Vue.registerElement(
 Vue.use(RadGauge);
 firebase.init({}).then(
   function() {
-    console.log("firebase.init done");
+    console.log("firebase.init done 555");
     firebase
       .subscribeToTopic("news")
       .then(() => console.log("Subscribed to topic"));
