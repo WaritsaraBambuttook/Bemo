@@ -1,6 +1,6 @@
 import Vue from "nativescript-vue";
 //import noti from "./components/notification";
-import bemo from "./components/bemo";
+import login from "./components/login";
 import VueDevtools from "nativescript-vue-devtools";
 var firebase = require("nativescript-plugin-firebase");
 import RadGauge from "nativescript-ui-gauge/vue";
@@ -46,5 +46,5 @@ if (TNS_ENV !== "production") {
 Vue.config.silent = TNS_ENV === "production";
 
 new Vue({
-  render: h => h("frame", [h(bemo)])
+  render: h => h("frame", [h(login)])
 }).$start();

@@ -28,7 +28,7 @@ firebase.initializeApp(config);
           </StackLayout>
         </GridLayout>
         <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
-        <!-- <Button text="Sign Up With Google" @tap="signup" class="btn btn-primary m-t-20"></Button> -->
+        <Button text="Sign Up With Google" @tap="google"></Button>
         <Label text="New User Register" class="register" @tap="regis()"></Label>
       </StackLayout>
     </FlexboxLayout>
@@ -73,44 +73,42 @@ export default {
     },
     regis: function() {
       this.$navigateTo(regis);
+    },
+    google: function() {
+      firebase
+        .login({
+          type: firebase.LoginType.GOOGLE
+        })
+        .then(
+          function(result) {
+            console.log(JSON.stringify(result));
+
+            this.$user = result;
+            console.log(this.$user);
+            // this.$navigateTo(username, {props: {user:this.$user}});
+            this.$navigateTo(bemo, { props: { user: this.$user } });
+            //this.$navigateTo(bemo);
+          },
+          function(errorMessage) {
+            console.log(errorMessage);
+          }
+        );
+
+      // const provide = new firebase.auth.GoogleAuthProvider().addScope("email");
+      // firebase.auth().signInWithPopup(provide).then(result =>{
+      //     let obj = {
+      //         google_id : result.additionalUserInfo.profile.id,
+      //         fullname : result.additionalUserInfo.profile.name,
+      //         email : result.additionalUserInfo.profile.email,
+      //         profile_image : result.additionalUserInfo.profile.picture,
+      //         user_type_id:1
+
+      //     };
+      //     console.log(obj);
+      // }).catch(err =>{
+      //     console.log(err);
+      // })
     }
-    // signup: function(){
-    //         firebase.login({
-    //         type: firebase.LoginType.GOOGLE,
-    //         // Optional
-    //         googleOptions: {
-    //         hostedDomain: "mygsuitedomain.com",
-    //         // NOTE: no need to add 'profile' nor 'email', because they are always provided
-    //         // NOTE 2: requesting scopes means you may access those properties, but they are not automatically fetched by the plugin
-    //         scopes: ['https://www.googleapis.com/auth/user.birthday.read']
-    //     }
-    //   }).then(
-    //       function (result) {
-    //         JSON.stringify(result);
-    //         this.$navigateTo(bemo);
-
-    //       },
-    //       function (errorMessage) {
-    //         console.log(errorMessage);
-    //       }
-    //   );
-
-    // const provide = new firebase.auth.GoogleAuthProvider().addScope("email");
-    // firebase.auth().signInWithPopup(provide).then(result =>{
-    //     let obj = {
-    //         google_id : result.additionalUserInfo.profile.id,
-    //         fullname : result.additionalUserInfo.profile.name,
-    //         email : result.additionalUserInfo.profile.email,
-    //         profile_image : result.additionalUserInfo.profile.picture,
-    //         user_type_id:1
-
-    //     };
-    //     console.log(obj);
-    // }).catch(err =>{
-    //     console.log(err);
-    // })
-
-    // }
   }
 };
 </script>
