@@ -30,7 +30,7 @@ var firebase = require("nativescript-plugin-firebase");
 
 export default {
   // name: item,
-  props: ["user"],
+  //props: ["user"],
   data() {
     return {
       items: [],
