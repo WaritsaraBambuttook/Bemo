@@ -22,7 +22,7 @@
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
             <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
-            <Label :text="this.items.name" textWrap="true" />
+            <Label :text="this.items" textWrap="true" />
           </StackLayout>
           <!-- <StackLayout col="1" row="1">
             <ListPicker
@@ -70,7 +70,7 @@ import { MapboxMarker, Mapbox } from "nativescript-mapbox";
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
 export default {
-  props: ["items"],
+  props: ["items", "email"],
   data() {
     return {
       latitude: [],
@@ -145,25 +145,29 @@ export default {
         args.map.setZoomLevel(this.zoom);
         args.map.setCenter(this.center);
 
-        let data = this.items.name;
+        let data = this.items;
+        let email = this.email;
+        console.log("items " + data);
+        console.log("email " + email);
 
         const qs = await firebase.firestore
           .collection("item")
           .get({ source: "server" });
         qs.forEach(doc => {
           console.log(doc.data().name);
-
-          if (data == doc.data().name) {
-            const dataInFirebase = {
-              lat: doc.data().location.latitude,
-              lng: doc.data().location.longitude,
-              animated: false,
-              title:
-                "Name : " + doc.data().name + "  UUID : " + doc.data().uuid,
-              subtitle: "time >> " + doc.data().time,
-              iconPath: "./img/placeholder.png"
-            };
-            args.map.addMarkers([dataInFirebase]);
+          if (email === doc.data().email) {
+            if (data === doc.data().name) {
+              const dataInFirebase = {
+                lat: doc.data().location.latitude,
+                lng: doc.data().location.longitude,
+                animated: false,
+                title:
+                  "Name : " + doc.data().name + "  UUID : " + doc.data().uuid,
+                subtitle: "time >> " + doc.data().time,
+                iconPath: "./img/placeholder.png"
+              };
+              args.map.addMarkers([dataInFirebase]);
+            }
           }
         });
 
@@ -172,7 +176,7 @@ export default {
             lat: this.latitude,
             lng: this.longitude,
             animated: false,
-            title: "location",
+            title: "Current your location",
             subtitle: this.latitude + "," + this.longitude
           }
         ]);

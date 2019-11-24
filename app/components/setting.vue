@@ -12,7 +12,7 @@
 
       <StackLayout margin="20">
         <Button text="Notification" class="button"></Button>
-        <Button text="Log out" class="button" @tap="logout"/>
+        <Button text="Log out" class="button" />
       </StackLayout>
     </StackLayout>
   </ScrollView>
@@ -20,6 +20,7 @@
 <script>
 import noti from "./notification";
 export default {
+  props: ["user"],
   data() {
     return {};
   },

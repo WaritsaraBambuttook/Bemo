@@ -69,6 +69,7 @@ import * as geolocation from "nativescript-geolocation";
 var dialogs = require("tns-core-modules/ui/dialogs");
 
 export default {
+  props: ["email"],
   data() {
     return {
       name: "",
@@ -115,7 +116,7 @@ export default {
       const addData = firebase.firestore.collection("item");
 
       //ส่งค้า email มาใส่
-      let EmailOfUser = "a.a@email.com";
+      let EmailOfUser = this.email;
       addData
         .add({
           email: EmailOfUser,
