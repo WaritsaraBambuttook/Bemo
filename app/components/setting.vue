@@ -16,7 +16,7 @@
       </StackLayout>
 
       <StackLayout margin="20">
-        <Button text="Notification" class="button"></Button>
+        <!-- <Button text="Notification" class="button"></Button> -->
         <Button text="Log out" class="button" @tap="logout" />
       </StackLayout>
     </StackLayout>
@@ -34,9 +34,9 @@ export default {
   },
 
   methods: {
-    notification: function() {
-      this.$navigateTo(noti);
-    },
+    // notification: function() {
+    //   this.$navigateTo(noti);
+    // },
     logout: function() {
       console.log("logout");
 

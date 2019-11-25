@@ -22,7 +22,7 @@
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
             <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
-            <Label :text="this.items" textWrap="true" />
+            <Label :text="this.items.name" textWrap="true" />
           </StackLayout>
           <!-- <StackLayout col="1" row="1">
             <ListPicker
@@ -54,9 +54,9 @@
           </StackLayout>
         </GridLayout>
 
-        <StackLayout orientation="horizontal" margin="10" horizontalAlignment="center">
-          <Button class="button" text="Find" width="40%" margin="10" />
-          <Button class="button" text="lost" @tap="lost_item" width="40%" margin="10" />
+        <StackLayout margin="10">
+          <!-- <Button class="button" text="Find" width="40%" margin="10" /> -->
+          <Button class="button" text="lost" @tap="lost_item" margin="10" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -145,29 +145,30 @@ export default {
         args.map.setZoomLevel(this.zoom);
         args.map.setCenter(this.center);
 
-        let data = this.items;
+        let data = this.items.uuid;
         let email = this.email;
         console.log("items " + data);
         console.log("email " + email);
-
+        console.log(this.items.uuid);
+        var count = 0;
         const qs = await firebase.firestore
-          .collection("item")
+          .collection("scan")
+          .where("uuid", "==", this.items.uuid)
+          .orderBy("time", "desc")
           .get({ source: "server" });
         qs.forEach(doc => {
-          console.log(doc.data().name);
-          if (email === doc.data().email) {
-            if (data === doc.data().name) {
-              const dataInFirebase = {
-                lat: doc.data().location.latitude,
-                lng: doc.data().location.longitude,
-                animated: false,
-                title:
-                  "Name : " + doc.data().name + "  UUID : " + doc.data().uuid,
-                subtitle: "time >> " + doc.data().time,
-                iconPath: "./img/placeholder.png"
-              };
-              args.map.addMarkers([dataInFirebase]);
-            }
+          count = count + 1;
+          if (count == 1) {
+            const dataInFirebase = {
+              lat: doc.data().location.latitude,
+              lng: doc.data().location.longitude,
+              animated: false,
+              title:
+                "Name : " + this.items.name + "  UUID : " + doc.data().uuid,
+              subtitle: "เวลาที่พบ : " + doc.data().time,
+              iconPath: "./img/placeholder.png"
+            };
+            args.map.addMarkers([dataInFirebase]);
           }
         });
 

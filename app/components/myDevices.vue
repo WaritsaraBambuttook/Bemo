@@ -52,7 +52,7 @@ export default {
       console.log("You tapped: " + this.$data.items[event.index].name);
       this.$navigateTo(detail_item, {
         props: {
-          items: this.$data.items[event.index].name,
+          items: this.$data.items[event.index],
           email: this.$data.email
         }
         // props: { email: this.$data.email }
