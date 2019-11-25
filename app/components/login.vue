@@ -87,7 +87,7 @@ export default {
             console.log(this.$user);
             // this.$navigateTo(username, {props: {user:this.$user}});
             this.$navigateTo(bemo, { props: { user: this.$user } });
-            //this.$navigateTo(bemo);
+            // this.$navigateTo(bemo);
           },
           function(errorMessage) {
             console.log(errorMessage);
