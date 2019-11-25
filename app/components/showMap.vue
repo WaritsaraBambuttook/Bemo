@@ -54,9 +54,9 @@
           </StackLayout>
         </GridLayout>
 
-        <StackLayout orientation="horizontal" margin="10" horizontalAlignment="center">
-          <Button class="button" text="Find" width="40%" margin="10" />
-          <Button class="button" text="lost" @tap="lost_item" width="40%" margin="10" />
+        <StackLayout margin="10">
+          <!-- <Button class="button" text="Find" width="40%" margin="10" /> -->
+          <Button class="button" text="lost" @tap="lost_item" margin="10" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -70,7 +70,7 @@ import { MapboxMarker, Mapbox } from "nativescript-mapbox";
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
 export default {
-  props: ["items"],
+  props: ["items", "email"],
   data() {
     return {
       latitude: [],
@@ -145,22 +145,27 @@ export default {
         args.map.setZoomLevel(this.zoom);
         args.map.setCenter(this.center);
 
-        let data = this.items.name;
-
+        let data = this.items.uuid;
+        let email = this.email;
+        console.log("items " + data);
+        console.log("email " + email);
+        console.log(this.items.uuid);
+        var count = 0;
         const qs = await firebase.firestore
-          .collection("item")
+          .collection("scan")
+          .where("uuid", "==", this.items.uuid)
+          .orderBy("time", "desc")
           .get({ source: "server" });
         qs.forEach(doc => {
-          console.log(doc.data().name);
-
-          if (data == doc.data().name) {
+          count = count + 1;
+          if (count == 1) {
             const dataInFirebase = {
               lat: doc.data().location.latitude,
               lng: doc.data().location.longitude,
               animated: false,
               title:
-                "Name : " + doc.data().name + "  UUID : " + doc.data().uuid,
-              subtitle: "time >> " + doc.data().time,
+                "Name : " + this.items.name + "  UUID : " + doc.data().uuid,
+              subtitle: "เวลาที่พบ : " + doc.data().time,
               iconPath: "./img/placeholder.png"
             };
             args.map.addMarkers([dataInFirebase]);
@@ -172,7 +177,7 @@ export default {
             lat: this.latitude,
             lng: this.longitude,
             animated: false,
-            title: "location",
+            title: "Current your location",
             subtitle: this.latitude + "," + this.longitude
           }
         ]);

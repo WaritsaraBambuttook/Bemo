@@ -37,7 +37,10 @@ import setting from "./setting";
 import { Observable } from "tns-core-modules/ui/page/page";
 import { functions } from "nativescript-plugin-firebase";
 import AddDevice from "./AddDevice";
+import { store } from "../store/store";
 export default {
+  props: ["user"],
+  store,
   components: {
     c0: myDevice,
     c1: scan,
@@ -50,10 +53,14 @@ export default {
   },
   methods: {
     indexChange: function(args) {
+      // console.log(this.user);
       let newIndex = args.value;
       this.component = "c" + newIndex;
       console.log("Current tab index: " + this.component);
     }
+  },
+  created() {
+    this.$store.commit("setdataAboutUser", this.user);
   }
 };
 </script>

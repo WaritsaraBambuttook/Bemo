@@ -2,32 +2,59 @@
   <ScrollView>
     <StackLayout>
       <StackLayout margin="20">
-        <Image src="~/img/1.jpg" width="50%" height="50%" class="images" />
+        <Image :src="this.detail.photoURL" width="50%" height="50%" class="images" />
 
         <StackLayout margin="20" horizontalAlignment="center">
-          <Label text="name : waritsara" textWrap="true" class="size" margin="10" />
-          <Label text="emal : four_nukiz@hotmail.com" textWrap="true" class="size" margin="10" />
+          <Label
+            :text="'name : '+ this.detail.displayName"
+            textWrap="true"
+            class="size"
+            margin="10"
+          />
+          <Label :text="'email : '+this.detail.email " textWrap="true" class="size" margin="10" />
         </StackLayout>
       </StackLayout>
 
       <StackLayout margin="20">
-        <Button text="Notification" class="button"></Button>
-        <Button text="Log out" class="button" @tap="logout"/>
+        <!-- <Button text="Notification" class="button"></Button> -->
+        <Button text="Log out" class="button" @tap="logout" />
       </StackLayout>
     </StackLayout>
   </ScrollView>
 </template>
 <script>
 import noti from "./notification";
+var firebase = require("nativescript-plugin-firebase");
+import login from "./login";
 export default {
   data() {
-    return {};
+    return {
+      detail: []
+    };
   },
 
   methods: {
-    notification: function() {
-      this.$navigateTo(noti);
+    // notification: function() {
+    //   this.$navigateTo(noti);
+    // },
+    logout: function() {
+      console.log("logout");
+
+      // firebase
+      //   .logout({
+      //     type: firebase.LoginType.GOOGLE
+      //   })
+      //   .then(result => {
+      //     console.log(result);
+      //     this.$navigateTo(login);
+      //   })
+      //   .catch(error => console.log(error));
     }
+  },
+  async mounted() {
+    let dataInStore = this.$store.getters.dataAboutUser;
+    console.log(dataInStore);
+    this.detail = dataInStore;
   }
 };
 </script>
@@ -45,7 +72,7 @@ export default {
   border-radius: 50%;
 }
 .size {
-  font-size: 20px;
+  font-size: 18px;
 }
 .button {
   background-color: #4caf50;

@@ -29,7 +29,7 @@ firebase.initializeApp(config);
         </GridLayout>
         <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
         <Button text="Sign Up With Google" @tap="google"></Button>
-        <Label text="New User Register" class="register" @tap="regis()"></Label>
+        <!-- <Label text="New User Register" class="register" @tap="regis()"></Label> -->
       </StackLayout>
     </FlexboxLayout>
   </Page>
@@ -38,6 +38,8 @@ firebase.initializeApp(config);
 import bemo from "./bemo";
 var firebase = require("nativescript-plugin-firebase");
 import regis from "./regis";
+var Toast = require("nativescript-toast");
+var dialogs = require("tns-core-modules/ui/dialogs");
 export default {
   name: "user",
   data() {
@@ -51,6 +53,8 @@ export default {
     //     this.$navigateTo(Second)
     // },
     login: function() {
+      console.log("login");
+
       firebase
         .login({
           type: firebase.LoginType.PASSWORD,
@@ -61,53 +65,62 @@ export default {
         })
         .then(result => {
           // Vue.prototype.$result = JSON.stringify(result);
-          console.log(JSON.stringify(result));
+          //console.log(JSON.stringify(result));
 
           this.$user = result;
-          console.log(this.$user);
+          //console.log(this.$user);
           // this.$navigateTo(username, {props: {user:this.$user}});
           this.$navigateTo(bemo, { props: { user: this.$user } });
         })
 
         .catch(error => console.log(error));
     },
-    regis: function() {
-      this.$navigateTo(regis);
-    },
-    google: function() {
+    // regis: function() {
+    //   console.log("regis");
+
+    //   this.$navigateTo(regis);
+    // },
+    google: async function() {
+      console.log("googleeeeeeee");
       firebase
         .login({
-          type: firebase.LoginType.GOOGLE
-        })
-        .then(
-          function(result) {
-            console.log(JSON.stringify(result));
-
-            this.$user = result;
-            console.log(this.$user);
-            // this.$navigateTo(username, {props: {user:this.$user}});
-            this.$navigateTo(bemo, { props: { user: this.$user } });
-            // this.$navigateTo(bemo);
-          },
-          function(errorMessage) {
-            console.log(errorMessage);
+          type: firebase.LoginType.GOOGLE,
+          googleOptions: {
+            scopes: [
+              "https://www.googleapis.com/auth/userinfo.email",
+              "https://www.googleapis.com/auth/userinfo.profile"
+            ]
           }
-        );
+        })
+        .then(result => {
+          var data = JSON.stringify(result);
+          console.log("RESULT " + JSON.stringify(result));
+          // dialogs.alert("data :" + data).then(function() {
+          //   console.log("Dialog closed!");
+          // });
+          // var toast = Toast.makeText(JSON.stringify(result));
+          this.$user = result;
+          // console.log(this.$user);
+          // this.$navigateTo(username, {props: {user:this.$user}});
+          this.$navigateTo(bemo, { props: { user: this.$user } });
+        })
+        .catch(error => console.log("google :" + error));
 
-      // const provide = new firebase.auth.GoogleAuthProvider().addScope("email");
-      // firebase.auth().signInWithPopup(provide).then(result =>{
-      //     let obj = {
-      //         google_id : result.additionalUserInfo.profile.id,
-      //         fullname : result.additionalUserInfo.profile.name,
-      //         email : result.additionalUserInfo.profile.email,
-      //         profile_image : result.additionalUserInfo.profile.picture,
-      //         user_type_id:1
-
-      //     };
-      //     console.log(obj);
-      // }).catch(err =>{
-      //     console.log(err);
-      // })
+      // try {
+      //   console.log("dasdasdas");
+      //   const user = await firebase.login({
+      //     type: firebase.LoginType.GOOGLE,
+      //     googleOptions: {
+      //       scopes: [
+      //         "https://www.googleapis.com/auth/userinfo.email",
+      //         "https://www.googleapis.com/auth/userinfo.profile"
+      //       ]
+      //     }
+      //   });
+      //   console.log(user);
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
   }
 };

@@ -69,6 +69,7 @@ import * as geolocation from "nativescript-geolocation";
 var dialogs = require("tns-core-modules/ui/dialogs");
 
 export default {
+  props: ["email"],
   data() {
     return {
       name: "",
@@ -112,11 +113,11 @@ export default {
     },
     add_item: function() {
       console.log("add item");
-      const addData = firebase.firestore.collection("item");
-
+      const addDataToItem = firebase.firestore.collection("item");
+      const addDataToScan = firebase.firestore.collection("scan");
       //ส่งค้า email มาใส่
-      let EmailOfUser = "a.a@email.com";
-      addData
+      let EmailOfUser = this.email;
+      addDataToItem
         .add({
           email: EmailOfUser,
           uuid: this.UUID,
@@ -125,11 +126,24 @@ export default {
           time: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(function(doc) {
-          console.log("found id ...." + doc.id);
+          console.log("found id in items...." + doc.id);
         });
       dialogs.alert("Add Items success").then(function() {
         console.log("Dialog closed!");
       });
+
+      addDataToScan
+        .add({
+          // email: EmailOfUser,
+          uuid: this.UUID,
+          distance: this.devices.distance,
+          // name: this.name,
+          location: firebase.firestore.GeoPoint(this.lat, this.lng),
+          time: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(function(doc) {
+          console.log("found id in scan...." + doc.id);
+        });
     },
     SelectUUID: function() {
       this.devices = [];

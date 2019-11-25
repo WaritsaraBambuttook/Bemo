@@ -30,26 +30,32 @@ var firebase = require("nativescript-plugin-firebase");
 
 export default {
   // name: item,
-  // props: ['user'],
+  //props: ["user"],
   data() {
     return {
       items: [],
-      // email: this.user.email
+      email: []
     };
   },
   methods: {
     addDevices: function() {
       // const test = email;
       // console.log(""+this.$email);
-      
-      this.$navigateTo(AddDevice);console.log("test");
+
+      this.$navigateTo(AddDevice, {
+        props: { email: this.$data.email }
+      });
+      console.log("test");
       console.log("add");
-      
     },
     onItemTap: function(event) {
       console.log("You tapped: " + this.$data.items[event.index].name);
       this.$navigateTo(detail_item, {
-        props: { items: this.$data.items[event.index] }
+        props: {
+          items: this.$data.items[event.index],
+          email: this.$data.email
+        }
+        // props: { email: this.$data.email }
       });
     }
 
@@ -75,19 +81,22 @@ export default {
     // }
   },
   async mounted() {
+    let dataInStore = this.$store.getters.dataAboutUser;
+    console.log(dataInStore.email);
+    this.email = dataInStore.email;
+
     const query = await firebase.firestore
       .collection("item")
       .get({ source: "server" });
     query.forEach(doc => {
       //ส่งค้า email มาใส่
-      let email = "a.a@email.com";
-      if (email == doc.data().email) {
+      let detail = this.email;
+      if (detail == doc.data().email) {
         //console.log(doc.data());
         this.items.push(doc.data());
       }
     });
-  },
-  
+  }
 
   // created() {
   //   firebase
