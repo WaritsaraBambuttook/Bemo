@@ -29,7 +29,7 @@ firebase.initializeApp(config);
         </GridLayout>
         <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
         <Button text="Sign Up With Google" @tap="google"></Button>
-        <Label text="New User Register" class="register" @tap="regis()"></Label>
+        <!-- <Label text="New User Register" class="register" @tap="regis()"></Label> -->
       </StackLayout>
     </FlexboxLayout>
   </Page>
@@ -75,11 +75,11 @@ export default {
 
         .catch(error => console.log(error));
     },
-    regis: function() {
-      console.log("regis");
+    // regis: function() {
+    //   console.log("regis");
 
-      this.$navigateTo(regis);
-    },
+    //   this.$navigateTo(regis);
+    // },
     google: async function() {
       console.log("googleeeeeeee");
       firebase

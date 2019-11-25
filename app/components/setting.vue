@@ -72,7 +72,7 @@ export default {
   border-radius: 50%;
 }
 .size {
-  font-size: 20px;
+  font-size: 18px;
 }
 .button {
   background-color: #4caf50;
