@@ -55,7 +55,7 @@
         </GridLayout>
 
         <StackLayout margin="10">
-          <!-- <Button class="button" text="Find" width="40%" margin="10" /> -->
+          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
           <Button class="button" text="lost" @tap="lost_item" margin="10" />
         </StackLayout>
       </StackLayout>
@@ -124,6 +124,10 @@ export default {
   methods: {
     BacktoBemo: function() {
       this.$navigateBack(bemo);
+    },
+    deleteItem: function() {
+      console.log(">>>>>>>>>" + this.items);
+      console.log(">>>>>>>>>" + this.email);
     },
     onMapReady: async function(args) {
       this.map = args.map;
@@ -279,5 +283,17 @@ ActionBar {
 .NameofItem {
   margin: 20;
   font-size: 24;
+}
+.delete {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 50%;
 }
 </style>
