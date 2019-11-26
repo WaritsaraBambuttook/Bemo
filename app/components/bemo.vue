@@ -38,6 +38,7 @@ import { Observable } from "tns-core-modules/ui/page/page";
 import { functions } from "nativescript-plugin-firebase";
 import AddDevice from "./AddDevice";
 import { store } from "../store/store";
+var firebase = require("nativescript-plugin-firebase");
 export default {
   props: ["user"],
   store,
@@ -58,9 +59,45 @@ export default {
       this.component = "c" + newIndex;
       console.log("Current tab index: " + this.component);
     }
+    // notify: function(message) {
+    //   console.log("Title: " + message.title);
+    //   console.log("Body: " + message.body);
+    //   const confirmOptions = {
+    //     title: message.title,
+    //     message: message.body,
+    //     okButtonText: "Scan",
+    //     cancelButtonText: "Cancel"
+    //   };
+    //   confirm(confirmOptions).then(result => {
+    //     console.log(result);
+    //     if (result == true) {
+    //       console.log("scan button");
+    //       this.indexChange(2);
+    //       //this.changePage = pageApp;
+    //     } else {
+    //       console.log("cancel button");
+    //     }
+    //   });
+    // }
   },
   created() {
     this.$store.commit("setdataAboutUser", this.user);
+
+    // firebase
+    //   .init({
+    //     onMessageReceivedCallback: this.notify
+    //   })
+    //   .then(
+    //     function() {
+    //       console.log("firebase.init done");
+    //       firebase
+    //         .subscribeToTopic("news")
+    //         .then(() => console.log("Subscribed to topic"));
+    //     },
+    //     function(error) {
+    //       console.log("firebase.init error: " + error);
+    //     }
+    //   );
   }
 };
 </script>

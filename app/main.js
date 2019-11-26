@@ -13,17 +13,46 @@ Vue.registerElement(
 );
 
 Vue.use(RadGauge);
-firebase.init({}).then(
-  function() {
-    console.log("firebase.init done 555");
-    firebase
-      .subscribeToTopic("news")
-      .then(() => console.log("Subscribed to topic"));
-  },
-  function(error) {
-    console.log("firebase.init error: " + error);
-  }
-);
+firebase
+  .init({
+    onMessageReceivedCallback: function(message) {
+      console.log("Title: " + message.title);
+      console.log("Body: " + message.body);
+      // if your server passed a custom property called 'foo', then do this:
+      // console.log("Value of 'foo': " + message.data.foo);
+      const confirmOptions = {
+        title: message.title,
+        message: message.body,
+        okButtonText: "Scan",
+        cancelButtonText: "Cancel"
+      };
+      confirm(confirmOptions).then(result => {
+        console.log(result);
+        if (result == true) {
+          console.log("scan button");
+          // this.$navigateTo(pageApp);
+          //this.changePage = pageApp;
+        } else {
+          console.log("cancel button");
+        }
+      });
+    },
+
+    onPushTokenReceivedCallback: function(token) {
+      console.log("Firebase push token: " + token);
+    }
+  })
+  .then(
+    function() {
+      console.log("firebase.init done 555");
+      firebase
+        .subscribeToTopic("news")
+        .then(() => console.log("Subscribed to topic"));
+    },
+    function(error) {
+      console.log("firebase.init error: " + error);
+    }
+  );
 
 //import { MapViewBase } from 'nativescript-google-maps-sdk/map-view-common';
 //Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
