@@ -16,7 +16,9 @@
             </FlexboxLayout>
           </v-template>
         </ListView>
-        <Button class="button" text="Add" @tap="addDevices" />
+        <!-- <StackLayout margin="10"> -->
+        <Button class="but" text="Add" @tap="addDevices" />
+        <!-- </StackLayout> -->
       </StackLayout>
     </ScrollView>
   </StackLayout>
@@ -128,7 +130,13 @@ export default {
 .description-label {
   margin-bottom: 15;
 }
-.button {
+.button{
+  color: red;
+  
+  margin-top: 20px;
+  background-color: aqua;
+}
+.but {
   background-color: #4caf50;
   border: none;
   color: white;

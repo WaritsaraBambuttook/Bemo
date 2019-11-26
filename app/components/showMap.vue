@@ -203,6 +203,7 @@ export default {
         .then(doc => {
           console.log("found lost item ...." + doc.id);
         });
+        
     }
 
     // indexChange: function(args) {

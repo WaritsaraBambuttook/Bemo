@@ -39,6 +39,10 @@ export default {
     // },
     logout: function() {
       console.log("logout");
+      //  this.$authService.logout().then(() => {
+        firebase.logout().then(() => {
+        this.$navigateTo(login, { clearHistory: true });
+      });
 
       // firebase
       //   .logout({
