@@ -70,6 +70,7 @@ var dialogs = require("tns-core-modules/ui/dialogs");
 
 export default {
   props: ["email"],
+  // name: ["item_id"],
   data() {
     return {
       name: "",
@@ -126,10 +127,12 @@ export default {
           time: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then(function(doc) {
+          
           console.log("found id in items...." + doc.id);
         });
       dialogs.alert("Add Items success").then(function() {
         console.log("Dialog closed!");
+        
       });
 
       addDataToScan

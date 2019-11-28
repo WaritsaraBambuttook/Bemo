@@ -126,8 +126,47 @@ export default {
       this.$navigateBack(bemo);
     },
     deleteItem: function() {
-      console.log(">>>>>>>>>" + this.items);
-      console.log(">>>>>>>>>" + this.email);
+    
+    console.log(">>>>>>>>>" + this.items.name);
+    console.log(">>>>>>>>>" + this.email);
+
+    let bemo = firebase.firestore.collection('item')
+    .where('name', '==', this.items.name)
+    .where('email', '==', this.email);
+
+    bemo.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      console.log(doc.id, ' => ', doc.data());
+      const test = firebase.firestore.collection("item").doc(doc.id);
+      test.delete().then(() => {
+        console.log('Deleted ' + doc.id);
+      });
+    });
+
+});
+
+
+      // console.log(">>>>>>>>>" + this.items);
+      // console.log(">>>>>>>>>" + this.email);
+      // console.log("TEST: "+this.items.name);
+      // const test = firebase.firestore.collection("item").doc("IYrEw9hBPfNFddwEImbe");
+      // test.delete().then(() => {
+      //   console.log("Delete");
+      // });
+
+
+      // const collection = firebase.firestore.collection("item");
+      // const query = collection
+      // .where("name", "==", ""+this.items.name)
+      // query
+      // .get().querySnapshot.forEach(doc => {
+      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
+      // })
+      // .then(querySnapshot => {
+      // querySnapshot.forEach(doc => {
+      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
+      // });
+      // }).catch(err => console.log(err)); 
     },
     onMapReady: async function(args) {
       this.map = args.map;
