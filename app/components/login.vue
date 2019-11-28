@@ -70,7 +70,9 @@ export default {
           this.$user = result;
           //console.log(this.$user);
           // this.$navigateTo(username, {props: {user:this.$user}});
-          this.$navigateTo(bemo, { props: { user: this.$user } });
+          this.$navigateTo(bemo, {
+            props: { user: this.$user, indexChangeTap: 0, text: "3" }
+          });
         })
 
         .catch(error => console.log(error));

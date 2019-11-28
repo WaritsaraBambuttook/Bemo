@@ -4,7 +4,7 @@ vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    dataAboutUser: "f"
+    dataAboutUser: ""
     // Notification: "0"
   },
   mutations: {

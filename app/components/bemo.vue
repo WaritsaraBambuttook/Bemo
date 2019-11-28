@@ -13,7 +13,7 @@
       </StackLayout>
     </ActionBar>
     <StackLayout>
-      <SegmentedBar @selectedIndexChange="indexChange" row="0">
+      <SegmentedBar @selectedIndexChange="indexChange" :selectedIndex="index" row="0">
         <SegmentedBarItem title="device" />
         <SegmentedBarItem title="Scan" />
         <SegmentedBarItem title="setting" />
@@ -40,7 +40,7 @@ import AddDevice from "./AddDevice";
 import { store } from "../store/store";
 var firebase = require("nativescript-plugin-firebase");
 export default {
-  props: ["user"],
+  props: ["user", "indexChangeTap", "text"],
   store,
   components: {
     c0: myDevice,
@@ -49,56 +49,36 @@ export default {
   },
   data() {
     return {
-      component: "c0"
+      component: "c0",
+      // data: ""
+      index: 0
     };
   },
   methods: {
     indexChange: function(args) {
-      // console.log(this.user);
       let newIndex = args.value;
       this.component = "c" + newIndex;
       console.log("Current tab index: " + this.component);
+    },
+    setIndex: function(args) {
+      let newIndex = args.value;
+      this.component = "c" + newIndex;
+      this.index = args.value;
+      console.log("Set tab index: " + this.index);
     }
-    // notify: function(message) {
-    //   console.log("Title: " + message.title);
-    //   console.log("Body: " + message.body);
-    //   const confirmOptions = {
-    //     title: message.title,
-    //     message: message.body,
-    //     okButtonText: "Scan",
-    //     cancelButtonText: "Cancel"
-    //   };
-    //   confirm(confirmOptions).then(result => {
-    //     console.log(result);
-    //     if (result == true) {
-    //       console.log("scan button");
-    //       this.indexChange(2);
-    //       //this.changePage = pageApp;
-    //     } else {
-    //       console.log("cancel button");
-    //     }
-    //   });
-    // }
   },
   created() {
     this.$store.commit("setdataAboutUser", this.user);
+    console.log("indexFromProps" + this.indexChangeTap);
+    // console.log("text" + this.text);
+    // this.component = "c" + this.indexChangeTap;
+    // console.log("mounted " + this.component);
 
-    // firebase
-    //   .init({
-    //     onMessageReceivedCallback: this.notify
-    //   })
-    //   .then(
-    //     function() {
-    //       console.log("firebase.init done");
-    //       firebase
-    //         .subscribeToTopic("news")
-    //         .then(() => console.log("Subscribed to topic"));
-    //     },
-    //     function(error) {
-    //       console.log("firebase.init error: " + error);
-    //     }
-    //   );
-  }
+    let args = { value: this.indexChangeTap };
+
+    this.setIndex(args);
+  },
+  mounted() {}
 };
 </script>
 
