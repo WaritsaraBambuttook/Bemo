@@ -222,6 +222,9 @@ export default {
           console.log("found lost item ...." + doc.id);
         });
       this.onSendNotification();
+      dialogs.alert("sent ask for help success ").then(function() {
+        console.log("Dialog closed!");
+      });
     },
     onSendNotification: function() {
       axios

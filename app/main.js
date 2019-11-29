@@ -65,13 +65,14 @@ firebase
             }
           });
         }
-      } else {
-        // console.log("go to login");
-        dialogs.alert("Complete").then(function () {
-          console.log("Dialog closed!");
-        });
-        // Vue.prototype.$navigateTo(login);
       }
+      // else {
+      //   // console.log("go to login");
+      //   dialogs.alert("Complete").then(function () {
+      //     console.log("Dialog closed!");
+      //   });
+      //   // Vue.prototype.$navigateTo(login);
+      // }
     },
 
     onPushTokenReceivedCallback: function (token) {
