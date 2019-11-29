@@ -47,9 +47,11 @@
               </FlexboxLayout>
             </v-template>
           </ListView>
+          <Image :src="cameraImage" class="image" stretch="aspectFit" margin="10" />
           <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" margin="10" />
+          <Button text="Take a Picture" class="SelectUUID" @tap="TakePicture" margin="10"></Button>
         </StackLayout>
-        <StackLayout margin="10">
+        <StackLayout margin="20">
           <Button text="Add Item" class="button" @tap="add_item"></Button>
           <Button text="Back" class="button" @tap="Back" />
         </StackLayout>
@@ -67,7 +69,14 @@ import myDevices from "./myDevices";
 import { device } from "tns-core-modules/platform/platform";
 import * as geolocation from "nativescript-geolocation";
 var dialogs = require("tns-core-modules/ui/dialogs");
-
+import {
+  EventData,
+  Observable,
+  fromObject
+} from "tns-core-modules/data/observable";
+import { Page } from "tns-core-modules/ui/page";
+import { View } from "tns-core-modules/ui/core/view";
+import { takePicture, requestPermissions } from "nativescript-camera";
 export default {
   props: ["email"],
   // name: ["item_id"],
@@ -77,7 +86,15 @@ export default {
       UUID: "",
       devices: [],
       lat: [],
-      lng: []
+      lng: [],
+      saveToGallery: true,
+      allowsEditing: false,
+      keepAspectRatio: true,
+      width: 150,
+      height: 150,
+      cameraImage: null,
+      labelText: "",
+      link: ""
     };
   },
   mounted() {
@@ -112,41 +129,84 @@ export default {
     Back: function() {
       this.$navigateBack(myDevices);
     },
-    add_item: function() {
+    add_item: async function() {
       console.log("add item");
-      const addDataToItem = firebase.firestore.collection("item");
-      const addDataToScan = firebase.firestore.collection("scan");
-      //ส่งค้า email มาใส่
+      const addDataToItem = await firebase.firestore.collection("item");
+      const addDataToScan = await firebase.firestore.collection("scan");
       let EmailOfUser = this.email;
-      addDataToItem
-        .add({
-          email: EmailOfUser,
-          uuid: this.UUID,
-          name: this.name,
-          location: firebase.firestore.GeoPoint(this.lat, this.lng),
-          time: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(function(doc) {
-          
-          console.log("found id in items...." + doc.id);
-        });
-      dialogs.alert("Add Items success").then(function() {
-        console.log("Dialog closed!");
-        
-      });
+      var fs = require("tns-core-modules/file-system");
+      console.log(this.cameraImage);
+      var logoPath = this.cameraImage;
+      let instance = this;
+      var name = this.UUID.replace(/:/g, "");
+      await firebase.storage
+        .uploadFile({
+          bucket: "gs://bemo-c5ae7.appspot.com/",
+          // remoteFullPath: "ads/" + this.UUID.replace(/:/g, ""),
+          remoteFullPath: "ads/" + name,
 
-      addDataToScan
-        .add({
-          // email: EmailOfUser,
-          uuid: this.UUID,
-          distance: this.devices.distance,
-          // name: this.name,
-          location: firebase.firestore.GeoPoint(this.lat, this.lng),
-          time: firebase.firestore.FieldValue.serverTimestamp()
+          localFullPath: logoPath,
+          onProgress: function(status) {
+            console.log("Uploaded fraction: " + status.fractionCompleted);
+            console.log("Percentage complete: " + status.percentageCompleted);
+          }
         })
-        .then(function(doc) {
-          console.log("found id in scan...." + doc.id);
-        });
+        .then(
+          function(uploadedFile) {
+            console.log("File uploaded: " + JSON.stringify(uploadedFile));
+            firebase.storage
+              .getDownloadUrl({
+                bucket: "gs://bemo-c5ae7.appspot.com/",
+                remoteFullPath: "ads/" + name
+              })
+              .then(
+                function(url) {
+                  console.log("Remote URL: " + url);
+                  instance.link = url;
+                  addDataToItem
+                    .add({
+                      email: EmailOfUser,
+                      uuid: instance.UUID,
+                      name: instance.name,
+                      location: firebase.firestore.GeoPoint(
+                        instance.lat,
+                        instance.lng
+                      ),
+                      time: firebase.firestore.FieldValue.serverTimestamp(),
+                      url: instance.link
+                    })
+                    .then(function(doc) {
+                      console.log("found id in items...." + doc.id);
+                    });
+                  dialogs.alert("Add Items success").then(function() {
+                    console.log("Dialog closed!");
+                  });
+
+                  addDataToScan
+                    .add({
+                      // email: EmailOfUser,
+                      uuid: instance.UUID,
+                      distance: instance.devices.distance,
+                      // name: this.name,
+                      location: firebase.firestore.GeoPoint(
+                        instance.lat,
+                        instance.lng
+                      ),
+                      time: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                    .then(function(doc) {
+                      console.log("found id in scan...." + doc.id);
+                    });
+                },
+                function(error) {
+                  console.log("Error: " + error);
+                }
+              );
+          },
+          function(error) {
+            console.log("File upload error: " + error);
+          }
+        );
     },
     SelectUUID: function() {
       this.devices = [];
@@ -176,6 +236,58 @@ export default {
       console.log("data " + data);
 
       this.UUID = data;
+    },
+    TakePicture: function(args) {
+      console.log("take a picture");
+      let page = args.object.page;
+      let that = this;
+      requestPermissions().then(
+        () => {
+          takePicture({
+            width: that.width,
+            height: that.height,
+            keepAspectRatio: that.keepAspectRatio,
+            saveToGallery: that.saveToGallery,
+            allowsEditing: that.allowsEditing
+          }).then(
+            imageAsset => {
+              console.log(imageAsset);
+
+              that.cameraImage = imageAsset;
+              imageAsset.getImageAsync(function(nativeImage) {
+                let scale = 1;
+                let actualWidth = 0;
+                let actualHeight = 0;
+                if (imageAsset.android) {
+                  // get the current density of the screen (dpi) and divide it by the default one to get the scale
+                  scale =
+                    nativeImage.getDensity() /
+                    android.util.DisplayMetrics.DENSITY_DEFAULT;
+                  actualWidth = nativeImage.getWidth();
+                  actualHeight = nativeImage.getHeight();
+                } else {
+                  scale = nativeImage.scale;
+                  actualWidth = nativeImage.size.width * scale;
+                  actualHeight = nativeImage.size.height * scale;
+                }
+                that.cameraImage = imageAsset.android;
+                console.log("camer " + that.cameraImage);
+
+                that.labelText =
+                  `Displayed Size: ${actualWidth}x${actualHeight} with scale ${scale}\n` +
+                  `Image Size: ${Math.round(actualWidth / scale)}x${Math.round(
+                    actualHeight / scale
+                  )}`;
+                console.log(`${labelText}`);
+              });
+            },
+            err => {
+              console.log("Error -> " + err.message);
+            }
+          );
+        },
+        () => alert("permissions rejected")
+      );
     }
   }
 };

@@ -8,10 +8,11 @@
           for="item in items"
           @itemTap="onItemTap"
           height="500"
-          rowHeight="50"
+          rowHeight="150"
         >
           <v-template>
             <FlexboxLayout flexDirection="row" class="list-group-item">
+              <Image :src="item.url" class="image" width="170" />
               <Label :text="item.name" class="list-group-item-heading" style="width: 100%" />
             </FlexboxLayout>
           </v-template>
@@ -130,9 +131,9 @@ export default {
 .description-label {
   margin-bottom: 15;
 }
-.button{
+.button {
   color: red;
-  
+
   margin-top: 20px;
   background-color: aqua;
 }
@@ -151,5 +152,8 @@ export default {
 .list-group {
   border-color: #d3d3d3;
   border-right-width: 2;
+}
+.list-group-item-heading {
+  font-size: 18;
 }
 </style>

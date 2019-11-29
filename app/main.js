@@ -19,14 +19,16 @@ firebase
   .init({
     showNotifications: true,
     showNotificationsWhenInForeground: true,
-    onMessageReceivedCallback: function(message) {
+    onMessageReceivedCallback: function (message) {
       console.log("Title: " + message.title);
       console.log("Body: " + message.body);
+      console.log("email " + message.data.email);
       console.log(JSON.stringify(message));
+      let email = message.data.email
 
-      let dataInStore = store.getters.dataAboutUser;
+      let dataInStore = store.getters.dataAboutUser.email;
       console.log(dataInStore);
-      if (dataInStore != "") {
+      if (dataInStore != email) {
         if (message.title) {
           const confirmOptions = {
             title: message.title,
@@ -64,43 +66,20 @@ firebase
           });
         }
       } else {
-        console.log("go to login");
-        dialogs.alert("Pleasa first login and help people").then(function() {
+        // console.log("go to login");
+        dialogs.alert("Complete").then(function () {
           console.log("Dialog closed!");
         });
-        Vue.prototype.$navigateTo(login);
+        // Vue.prototype.$navigateTo(login);
       }
-
-      // if(){}
-
-      // if your server passed a custom property called 'foo', then do this:
-      // console.log("Value of 'foo': " + message.data.foo);
-      // const confirmOptions = {
-      //   title: message.title,
-      //   message: message.body,
-      //   okButtonText: "Scan",
-      //   cancelButtonText: "Cancel"
-      // };
-      // dialogs.confirm(confirmOptions).then(result => {
-      //   console.log(result);
-      //   if (result == true) {
-      //     console.log("scan button");
-      //     Vue.prototype.$navigateTo(bemo);
-
-      //     // this.$navigateTo(pageApp);
-      //     //this.changePage = pageApp;
-      //   } else {
-      //     console.log("cancel button");
-      //   }
-      // });
     },
 
-    onPushTokenReceivedCallback: function(token) {
+    onPushTokenReceivedCallback: function (token) {
       console.log("Firebase push token: " + token);
     }
   })
   .then(
-    function() {
+    function () {
       console.log("firebase.init done 555");
       // let dataInStore = store.getters.dataAboutUser;
       // console.log(dataInStore);
@@ -108,7 +87,7 @@ firebase
         .subscribeToTopic("news")
         .then(() => console.log("Subscribed to topic"));
     },
-    function(error) {
+    function (error) {
       console.log("firebase.init error: " + error);
     }
   );

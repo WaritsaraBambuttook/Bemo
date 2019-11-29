@@ -55,8 +55,8 @@
         </GridLayout>
 
         <StackLayout margin="10">
-          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
           <Button class="button" text="lost" @tap="lost_item" margin="10" />
+          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -67,8 +67,10 @@ import * as geolocation from "nativescript-geolocation";
 import { functions } from "nativescript-plugin-firebase";
 var mapbox = require("nativescript-mapbox");
 import { MapboxMarker, Mapbox } from "nativescript-mapbox";
+var dialogs = require("tns-core-modules/ui/dialogs");
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
+import axios from "axios";
 export default {
   props: ["items", "email"],
   data() {
@@ -83,9 +85,6 @@ export default {
       map: null
     };
   },
-  // mounted(){
-  //   console.log(stringify)
-  // },
   async created() {
     geolocation.isEnabled().then(
       function(isEnabled) {
@@ -126,47 +125,27 @@ export default {
       this.$navigateBack(bemo);
     },
     deleteItem: function() {
-    
-    console.log(">>>>>>>>>" + this.items.name);
-    console.log(">>>>>>>>>" + this.email);
+      console.log(">>>>>>>>>" + this.items.name);
+      console.log(">>>>>>>>>" + this.email);
 
-    let bemo = firebase.firestore.collection('item')
-    .where('name', '==', this.items.name)
-    .where('email', '==', this.email);
-
-    bemo.get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      console.log(doc.id, ' => ', doc.data());
-      const test = firebase.firestore.collection("item").doc(doc.id);
-      test.delete().then(() => {
-        console.log('Deleted ' + doc.id);
+      let bemo = firebase.firestore
+        .collection("item")
+        .where("name", "==", this.items.name)
+        .where("email", "==", this.email);
+      let go = this;
+      bemo.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log(doc.id, " => ", doc.data());
+          const test = firebase.firestore.collection("item").doc(doc.id);
+          test.delete().then(() => {
+            console.log("Deleted " + doc.id);
+            dialogs.alert("delete complete").then(function() {
+              console.log("Dialog closed!");
+              go.$navigateBack(bemo);
+            });
+          });
+        });
       });
-    });
-
-});
-
-
-      // console.log(">>>>>>>>>" + this.items);
-      // console.log(">>>>>>>>>" + this.email);
-      // console.log("TEST: "+this.items.name);
-      // const test = firebase.firestore.collection("item").doc("IYrEw9hBPfNFddwEImbe");
-      // test.delete().then(() => {
-      //   console.log("Delete");
-      // });
-
-
-      // const collection = firebase.firestore.collection("item");
-      // const query = collection
-      // .where("name", "==", ""+this.items.name)
-      // query
-      // .get().querySnapshot.forEach(doc => {
-      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
-      // })
-      // .then(querySnapshot => {
-      // querySnapshot.forEach(doc => {
-      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
-      // });
-      // }).catch(err => console.log(err)); 
     },
     onMapReady: async function(args) {
       this.map = args.map;
@@ -242,7 +221,37 @@ export default {
         .then(doc => {
           console.log("found lost item ...." + doc.id);
         });
-        
+      this.onSendNotification();
+    },
+    onSendNotification: function() {
+      axios
+        .post(
+          "https://fcm.googleapis.com/fcm/send",
+          {
+            to: "/topics/news",
+            notification: {
+              body: "Please help scanning BEMO",
+              title: "Help"
+            },
+            data: {
+              email: this.email
+            }
+          },
+          {
+            headers: {
+              Authorization:
+                "key=AAAAF3Re7hE:APA91bEBRPd6KbCDzdiYKKKReXjCnBrHoOaqeWv1Ze-Vz33eCluspSIVwFiws2KticSQNl3ziyOfFnroXxovjiVc5vFvjNFWV80Gg2o8t-iq1gIe7b4Gi2C4OQoDHgYkQW4xlQUlFdY-",
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(response => {
+          console.dir(response.data);
+          this.data = JSON.stringify(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
 
     // indexChange: function(args) {
