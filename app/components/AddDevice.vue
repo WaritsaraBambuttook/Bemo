@@ -177,10 +177,13 @@ export default {
                     })
                     .then(function(doc) {
                       console.log("found id in items...." + doc.id);
+                      dialogs.alert("Add Items success").then(function() {
+                        console.log("Dialog closed!");
+                      });
+                    })
+                    .catch(err => {
+                      console.log(err);
                     });
-                  dialogs.alert("Add Items success").then(function() {
-                    console.log("Dialog closed!");
-                  });
 
                   addDataToScan
                     .add({
@@ -196,6 +199,9 @@ export default {
                     })
                     .then(function(doc) {
                       console.log("found id in scan...." + doc.id);
+                    })
+                    .catch(err => {
+                      console.log(err);
                     });
                 },
                 function(error) {
@@ -205,6 +211,11 @@ export default {
           },
           function(error) {
             console.log("File upload error: " + error);
+            dialogs
+              .alert("Please choose uuid and take a pictrue")
+              .then(function() {
+                console.log("Dialog closed!");
+              });
           }
         );
     },

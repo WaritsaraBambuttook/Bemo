@@ -28,7 +28,7 @@ firebase.initializeApp(config);
           </StackLayout>
         </GridLayout>
         <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
-        <Button text="Sign Up With Google" @tap="google"></Button>
+        <Button text="Sign In With Google" @tap="google"></Button>
         <!-- <Label text="New User Register" class="register" @tap="regis()"></Label> -->
       </StackLayout>
     </FlexboxLayout>
