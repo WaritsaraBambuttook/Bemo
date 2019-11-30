@@ -13,22 +13,11 @@
         <Label text="Add Devices" fontSize="24" verticalAlignment="right" />
       </StackLayout>
     </ActionBar>
-    <ScrollView>
+    <ScrollView class="pg">
       <StackLayout orientation="vertical">
         <StackLayout class="input-field" margin="10">
           <TextField class="name" hint="Name" v-model="name" />
           <TextField class="UUID" hint="UUID" v-model="UUID" />
-          <!-- <Label
-            v-for="item in devices"
-            :key="item.uuid"
-            textWrap="true"
-            margin="10"
-            height="50"
-            class="item"
-            backgroundColor="#43b883"
-            @tap="selectItems($event)"
-          >UUID : {{item.uuid}} distance : {{item.distance}}</Label>-->
-
           <ListView
             class="list-group"
             for="item in devices"
@@ -48,10 +37,10 @@
             </v-template>
           </ListView>
           <Image :src="cameraImage" class="image" stretch="aspectFit" margin="10" />
-          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" margin="10" />
-          <Button text="Take a Picture" class="SelectUUID" @tap="TakePicture" margin="10"></Button>
+          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" />
+          <Button text="Take a Picture" class="SelectUUID" @tap="TakePicture"></Button>
         </StackLayout>
-        <StackLayout margin="20">
+        <StackLayout margin="10">
           <Button text="Add Item" class="button" @tap="add_item"></Button>
           <Button text="Back" class="button" @tap="Back" />
         </StackLayout>
@@ -195,10 +184,8 @@ export default {
 
                     addDataToScan
                       .add({
-                        // email: EmailOfUser,
                         uuid: instance.UUID,
                         distance: instance.devices.distance,
-                        // name: this.name,
                         location: firebase.firestore.GeoPoint(
                           instance.lat,
                           instance.lng
@@ -219,11 +206,6 @@ export default {
             },
             function(error) {
               console.log("File upload error: " + error);
-              //   dialogs
-              //     .alert("Please choose uuid and take a pictrue")
-              //     .then(function() {
-              //       console.log("Dialog closed!");
-              //     });
             }
           );
       } else {
@@ -331,11 +313,11 @@ export default {
   margin-bottom: 15;
 }
 ActionBar {
-  background-color: #53ba82;
+  background-color: #143059;
   color: #ffffff;
 }
 .button {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
@@ -347,7 +329,7 @@ ActionBar {
   border-radius: 50%;
 }
 .SelectUUID {
-  background-color: #bdb217;
+  background-color: #fb7452;
   border: none;
   color: white;
   padding: 20px;
@@ -360,5 +342,8 @@ ActionBar {
 }
 .item {
   font-size: 16;
+}
+.pg {
+  background-color: #fad6b1;
 }
 </style>

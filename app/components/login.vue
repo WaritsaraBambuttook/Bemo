@@ -27,8 +27,8 @@ firebase.initializeApp(config);
             <StackLayout class="hr-light"></StackLayout>
           </StackLayout>
         </GridLayout>
-        <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20"></Button>
-        <Button text="Sign In With Google" @tap="google"></Button>
+        <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20 login"></Button>
+        <Button text="Sign In With Google" class="google" @tap="google"></Button>
         <!-- <Label text="New User Register" class="register" @tap="regis()"></Label> -->
       </StackLayout>
     </FlexboxLayout>
@@ -132,6 +132,7 @@ export default {
 .page {
   align-items: center;
   flex-direction: column;
+  background-color: #143059;
 }
 
 .form {
@@ -143,7 +144,7 @@ export default {
 
 .logo {
   margin-bottom: 12;
-  height: 90;
+  height: 150;
   font-weight: bold;
 }
 
@@ -186,5 +187,35 @@ export default {
 
 .bold {
   color: #000000;
+}
+.google {
+  background-color: #fb7452;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 50%;
+}
+.login {
+  background-color: #b8c791;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 50%;
+}
+.email {
+  color: white;
+}
+.password {
+  color: white;
 }
 </style>

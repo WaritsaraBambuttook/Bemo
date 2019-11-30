@@ -17,9 +17,7 @@
             </FlexboxLayout>
           </v-template>
         </ListView>
-        <!-- <StackLayout margin="10"> -->
         <Button class="but" text="Add" @tap="addDevices" />
-        <!-- </StackLayout> -->
       </StackLayout>
     </ScrollView>
   </StackLayout>
@@ -32,8 +30,7 @@ import detail_item from "./showMap";
 var firebase = require("nativescript-plugin-firebase");
 
 export default {
-  // name: item,
-  //props: ["user"],
+  ops: ["user"],
   data() {
     return {
       items: [],
@@ -42,9 +39,6 @@ export default {
   },
   methods: {
     addDevices: function() {
-      // const test = email;
-      // console.log(""+this.$email);
-
       this.$navigateTo(AddDevice, {
         props: { email: this.$data.email }
       });
@@ -58,30 +52,8 @@ export default {
           items: this.$data.items[event.index],
           email: this.$data.email
         }
-        // props: { email: this.$data.email }
       });
     }
-
-    // notify: function(message) {
-    //   console.log("Title: " + message.title);
-    //   console.log("Body: " + message.body);
-    //   const confirmOptions = {
-    //     title: message.title,
-    //     message: message.body,
-    //     okButtonText: "Scan",
-    //     cancelButtonText: "Cancel"
-    //   };
-    //   confirm(confirmOptions).then(result => {
-    //     console.log(result);
-    //     if (result == true) {
-    //       console.log("scan button");
-    //       this.$navigateTo(pageApp);
-    //       //this.changePage = pageApp;
-    //     } else {
-    //       console.log("cancel button");
-    //     }
-    //   });
-    // }
   },
   async mounted() {
     let dataInStore = this.$store.getters.dataAboutUser;
@@ -92,32 +64,12 @@ export default {
       .collection("item")
       .get({ source: "server" });
     query.forEach(doc => {
-      //ส่งค้า email มาใส่
       let detail = this.email;
       if (detail == doc.data().email) {
-        //console.log(doc.data());
         this.items.push(doc.data());
       }
     });
   }
-
-  // created() {
-  //   firebase
-  //     .init({
-  //       onMessageReceivedCallback: this.notify
-  //     })
-  //     .then(
-  //       function() {
-  //         console.log("firebase.init done");
-  //         firebase
-  //           .subscribeToTopic("news")
-  //           .then(() => console.log("Subscribed to topic"));
-  //       },
-  //       function(error) {
-  //         console.log("firebase.init error: " + error);
-  //       }
-  //     );
-  // }
 };
 </script>
 
@@ -138,7 +90,7 @@ export default {
   background-color: aqua;
 }
 .but {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;

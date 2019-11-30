@@ -3,35 +3,12 @@
     <ActionBar class="action-bar" title="Map">
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
     </ActionBar>
-    <!-- <ActionBar>
-      <StackLayout orientation="horizontal">
-        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
-        <Image
-          class="btnImg"
-          src="~/img/Bemo.png"
-          width="40"
-          height="40"
-          verticalAlignment="right"
-        />
-        <Label text="Add Devices" fontSize="24" verticalAlignment="center" />
-      </StackLayout>
-    </ActionBar>-->
-
-    <ScrollView>
+    <ScrollView class="bg">
       <StackLayout>
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
-            <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
             <Label :text="this.items.name" textWrap="true" />
           </StackLayout>
-          <!-- <StackLayout col="1" row="1">
-            <ListPicker
-              :items="scanned"
-              v-model="selectedListPickerIndex"
-              @selectedIndexChange="indexChange"
-            />
-          </StackLayout>-->
-
           <StackLayout col="0" row="1" margin="10">
             <ContentView height="420" width="420">
               <GridLayout>
@@ -79,9 +56,6 @@ export default {
       longitude: [],
       center: null,
       zoom: null,
-      // selectedListPickerIndex: 0,
-      // dataInScan: [],
-      // index: [],
       map: null
     };
   },
@@ -101,24 +75,6 @@ export default {
         console.log("Error is: " + (e.message || e));
       }
     );
-    // const data = [];
-    // const qs = await firebase.firestore
-    //   .collection("scan")
-    //   .get({ source: "server" });
-    // qs.forEach(doc => {
-    //   data.push({
-    //     lat: doc.data().location.latitude,
-    //     lng: doc.data().location.longitude,
-    //     animated: false,
-    //     title: doc.data().tagID,
-    //     subtitle:
-    //       "time >> " + doc.data().time + "distance >> " + doc.data().distance,
-    //     iconPath: "./img/placeholder.png",
-    //     time: doc.data().time,
-    //     toString: () => doc.data().tagID
-    //   });
-    // });
-    // this.dataInScan = data;
   },
   methods: {
     BacktoBemo: function() {
@@ -203,9 +159,6 @@ export default {
             subtitle: this.latitude + "," + this.longitude
           }
         ]);
-        // this.index = null;
-        // console.log(this.index);
-        // console.log(args.map.object);
       }
     },
     lost_item: function() {
@@ -256,43 +209,6 @@ export default {
           console.log(err);
         });
     }
-
-    // indexChange: function(args) {
-    //   let newIndex = args.value;
-    //   const eachData = this.dataInScan[newIndex];
-    //   console.log(newIndex);
-
-    //   const locations = this.dataInScan.filter(e => e.title == eachData);
-    //   if (this.map) {
-    //     this.map.removeMarkers();
-    //     this.map.addMarkers([
-    //       {
-    //         lat: this.latitude,
-    //         lng: this.longitude,
-    //         animated: false,
-    //         title: "Current location",
-    //         subtitle: "location" + this.latitude + "," + this.longitude
-    //       }
-    //     ]);
-    //     const markers = [];
-    //     locations.map(l => {
-    //       const { lat, lng, title, iconPath } = l;
-    //       markers.push({
-    //         lat,
-    //         lng,
-    //         animated: false,
-    //         title,
-    //         subtitle: "location" + lat + "," + lng,
-    //         iconPath
-    //       });
-    //     });
-    //     //console.log(markers);
-    //     // this.map.addMarkers([markers[0]]);
-    //     // this.map.addMarkers([markers[1]]);
-
-    //     this.map.addMarkers(markers);
-    //   }
-    // }
   },
   computed: {
     scanned() {
@@ -317,7 +233,7 @@ export default {
   margin-bottom: 15;
 }
 .button {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
@@ -329,7 +245,7 @@ export default {
   border-radius: 50%;
 }
 ActionBar {
-  background-color: #53ba82;
+  background-color: #143059;
   color: #ffffff;
 }
 .NameofItem {
@@ -337,7 +253,7 @@ ActionBar {
   font-size: 24;
 }
 .delete {
-  background-color: red;
+  background-color: #fb7452;
   border: none;
   color: white;
   padding: 20px;
@@ -347,5 +263,8 @@ ActionBar {
   font-size: 16px;
   margin: 4px 2px;
   border-radius: 50%;
+}
+.bg {
+  background-color: #fad6b1;
 }
 </style>

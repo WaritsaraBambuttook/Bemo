@@ -3,7 +3,6 @@
     <StackLayout>
       <StackLayout margin="20">
         <Image :src="this.detail.photoURL" width="50%" height="50%" class="images" />
-
         <StackLayout margin="20" horizontalAlignment="center">
           <Label
             :text="'name : '+ this.detail.displayName"
@@ -14,9 +13,7 @@
           <Label :text="'email : '+this.detail.email " textWrap="true" class="size" margin="10" />
         </StackLayout>
       </StackLayout>
-
       <StackLayout margin="20">
-        <!-- <Button text="Notification" class="button"></Button> -->
         <Button text="Log out" class="button" @tap="logout" />
       </StackLayout>
     </StackLayout>
@@ -32,27 +29,12 @@ export default {
       detail: []
     };
   },
-
   methods: {
-    // notification: function() {
-    //   this.$navigateTo(noti);
-    // },
     logout: function() {
       console.log("logout");
-      //  this.$authService.logout().then(() => {
-        firebase.logout().then(() => {
+      firebase.logout().then(() => {
         this.$navigateTo(login, { clearHistory: true });
       });
-
-      // firebase
-      //   .logout({
-      //     type: firebase.LoginType.GOOGLE
-      //   })
-      //   .then(result => {
-      //     console.log(result);
-      //     this.$navigateTo(login);
-      //   })
-      //   .catch(error => console.log(error));
     }
   },
   async mounted() {
@@ -77,9 +59,10 @@ export default {
 }
 .size {
   font-size: 18px;
+  color: #0000;
 }
 .button {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
