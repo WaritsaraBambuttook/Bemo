@@ -139,85 +139,101 @@ export default {
       var logoPath = this.cameraImage;
       let instance = this;
       var name = this.UUID.replace(/:/g, "");
-      await firebase.storage
-        .uploadFile({
-          bucket: "gs://bemo-c5ae7.appspot.com/",
-          // remoteFullPath: "ads/" + this.UUID.replace(/:/g, ""),
-          remoteFullPath: "ads/" + name,
+      if (
+        instance.name != "" &&
+        instance.UUID != "" &&
+        instance.cameraImage != null
+      ) {
+        firebase.storage
+          .uploadFile({
+            bucket: "gs://bemo-c5ae7.appspot.com/",
+            // remoteFullPath: "ads/" + this.UUID.replace(/:/g, ""),
+            remoteFullPath: "ads/" + name,
 
-          localFullPath: logoPath,
-          onProgress: function(status) {
-            console.log("Uploaded fraction: " + status.fractionCompleted);
-            console.log("Percentage complete: " + status.percentageCompleted);
-          }
-        })
-        .then(
-          function(uploadedFile) {
-            console.log("File uploaded: " + JSON.stringify(uploadedFile));
-            firebase.storage
-              .getDownloadUrl({
-                bucket: "gs://bemo-c5ae7.appspot.com/",
-                remoteFullPath: "ads/" + name
-              })
-              .then(
-                function(url) {
-                  console.log("Remote URL: " + url);
-                  instance.link = url;
-                  addDataToItem
-                    .add({
-                      email: EmailOfUser,
-                      uuid: instance.UUID,
-                      name: instance.name,
-                      location: firebase.firestore.GeoPoint(
-                        instance.lat,
-                        instance.lng
-                      ),
-                      time: firebase.firestore.FieldValue.serverTimestamp(),
-                      url: instance.link
-                    })
-                    .then(function(doc) {
-                      console.log("found id in items...." + doc.id);
-                      dialogs.alert("Add Items success").then(function() {
-                        console.log("Dialog closed!");
+            localFullPath: logoPath,
+            onProgress: function(status) {
+              console.log("Uploaded fraction: " + status.fractionCompleted);
+              console.log("Percentage complete: " + status.percentageCompleted);
+            }
+          })
+          .then(
+            function(uploadedFile) {
+              console.log("File uploaded: " + JSON.stringify(uploadedFile));
+
+              firebase.storage
+                .getDownloadUrl({
+                  bucket: "gs://bemo-c5ae7.appspot.com/",
+                  remoteFullPath: "ads/" + name
+                })
+                .then(
+                  function(url) {
+                    console.log("Remote URL: " + url);
+                    instance.link = url;
+
+                    addDataToItem
+                      .add({
+                        email: EmailOfUser,
+                        uuid: instance.UUID,
+                        name: instance.name,
+                        location: firebase.firestore.GeoPoint(
+                          instance.lat,
+                          instance.lng
+                        ),
+                        time: firebase.firestore.FieldValue.serverTimestamp(),
+                        url: instance.link
+                      })
+                      .then(function(doc) {
+                        console.log("found id in items...." + doc.id);
+                        dialogs.alert("Add Items success").then(function() {
+                          console.log("Dialog closed!");
+                        });
+                      })
+                      .catch(err => {
+                        console.log(err);
                       });
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
 
-                  addDataToScan
-                    .add({
-                      // email: EmailOfUser,
-                      uuid: instance.UUID,
-                      distance: instance.devices.distance,
-                      // name: this.name,
-                      location: firebase.firestore.GeoPoint(
-                        instance.lat,
-                        instance.lng
-                      ),
-                      time: firebase.firestore.FieldValue.serverTimestamp()
-                    })
-                    .then(function(doc) {
-                      console.log("found id in scan...." + doc.id);
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
-                },
-                function(error) {
-                  console.log("Error: " + error);
-                }
-              );
-          },
-          function(error) {
-            console.log("File upload error: " + error);
-            dialogs
-              .alert("Please choose uuid and take a pictrue")
-              .then(function() {
-                console.log("Dialog closed!");
-              });
-          }
-        );
+                    addDataToScan
+                      .add({
+                        // email: EmailOfUser,
+                        uuid: instance.UUID,
+                        distance: instance.devices.distance,
+                        // name: this.name,
+                        location: firebase.firestore.GeoPoint(
+                          instance.lat,
+                          instance.lng
+                        ),
+                        time: firebase.firestore.FieldValue.serverTimestamp()
+                      })
+                      .then(function(doc) {
+                        console.log("found id in scan...." + doc.id);
+                      })
+                      .catch(err => {
+                        console.log(err);
+                      });
+                  },
+                  function(error) {
+                    console.log("Error: " + error);
+                  }
+                );
+            },
+            function(error) {
+              console.log("File upload error: " + error);
+              //   dialogs
+              //     .alert("Please choose uuid and take a pictrue")
+              //     .then(function() {
+              //       console.log("Dialog closed!");
+              //     });
+            }
+          );
+      } else {
+        dialogs
+          .alert(
+            "Please enter the name of the item, Select UUID and take a picture"
+          )
+          .then(function() {
+            console.log("Dialog closed!");
+          });
+      }
     },
     SelectUUID: function() {
       this.devices = [];
