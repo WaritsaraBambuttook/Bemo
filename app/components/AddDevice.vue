@@ -77,6 +77,7 @@ import {
 import { Page } from "tns-core-modules/ui/page";
 import { View } from "tns-core-modules/ui/core/view";
 import { takePicture, requestPermissions } from "nativescript-camera";
+
 export default {
   props: ["email"],
   // name: ["item_id"],
@@ -89,9 +90,9 @@ export default {
       lng: [],
       saveToGallery: true,
       allowsEditing: false,
-      keepAspectRatio: true,
-      width: 150,
-      height: 150,
+      keepAspectRatio: false,
+      width: 50,
+      height: 50,
       cameraImage: null,
       labelText: "",
       link: ""
