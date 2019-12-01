@@ -8,17 +8,16 @@
           for="item in items"
           @itemTap="onItemTap"
           height="500"
-          rowHeight="50"
+          rowHeight="150"
         >
           <v-template>
             <FlexboxLayout flexDirection="row" class="list-group-item">
+              <Image :src="item.url" class="image" width="170" />
               <Label :text="item.name" class="list-group-item-heading" style="width: 100%" />
             </FlexboxLayout>
           </v-template>
         </ListView>
-        <!-- <StackLayout margin="10"> -->
         <Button class="but" text="Add" @tap="addDevices" />
-        <!-- </StackLayout> -->
       </StackLayout>
     </ScrollView>
   </StackLayout>
@@ -31,8 +30,7 @@ import detail_item from "./showMap";
 var firebase = require("nativescript-plugin-firebase");
 
 export default {
-  // name: item,
-  //props: ["user"],
+  ops: ["user"],
   data() {
     return {
       items: [],
@@ -41,9 +39,6 @@ export default {
   },
   methods: {
     addDevices: function() {
-      // const test = email;
-      // console.log(""+this.$email);
-
       this.$navigateTo(AddDevice, {
         props: { email: this.$data.email }
       });
@@ -57,30 +52,8 @@ export default {
           items: this.$data.items[event.index],
           email: this.$data.email
         }
-        // props: { email: this.$data.email }
       });
     }
-
-    // notify: function(message) {
-    //   console.log("Title: " + message.title);
-    //   console.log("Body: " + message.body);
-    //   const confirmOptions = {
-    //     title: message.title,
-    //     message: message.body,
-    //     okButtonText: "Scan",
-    //     cancelButtonText: "Cancel"
-    //   };
-    //   confirm(confirmOptions).then(result => {
-    //     console.log(result);
-    //     if (result == true) {
-    //       console.log("scan button");
-    //       this.$navigateTo(pageApp);
-    //       //this.changePage = pageApp;
-    //     } else {
-    //       console.log("cancel button");
-    //     }
-    //   });
-    // }
   },
   async mounted() {
     let dataInStore = this.$store.getters.dataAboutUser;
@@ -91,32 +64,12 @@ export default {
       .collection("item")
       .get({ source: "server" });
     query.forEach(doc => {
-      //ส่งค้า email มาใส่
       let detail = this.email;
       if (detail == doc.data().email) {
-        //console.log(doc.data());
         this.items.push(doc.data());
       }
     });
   }
-
-  // created() {
-  //   firebase
-  //     .init({
-  //       onMessageReceivedCallback: this.notify
-  //     })
-  //     .then(
-  //       function() {
-  //         console.log("firebase.init done");
-  //         firebase
-  //           .subscribeToTopic("news")
-  //           .then(() => console.log("Subscribed to topic"));
-  //       },
-  //       function(error) {
-  //         console.log("firebase.init error: " + error);
-  //       }
-  //     );
-  // }
 };
 </script>
 
@@ -130,14 +83,14 @@ export default {
 .description-label {
   margin-bottom: 15;
 }
-.button{
+.button {
   color: red;
-  
+
   margin-top: 20px;
   background-color: aqua;
 }
 .but {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
@@ -151,5 +104,8 @@ export default {
 .list-group {
   border-color: #d3d3d3;
   border-right-width: 2;
+}
+.list-group-item-heading {
+  font-size: 18;
 }
 </style>

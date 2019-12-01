@@ -2,11 +2,11 @@ import * as bluetooth from "nativescript-bluetooth";
 import * as geolocation from "nativescript-geolocation";
 const firebase = require("nativescript-plugin-firebase");
 var dialogs = require("tns-core-modules/ui/dialogs");
-const StartScan = function(callback) {
-  bluetooth.isBluetoothEnabled().then(function(enabled) {
+const StartScan = function (callback) {
+  bluetooth.isBluetoothEnabled().then(function (enabled) {
     // console.log(enabled);
     if (enabled == false) {
-      dialogs.alert("Open Bluetooth").then(function() {
+      dialogs.alert("Open Bluetooth and GPS ").then(function () {
         console.log("Dialog closed!");
       });
     }
@@ -24,18 +24,18 @@ const StartScan = function(callback) {
 
         //location
         geolocation.isEnabled().then(
-          function(isEnabled) {
+          function (isEnabled) {
             console.log("Enable.....?" + isEnabled);
             if (!isEnabled) {
               geolocation.enableLocationRequest().then(
-                function() {},
-                function(e) {
+                function () { },
+                function (e) {
                   console.log("Error: " + (e.message || e));
                 }
               );
             }
           },
-          function(e) {
+          function (e) {
             console.log("Error is: " + (e.message || e));
           }
         );
@@ -58,13 +58,13 @@ const StartScan = function(callback) {
                       location: firebase.firestore.GeoPoint(lat, long),
                       time: firebase.firestore.FieldValue.serverTimestamp()
                     })
-                    .then(function(doc) {
+                    .then(function (doc) {
                       console.log("found id ...." + doc.id);
                     });
                 }
               }
             },
-            function(e) {
+            function (e) {
               console.log("Error getLocaton: " + e.message);
             }
           );
@@ -76,7 +76,7 @@ const StartScan = function(callback) {
       skipPermissionCheck: true
     })
     .then(
-      function() {
+      function () {
         console.log("success");
 
         //dialog
@@ -84,7 +84,7 @@ const StartScan = function(callback) {
         //   console.log("Dialog closed!");
         // });
       },
-      function(err) {
+      function (err) {
         console.log("error while scanning: " + err);
       }
     );
@@ -106,7 +106,7 @@ const calculateDistance = function calculateDistance(rssi) {
   }
 };
 const stopScan = async () => {
-  bluetooth.stopScanning().then(function() {
+  bluetooth.stopScanning().then(function () {
     console.log("scanning stopped >>>>>>>>>>");
   });
 };

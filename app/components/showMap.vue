@@ -3,35 +3,12 @@
     <ActionBar class="action-bar" title="Map">
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
     </ActionBar>
-    <!-- <ActionBar>
-      <StackLayout orientation="horizontal">
-        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="BacktoBemo" />
-        <Image
-          class="btnImg"
-          src="~/img/Bemo.png"
-          width="40"
-          height="40"
-          verticalAlignment="right"
-        />
-        <Label text="Add Devices" fontSize="24" verticalAlignment="center" />
-      </StackLayout>
-    </ActionBar>-->
-
-    <ScrollView>
+    <ScrollView class="bg">
       <StackLayout>
         <GridLayout rows="auto,auto,*" columns="*">
           <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
-            <!-- <Label class="title" row="0" col="0" text="Search with UUID" /> -->
             <Label :text="this.items.name" textWrap="true" />
           </StackLayout>
-          <!-- <StackLayout col="1" row="1">
-            <ListPicker
-              :items="scanned"
-              v-model="selectedListPickerIndex"
-              @selectedIndexChange="indexChange"
-            />
-          </StackLayout>-->
-
           <StackLayout col="0" row="1" margin="10">
             <ContentView height="420" width="420">
               <GridLayout>
@@ -55,8 +32,8 @@
         </GridLayout>
 
         <StackLayout margin="10">
-          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
           <Button class="button" text="lost" @tap="lost_item" margin="10" />
+          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -67,8 +44,10 @@ import * as geolocation from "nativescript-geolocation";
 import { functions } from "nativescript-plugin-firebase";
 var mapbox = require("nativescript-mapbox");
 import { MapboxMarker, Mapbox } from "nativescript-mapbox";
+var dialogs = require("tns-core-modules/ui/dialogs");
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
+import axios from "axios";
 export default {
   props: ["items", "email"],
   data() {
@@ -77,15 +56,9 @@ export default {
       longitude: [],
       center: null,
       zoom: null,
-      // selectedListPickerIndex: 0,
-      // dataInScan: [],
-      // index: [],
       map: null
     };
   },
-  // mounted(){
-  //   console.log(stringify)
-  // },
   async created() {
     geolocation.isEnabled().then(
       function(isEnabled) {
@@ -102,71 +75,33 @@ export default {
         console.log("Error is: " + (e.message || e));
       }
     );
-    // const data = [];
-    // const qs = await firebase.firestore
-    //   .collection("scan")
-    //   .get({ source: "server" });
-    // qs.forEach(doc => {
-    //   data.push({
-    //     lat: doc.data().location.latitude,
-    //     lng: doc.data().location.longitude,
-    //     animated: false,
-    //     title: doc.data().tagID,
-    //     subtitle:
-    //       "time >> " + doc.data().time + "distance >> " + doc.data().distance,
-    //     iconPath: "./img/placeholder.png",
-    //     time: doc.data().time,
-    //     toString: () => doc.data().tagID
-    //   });
-    // });
-    // this.dataInScan = data;
   },
   methods: {
     BacktoBemo: function() {
       this.$navigateBack(bemo);
     },
     deleteItem: function() {
-    
-    console.log(">>>>>>>>>" + this.items.name);
-    console.log(">>>>>>>>>" + this.email);
+      console.log(">>>>>>>>>" + this.items.name);
+      console.log(">>>>>>>>>" + this.email);
 
-    let bemo = firebase.firestore.collection('item')
-    .where('name', '==', this.items.name)
-    .where('email', '==', this.email);
-
-    bemo.get().then(function(querySnapshot) {
-    querySnapshot.forEach(function(doc) {
-      console.log(doc.id, ' => ', doc.data());
-      const test = firebase.firestore.collection("item").doc(doc.id);
-      test.delete().then(() => {
-        console.log('Deleted ' + doc.id);
+      let bemo = firebase.firestore
+        .collection("item")
+        .where("name", "==", this.items.name)
+        .where("email", "==", this.email);
+      let go = this;
+      bemo.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+          console.log(doc.id, " => ", doc.data());
+          const test = firebase.firestore.collection("item").doc(doc.id);
+          test.delete().then(() => {
+            console.log("Deleted " + doc.id);
+            dialogs.alert("delete complete").then(function() {
+              console.log("Dialog closed!");
+              go.$navigateBack(bemo);
+            });
+          });
+        });
       });
-    });
-
-});
-
-
-      // console.log(">>>>>>>>>" + this.items);
-      // console.log(">>>>>>>>>" + this.email);
-      // console.log("TEST: "+this.items.name);
-      // const test = firebase.firestore.collection("item").doc("IYrEw9hBPfNFddwEImbe");
-      // test.delete().then(() => {
-      //   console.log("Delete");
-      // });
-
-
-      // const collection = firebase.firestore.collection("item");
-      // const query = collection
-      // .where("name", "==", ""+this.items.name)
-      // query
-      // .get().querySnapshot.forEach(doc => {
-      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
-      // })
-      // .then(querySnapshot => {
-      // querySnapshot.forEach(doc => {
-      //   console.log(`Display Item :  ${doc.id} => ${JSON.stringify(doc.data())}`);
-      // });
-      // }).catch(err => console.log(err)); 
     },
     onMapReady: async function(args) {
       this.map = args.map;
@@ -224,9 +159,6 @@ export default {
             subtitle: this.latitude + "," + this.longitude
           }
         ]);
-        // this.index = null;
-        // console.log(this.index);
-        // console.log(args.map.object);
       }
     },
     lost_item: function() {
@@ -242,45 +174,41 @@ export default {
         .then(doc => {
           console.log("found lost item ...." + doc.id);
         });
-        
+      this.onSendNotification();
+      dialogs.alert("sent ask for help success ").then(function() {
+        console.log("Dialog closed!");
+      });
+    },
+    onSendNotification: function() {
+      axios
+        .post(
+          "https://fcm.googleapis.com/fcm/send",
+          {
+            to: "/topics/news",
+            notification: {
+              body: "Please help scanning BEMO",
+              title: "Help"
+            },
+            data: {
+              email: this.email
+            }
+          },
+          {
+            headers: {
+              Authorization:
+                "key=AAAAF3Re7hE:APA91bEBRPd6KbCDzdiYKKKReXjCnBrHoOaqeWv1Ze-Vz33eCluspSIVwFiws2KticSQNl3ziyOfFnroXxovjiVc5vFvjNFWV80Gg2o8t-iq1gIe7b4Gi2C4OQoDHgYkQW4xlQUlFdY-",
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(response => {
+          console.dir(response.data);
+          this.data = JSON.stringify(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
-
-    // indexChange: function(args) {
-    //   let newIndex = args.value;
-    //   const eachData = this.dataInScan[newIndex];
-    //   console.log(newIndex);
-
-    //   const locations = this.dataInScan.filter(e => e.title == eachData);
-    //   if (this.map) {
-    //     this.map.removeMarkers();
-    //     this.map.addMarkers([
-    //       {
-    //         lat: this.latitude,
-    //         lng: this.longitude,
-    //         animated: false,
-    //         title: "Current location",
-    //         subtitle: "location" + this.latitude + "," + this.longitude
-    //       }
-    //     ]);
-    //     const markers = [];
-    //     locations.map(l => {
-    //       const { lat, lng, title, iconPath } = l;
-    //       markers.push({
-    //         lat,
-    //         lng,
-    //         animated: false,
-    //         title,
-    //         subtitle: "location" + lat + "," + lng,
-    //         iconPath
-    //       });
-    //     });
-    //     //console.log(markers);
-    //     // this.map.addMarkers([markers[0]]);
-    //     // this.map.addMarkers([markers[1]]);
-
-    //     this.map.addMarkers(markers);
-    //   }
-    // }
   },
   computed: {
     scanned() {
@@ -305,7 +233,7 @@ export default {
   margin-bottom: 15;
 }
 .button {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
@@ -317,7 +245,7 @@ export default {
   border-radius: 50%;
 }
 ActionBar {
-  background-color: #53ba82;
+  background-color: #143059;
   color: #ffffff;
 }
 .NameofItem {
@@ -325,7 +253,7 @@ ActionBar {
   font-size: 24;
 }
 .delete {
-  background-color: red;
+  background-color: #fb7452;
   border: none;
   color: white;
   padding: 20px;
@@ -335,5 +263,8 @@ ActionBar {
   font-size: 16px;
   margin: 4px 2px;
   border-radius: 50%;
+}
+.bg {
+  background-color: #fad6b1;
 }
 </style>

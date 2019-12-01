@@ -1,5 +1,5 @@
 <template >
-  <Page>
+  <Page class="gf">
     <ActionBar>
       <StackLayout orientation="horizontal">
         <Image
@@ -13,13 +13,18 @@
       </StackLayout>
     </ActionBar>
     <StackLayout>
-      <SegmentedBar @selectedIndexChange="indexChange" :selectedIndex="index" row="0">
-        <SegmentedBarItem title="device" />
-        <SegmentedBarItem title="Scan" />
-        <SegmentedBarItem title="setting" />
-        <!-- <SegmentedBarItem title="detail" /> -->
+      <SegmentedBar
+        @selectedIndexChange="indexChange"
+        :selectedIndex="index"
+        row="0"
+        :backgroundColor="bg"
+        :selectedBackgroundColor="color"
+      >
+        <SegmentedBarItem class="text" title="device" />
+        <SegmentedBarItem class="text" title="Scan" />
+        <SegmentedBarItem class="text" title="setting" />
       </SegmentedBar>
-      <GridLayout rows="*">
+      <GridLayout class="compo" rows="*">
         <ScrollView row="1">
           <StackLayout>
             <component v-bind:is="component"></component>
@@ -39,6 +44,7 @@ import { functions } from "nativescript-plugin-firebase";
 import AddDevice from "./AddDevice";
 import { store } from "../store/store";
 var firebase = require("nativescript-plugin-firebase");
+
 export default {
   props: ["user", "indexChangeTap", "text"],
   store,
@@ -51,7 +57,9 @@ export default {
     return {
       component: "c0",
       // data: ""
-      index: 0
+      index: 0,
+      color: "#cd7f32",
+      bg: "#143059"
     };
   },
   methods: {
@@ -70,12 +78,7 @@ export default {
   created() {
     this.$store.commit("setdataAboutUser", this.user);
     console.log("indexFromProps" + this.indexChangeTap);
-    // console.log("text" + this.text);
-    // this.component = "c" + this.indexChangeTap;
-    // console.log("mounted " + this.component);
-
     let args = { value: this.indexChangeTap };
-
     this.setIndex(args);
   },
   mounted() {}
@@ -88,13 +91,6 @@ export default {
   font-size: 20;
   margin: 15;
 }
-/* .btn {
-  border: none;
-  outline: none;
-  margin: -5;
-  font-size: 15;
-text-transform: none;
-} */
 .description-label {
   margin-bottom: 15;
 }
@@ -102,40 +98,16 @@ text-transform: none;
   border-radius: 50%;
 }
 ActionBar {
-  background-color: #53ba82;
+  background-color: #143059;
   color: #ffffff;
 }
-
-/* .title {
-  text-align: left;
-  padding-left: 50%;
+.compo {
+  background-color: #fad6b1;
 }
-
-.message {
-  vertical-align: center;
-  text-align: center;
-  font-size: 20;
-  color: #333333;
+.segment {
+  background-color: #e5aab3;
 }
-
-.drawer-close-button {
-  margin-top: 20;
-  padding: 10 10 10 10;
-  background-color: #53ba82;
+.text {
   color: #ffffff;
 }
-
-.drawer-header {
-  padding: 80 40 40 40;
-  margin-bottom: 20;
-  background-color: #333333;
-  color: #ffffff;
-  font-size: 24;
-}
-
-.drawer-item {
-  padding: 8 16;
-  color: #333333;
-  font-size: 16;
-} */
 </style>

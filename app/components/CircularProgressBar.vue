@@ -59,9 +59,9 @@ export default {
     size: { default: 100 },
     progress: { default: 0 },
     offset: { default: 0 },
-    textColor: { default: "#bfbfc4" },
-    fillColor: { default: "#b9f04a" },
-    fillBackgroundColor: { default: "#efeff4" },
+    textColor: { default: "#000000" },
+    fillColor: { default: "#632605" },
+    fillBackgroundColor: { default: "#ff752a" },
     num: { default: 0 }
   },
   computed: {

@@ -1,20 +1,11 @@
 <template>
   <ScrollView>
     <StackLayout class="home-panel">
-      <CircularProgressBar :size="size" :progress="progress" :num="num" margin="10" />
+      <CircularProgressBar :size="size" :progress="progress" :num="num" margin="20" />
 
       <Button class="button" text="Start Scan" dock="bottom" @tap="startScan" margin="20" />
     </StackLayout>
   </ScrollView>
-  <!-- <ScrollView>
-    <StackLayout class="home-panel">
-      <CircularProgressBar size="50" progress="50" />
-      <StackLayout class="m-y-15" />
-      <CircularProgressBar size="100" progress="100" />
-      <StackLayout class="m-y-15" />
-      <CircularProgressBar size="200" progress="200" />
-    </StackLayout>
-  </ScrollView>-->
 </template>
 
 <script>
@@ -60,28 +51,8 @@ export default {
 
         this.num = this.devices.length;
         console.log(">>>>>>>>>>>>>>>>>>>>>>" + this.num);
-
-        //   const found = this.devices.some(el => el.uuid === device.uuid);
-        //   if (!found) {
-        //     this.devices.push(device);
-        //   } else {
-        //     this.devices.map(d => {
-        //       if (device.uuid == d.uuid) {
-        //         d.distance = device.distance;
-        //       }
-        //     });
-        //   }
       });
     }
-
-    // stopScan: async function() {
-    //   await BluetoothService.stopScan();
-    //   this.scanning = false;
-    // },
-
-    // random(min = 50, max = 150) {
-    //   return Math.floor(Math.random() * (max - min + 1)) + min;
-    // }
   },
   components: {
     CircularProgressBar
@@ -113,12 +84,8 @@ export default {
   width: 20%;
   height: 20%;
 }
-
-/* .ShowUID {
-  margin-top: 20px;
-} */
 .button {
-  background-color: #4caf50;
+  background-color: #304451;
   border: none;
   color: white;
   padding: 20px;
