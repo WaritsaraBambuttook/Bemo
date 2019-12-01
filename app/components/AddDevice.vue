@@ -94,7 +94,8 @@ export default {
       height: 50,
       cameraImage: null,
       labelText: "",
-      link: ""
+      link: "",
+      checkdata: []
     };
   },
   mounted() {
@@ -124,6 +125,15 @@ export default {
         console.log("lat " + this.lat);
         console.log("lng " + this.lng);
       });
+    const query = firebase.firestore
+      .collection("item")
+      .get()
+      .then(query => {
+        query.forEach(doc => {
+          this.checkdata.push(doc.data().uuid);
+          console.log(this.checkdata);
+        });
+      });
   },
   methods: {
     Back: function() {
@@ -139,90 +149,103 @@ export default {
       var logoPath = this.cameraImage;
       let instance = this;
       var name = this.UUID.replace(/:/g, "");
+      console.log();
+
+      let checkUUID = this.checkdata;
+      console.log("check uuid " + checkUUID);
+
       if (
         instance.name != "" &&
         instance.UUID != "" &&
         instance.cameraImage != null
       ) {
-        this.processing = true;
-        console.log(this.processing);
+        if (!checkUUID.includes(instance.UUID)) {
+          this.processing = true;
+          console.log(this.processing);
 
-        firebase.storage
-          .uploadFile({
-            bucket: "gs://bemo-c5ae7.appspot.com/",
-            // remoteFullPath: "ads/" + this.UUID.replace(/:/g, ""),
-            remoteFullPath: "ads/" + name,
+          firebase.storage
+            .uploadFile({
+              bucket: "gs://bemo-c5ae7.appspot.com/",
+              // remoteFullPath: "ads/" + this.UUID.replace(/:/g, ""),
+              remoteFullPath: "ads/" + name,
 
-            localFullPath: logoPath,
-            onProgress: function(status) {
-              console.log("Uploaded fraction: " + status.fractionCompleted);
-              console.log("Percentage complete: " + status.percentageCompleted);
-            }
-          })
-          .then(
-            function(uploadedFile) {
-              console.log("File uploaded: " + JSON.stringify(uploadedFile));
-
-              firebase.storage
-                .getDownloadUrl({
-                  bucket: "gs://bemo-c5ae7.appspot.com/",
-                  remoteFullPath: "ads/" + name
-                })
-                .then(
-                  function(url) {
-                    console.log("Remote URL: " + url);
-                    instance.link = url;
-
-                    addDataToItem
-                      .add({
-                        email: EmailOfUser,
-                        uuid: instance.UUID,
-                        name: instance.name,
-                        location: firebase.firestore.GeoPoint(
-                          instance.lat,
-                          instance.lng
-                        ),
-                        time: firebase.firestore.FieldValue.serverTimestamp(),
-                        url: instance.link
-                      })
-                      .then(function(doc) {
-                        console.log("found id in items...." + doc.id);
-                        dialogs.alert("Add Items success").then(function() {
-                          console.log("Dialog closed!");
-                          instance.processing = false;
-                          console.log(this.processing);
-                        });
-                      })
-                      .catch(err => {
-                        console.log(err);
-                      });
-
-                    addDataToScan
-                      .add({
-                        uuid: instance.UUID,
-                        distance: instance.devices.distance,
-                        location: firebase.firestore.GeoPoint(
-                          instance.lat,
-                          instance.lng
-                        ),
-                        time: firebase.firestore.FieldValue.serverTimestamp()
-                      })
-                      .then(function(doc) {
-                        console.log("found id in scan...." + doc.id);
-                      })
-                      .catch(err => {
-                        console.log(err);
-                      });
-                  },
-                  function(error) {
-                    console.log("Error: " + error);
-                  }
+              localFullPath: logoPath,
+              onProgress: function(status) {
+                console.log("Uploaded fraction: " + status.fractionCompleted);
+                console.log(
+                  "Percentage complete: " + status.percentageCompleted
                 );
-            },
-            function(error) {
-              console.log("File upload error: " + error);
-            }
-          );
+              }
+            })
+            .then(
+              function(uploadedFile) {
+                console.log("File uploaded: " + JSON.stringify(uploadedFile));
+
+                firebase.storage
+                  .getDownloadUrl({
+                    bucket: "gs://bemo-c5ae7.appspot.com/",
+                    remoteFullPath: "ads/" + name
+                  })
+                  .then(
+                    function(url) {
+                      console.log("Remote URL: " + url);
+                      instance.link = url;
+
+                      addDataToItem
+                        .add({
+                          email: EmailOfUser,
+                          uuid: instance.UUID,
+                          name: instance.name,
+                          location: firebase.firestore.GeoPoint(
+                            instance.lat,
+                            instance.lng
+                          ),
+                          time: firebase.firestore.FieldValue.serverTimestamp(),
+                          url: instance.link
+                        })
+                        .then(function(doc) {
+                          console.log("found id in items...." + doc.id);
+                          dialogs.alert("Add Items success").then(function() {
+                            console.log("Dialog closed!");
+                            instance.processing = false;
+                            console.log(this.processing);
+                          });
+                        })
+                        .catch(err => {
+                          console.log(err);
+                        });
+
+                      addDataToScan
+                        .add({
+                          uuid: instance.UUID,
+                          distance: instance.devices.distance,
+                          location: firebase.firestore.GeoPoint(
+                            instance.lat,
+                            instance.lng
+                          ),
+                          time: firebase.firestore.FieldValue.serverTimestamp()
+                        })
+                        .then(function(doc) {
+                          console.log("found id in scan...." + doc.id);
+                        })
+                        .catch(err => {
+                          console.log(err);
+                        });
+                    },
+                    function(error) {
+                      console.log("Error: " + error);
+                    }
+                  );
+              },
+              function(error) {
+                console.log("File upload error: " + error);
+              }
+            );
+        } else {
+          dialogs.alert("UUID have regist already").then(function() {
+            console.log("Dialog closed!");
+          });
+        }
       } else {
         dialogs
           .alert(
