@@ -33,7 +33,7 @@
         <StackLayout>
           <ActivityIndicator :busy="processing" rowspan="3" color="red" width="50" height="50"></ActivityIndicator>
         </StackLayout>
-        <StackLayout margin="10">
+        <StackLayout>
           <Button class="button" text="lost" @tap="lost_item" margin="10" :isEnabled="!processing" />
           <Button
             class="delete"
