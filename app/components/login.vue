@@ -160,7 +160,6 @@ export default {
 .input-field {
   margin-bottom: 25;
 }
-
 .input {
   font-size: 18;
   /* placeholder-color: #A8A8A8; */
@@ -177,7 +176,7 @@ export default {
 
 .login-label {
   /* horizontal-align: center; */
-  color: #a8a8a8;
+  color: #f8f2f2;
   font-size: 16;
 }
 
@@ -201,7 +200,7 @@ export default {
   border-radius: 50%;
 }
 .login {
-  background-color: #b8c791;
+  background-color: #006300;
   border: none;
   color: white;
   padding: 20px;
