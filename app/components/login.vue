@@ -75,7 +75,12 @@ export default {
           });
         })
 
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error);
+          dialogs.alert("email and password incorrect").then(function() {
+            console.log("Dialog closed!");
+          });
+        });
     },
     // regis: function() {
     //   console.log("regis");
