@@ -15,7 +15,7 @@ Vue.registerElement(
 );
 
 Vue.use(RadGauge);
-firebase
+firebase 
   .init({
     showNotifications: true,
     showNotificationsWhenInForeground: true,
@@ -66,19 +66,65 @@ firebase
           });
         }
       }
-      // else {
-      //   // console.log("go to login");
-      //   dialogs.alert("Complete").then(function () {
-      //     console.log("Dialog closed!");
-      //   });
-      //   // Vue.prototype.$navigateTo(login);
-      // }
+
+
+      
+
+      // if(){}
+
+      // if your server passed a custom property called 'foo', then do this:
+      // console.log("Value of 'foo': " + message.data.foo);
+      // const confirmOptions = {
+      //   title: message.title,
+      //   message: message.body,
+      //   okButtonText: "Scan",
+      //   cancelButtonText: "Cancel"
+      // };
+      // dialogs.confirm(confirmOptions).then(result => {
+      //   console.log(result);
+      //   if (result == true) {
+      //     console.log("scan button");
+      //     Vue.prototype.$navigateTo(bemo);
+
+      //     // this.$navigateTo(pageApp);
+      //     //this.changePage = pageApp;
+      //   } else {
+      //     console.log("cancel button");
+      //   }
+      // });
     },
+    
+    // onAuthStateChanged: function(data) { 
+    //   console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");  
+    //   console.log("Test........"+data)
+    //   if(data.loggedIn==true){
+    //     Vue.prototype.$navigateTo(bemo);
+    //     console.log("testBemo");
+    //   }else{
+    //     Vue.prototype.$navigateTo(login);
+    //     console.log("testLogin");
+    //   }
+      // let dataInStore = store.getters.dataAboutUser;
+    //   console.log(dataInStore);
+    //   // let data= dataInStore;
+    //   // console.log(data);
+    //   if (dataInStore!="") {
+    //     Vue.prototype.$navigateTo(bemo);
+    //     console.log(logined);
+    //     console.log(test);
+    //   }else{
+    //     Vue.prototype.$navigateTo(login);
+    // }
+    // },
+    
+    
 
     onPushTokenReceivedCallback: function (token) {
       console.log("Firebase push token: " + token);
     }
   })
+ 
+  
   .then(
     function () {
       console.log("firebase.init done 555");
@@ -92,6 +138,19 @@ firebase
       console.log("firebase.init error: " + error);
     }
   );
+  // firebase.auth.onAuthStateChanged(function(user) {
+  //   if (user) {
+  //     Vue.prototype.$navigateTo(bemo);
+  //   } else {
+  //     Vue.prototype.$navigateTo(login);
+  //   }
+  // });
+  // var user = firebase.auth.currentUser;
+  //   if (user) {
+  //     Vue.prototype.$navigateTo(bemo);
+  //   } else {
+  //     Vue.prototype.$navigateTo(login);
+  //   }
 
 //import { MapViewBase } from 'nativescript-google-maps-sdk/map-view-common';
 //Vue.registerElement('MapView', ()=> require('nativescript-google-maps-sdk').MapView)
