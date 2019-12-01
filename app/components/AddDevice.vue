@@ -13,16 +13,17 @@
         <Label text="Add Devices" fontSize="24" verticalAlignment="right" />
       </StackLayout>
     </ActionBar>
+
     <ScrollView class="pg">
       <StackLayout orientation="vertical">
         <StackLayout class="input-field" margin="10">
-          <TextField class="name" hint="Name" v-model="name" />
-          <TextField class="UUID" hint="UUID" v-model="UUID" />
+          <TextField class="name" hint="Name" v-model="name" :isEnabled="!processing" />
+          <TextField class="UUID" hint="UUID" v-model="UUID" :isEnabled="!processing" />
           <ListView
             class="list-group"
             for="item in devices"
             @itemTap="selectItems"
-            height="250"
+            height="50"
             rowHeight="50"
             margin="10"
           >
@@ -37,12 +38,20 @@
             </v-template>
           </ListView>
           <Image :src="cameraImage" class="image" stretch="aspectFit" margin="10" />
-          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" />
-          <Button text="Take a Picture" class="SelectUUID" @tap="TakePicture"></Button>
+
+          <ActivityIndicator :busy="processing" rowspan="3" color="red" width="50" height="50"></ActivityIndicator>
+
+          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" :isEnabled="!processing"></Button>
+          <Button
+            text="Take a Picture"
+            class="SelectUUID"
+            @tap="TakePicture"
+            :isEnabled="!processing"
+          ></Button>
         </StackLayout>
         <StackLayout margin="10">
-          <Button text="Add Item" class="button" @tap="add_item"></Button>
-          <Button text="Back" class="button" @tap="Back" />
+          <Button text="Add Item" class="button" @tap="add_item" :isEnabled="!processing"></Button>
+          <Button text="Back" class="button" @tap="Back" :isEnabled="!processing"></Button>
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -72,6 +81,7 @@ export default {
   // name: ["item_id"],
   data() {
     return {
+      processing: false,
       name: "",
       UUID: "",
       devices: [],
@@ -134,6 +144,9 @@ export default {
         instance.UUID != "" &&
         instance.cameraImage != null
       ) {
+        this.processing = true;
+        console.log(this.processing);
+
         firebase.storage
           .uploadFile({
             bucket: "gs://bemo-c5ae7.appspot.com/",
@@ -176,6 +189,8 @@ export default {
                         console.log("found id in items...." + doc.id);
                         dialogs.alert("Add Items success").then(function() {
                           console.log("Dialog closed!");
+                          instance.processing = false;
+                          console.log(this.processing);
                         });
                       })
                       .catch(err => {
@@ -222,7 +237,7 @@ export default {
       this.devices = [];
       Bluetooth.StartScan(device => {
         // console.log("..........." + device.distance);
-        if (device.distance <= 20) {
+        if (device.distance <= 0.3) {
           this.devices.push(device);
         } else {
           console.log(device.distance);
@@ -345,5 +360,8 @@ ActionBar {
 }
 .pg {
   background-color: #fad6b1;
+}
+:disabled {
+  opacity: 0.5;
 }
 </style>

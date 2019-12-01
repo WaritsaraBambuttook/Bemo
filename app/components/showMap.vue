@@ -30,10 +30,18 @@
             </ContentView>
           </StackLayout>
         </GridLayout>
-
+        <StackLayout>
+          <ActivityIndicator :busy="processing" rowspan="3" color="red" width="50" height="50"></ActivityIndicator>
+        </StackLayout>
         <StackLayout margin="10">
-          <Button class="button" text="lost" @tap="lost_item" margin="10" />
-          <Button class="delete" text="Delete item" margin="10" @tap="deleteItem" />
+          <Button class="button" text="lost" @tap="lost_item" margin="10" :isEnabled="!processing" />
+          <Button
+            class="delete"
+            text="Delete item"
+            margin="10"
+            @tap="deleteItem"
+            :isEnabled="!processing"
+          />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -52,6 +60,7 @@ export default {
   props: ["items", "email"],
   data() {
     return {
+      processing: false,
       latitude: [],
       longitude: [],
       center: null,
@@ -83,7 +92,8 @@ export default {
     deleteItem: function() {
       console.log(">>>>>>>>>" + this.items.name);
       console.log(">>>>>>>>>" + this.email);
-
+      this.processing = true;
+      console.log(this.processing);
       let bemo = firebase.firestore
         .collection("item")
         .where("name", "==", this.items.name)
@@ -97,6 +107,8 @@ export default {
             console.log("Deleted " + doc.id);
             dialogs.alert("delete complete").then(function() {
               console.log("Dialog closed!");
+              go.processing = false;
+              console.log(this.processing);
               go.$navigateBack(bemo);
             });
           });
@@ -163,7 +175,9 @@ export default {
     },
     lost_item: function() {
       console.log(this.items.name);
-
+      this.processing = true;
+      console.log(this.processing);
+      var instance = this;
       const lost = firebase.firestore.collection("lost");
       lost
         .add({
@@ -177,6 +191,8 @@ export default {
       this.onSendNotification();
       dialogs.alert("sent ask for help success ").then(function() {
         console.log("Dialog closed!");
+        instance.processing = false;
+        console.log(this.processing);
       });
     },
     onSendNotification: function() {
@@ -266,5 +282,8 @@ ActionBar {
 }
 .bg {
   background-color: #fad6b1;
+}
+:disabled {
+  opacity: 0.5;
 }
 </style>
