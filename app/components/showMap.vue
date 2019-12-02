@@ -175,7 +175,7 @@ export default {
               title:
                 "Name : " + this.items.name + "  UUID : " + doc.data().uuid,
               subtitle: "เวลาที่พบ : " + doc.data().time,
-              iconPath: "./img/placeholder.png"
+              iconPath: "./img/bemoIcon.png"
             };
             args.map.addMarkers([dataInFirebase]);
           }
@@ -187,7 +187,8 @@ export default {
             lng: this.longitude,
             animated: false,
             title: "Current your location",
-            subtitle: this.latitude + "," + this.longitude
+            subtitle: this.latitude + "," + this.longitude,
+            iconPath: "./img/human.png"
           }
         ]);
       }

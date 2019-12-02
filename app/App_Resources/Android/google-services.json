@@ -8,17 +8,54 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:100736626193:android:60f4d2301d88e6cc0f8bb0",
+        "mobilesdk_app_id": "1:100736626193:android:ce010aa64e2794ae0f8bb0",
         "android_client_info": {
-          "package_name": "org.nativescript.application"
+          "package_name": "com.waritsara.bemo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "100736626193-i7cfeie53lfdb0ddc1v5lqmh75a1ljse.apps.googleusercontent.com",
+          "client_id": "100736626193-g1qdpso09frovi09qonmu1oh72idda6s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "org.nativescript.application",
+            "package_name": "com.waritsara.bemo",
+            "certificate_hash": "0ab95ffd2bc1e9ac15bb481b3f40e454b9d4a76b"
+          }
+        },
+        {
+          "client_id": "100736626193-jcdv7js8sflhvhbos2rq27rikp268bbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8zvdiedqck5B2mj9QM878VkZgFjApVQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100736626193-jcdv7js8sflhvhbos2rq27rikp268bbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100736626193:android:60f4d2301d88e6cc0f8bb0",
+        "android_client_info": {
+          "package_name": "com.waritsara.bemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100736626193-ltmso4uoiebb84e0u5jvdl75mu920l9m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.waritsara.bemo",
             "certificate_hash": "0ab95ffd2bc1e9ac15bb481b3f40e454b9d4a76b"
           }
         },
