@@ -6,11 +6,23 @@
     <ScrollView class="bg">
       <StackLayout>
         <GridLayout rows="auto,auto,*" columns="*">
-          <StackLayout class="NameofItem" col="0" row="0" horizontalAlignment="center">
-            <Label :text="this.items.name" textWrap="true" />
+          <StackLayout col="0" row="0">
+            <Label
+              :text="'Name : '+ this.items.name"
+              textWrap="true"
+              horizontalAlignment="center"
+              margin="10"
+              class="NameofItem"
+            />
+            <Label
+              :text="'Last time : '+ this.lastTimeInScane"
+              textWrap="true"
+              margin="10"
+              class="NameofItem1"
+            />
           </StackLayout>
           <StackLayout col="0" row="1" margin="10">
-            <ContentView height="420" width="420">
+            <ContentView height="400" width="400">
               <GridLayout>
                 <Mapbox
                   ref="map"
@@ -34,14 +46,8 @@
           <ActivityIndicator :busy="processing" rowspan="3" color="red" width="50" height="50"></ActivityIndicator>
         </StackLayout>
         <StackLayout>
-          <Button class="button" text="lost" @tap="lost_item" margin="10" :isEnabled="!processing" />
-          <Button
-            class="delete"
-            text="Delete item"
-            margin="10"
-            @tap="deleteItem"
-            :isEnabled="!processing"
-          />
+          <Button class="button" text="lost" @tap="lost_item" :isEnabled="!processing" />
+          <Button class="delete" text="Delete item" @tap="deleteItem" :isEnabled="!processing" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -56,8 +62,10 @@ var dialogs = require("tns-core-modules/ui/dialogs");
 const firebase = require("nativescript-plugin-firebase");
 import bemo from "./bemo";
 import axios from "axios";
+import { store } from "../store/store";
 export default {
   props: ["items", "email"],
+  store,
   data() {
     return {
       processing: false,
@@ -65,7 +73,9 @@ export default {
       longitude: [],
       center: null,
       zoom: null,
-      map: null
+      map: null,
+      dataInStore: [],
+      lastTimeInScane: ""
     };
   },
   async created() {
@@ -87,19 +97,22 @@ export default {
   },
   methods: {
     BacktoBemo: function() {
-      this.$navigateBack(bemo);
+      this.$navigateTo(bemo, {
+        props: { user: this.dataInStore, indexChangeTap: 0, text: "3" }
+      });
     },
     deleteItem: function() {
       console.log(">>>>>>>>>" + this.items.name);
       console.log(">>>>>>>>>" + this.email);
       this.processing = true;
       console.log(this.processing);
-      let bemo = firebase.firestore
+      let Getdata = firebase.firestore
         .collection("item")
         .where("name", "==", this.items.name)
         .where("email", "==", this.email);
+      let dataInStore = this.dataInStore;
       let go = this;
-      bemo.get().then(function(querySnapshot) {
+      Getdata.get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
           console.log(doc.id, " => ", doc.data());
           const test = firebase.firestore.collection("item").doc(doc.id);
@@ -109,7 +122,9 @@ export default {
               console.log("Dialog closed!");
               go.processing = false;
               console.log(this.processing);
-              go.$navigateBack(bemo);
+            });
+            go.$navigateTo(bemo, {
+              props: { user: dataInStore, indexChangeTap: 0, text: "3" }
             });
           });
         });
@@ -140,6 +155,7 @@ export default {
         console.log("items " + data);
         console.log("email " + email);
         console.log(this.items.uuid);
+
         var count = 0;
         const qs = await firebase.firestore
           .collection("scan")
@@ -149,6 +165,9 @@ export default {
         qs.forEach(doc => {
           count = count + 1;
           if (count == 1) {
+            let timeInScan = doc.data().time;
+            console.log(timeInScan);
+            this.lastTimeInScane = timeInScan;
             const dataInFirebase = {
               lat: doc.data().location.latitude,
               lng: doc.data().location.longitude,
@@ -226,6 +245,9 @@ export default {
         });
     }
   },
+  mounted() {
+    this.dataInStore = this.$store.getters.dataAboutUser;
+  },
   computed: {
     scanned() {
       return [...new Set(this.dataInScan)];
@@ -267,6 +289,10 @@ ActionBar {
 .NameofItem {
   margin: 20;
   font-size: 24;
+  font-weight: bold;
+}
+.NameofItem1 {
+  font-size: 22;
 }
 .delete {
   background-color: #fb7452;

@@ -20,7 +20,7 @@
         :backgroundColor="bg"
         :selectedBackgroundColor="color"
       >
-        <SegmentedBarItem class="text" title="device" />
+        <SegmentedBarItem class="text" title="devices" />
         <SegmentedBarItem class="text" title="Scan" />
         <SegmentedBarItem class="text" title="setting" />
       </SegmentedBar>

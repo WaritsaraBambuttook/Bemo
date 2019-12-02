@@ -17,41 +17,55 @@
     <ScrollView class="pg">
       <StackLayout orientation="vertical">
         <StackLayout class="input-field" margin="10">
-          <TextField class="name" hint="Name" v-model="name" :isEnabled="!processing" />
-          <TextField class="UUID" hint="UUID" v-model="UUID" :isEnabled="!processing" />
-          <ListView
-            class="list-group"
-            for="item in devices"
-            @itemTap="selectItems"
-            height="50"
-            rowHeight="50"
-            margin="10"
-          >
-            <v-template>
-              <FlexboxLayout flexDirection="row" class="list-group-item">
-                <Label
-                  :text="'UUID : '+item.uuid +' distance : ' + item.distance"
-                  class="list-group-item-heading"
-                  style="width: 100%"
-                />
-              </FlexboxLayout>
-            </v-template>
-          </ListView>
-          <Image :src="cameraImage" class="image" stretch="aspectFit" margin="10" />
+          <StackLayout margin="10" :isEnabled="!processing">
+            <Label text="1.Please enter your item name" class="text" textWrap="true" />
 
-          <ActivityIndicator :busy="processing" rowspan="3" color="red" width="50" height="50"></ActivityIndicator>
+            <TextField class="name" hint="Name" v-model="name" margin="10" />
+          </StackLayout>
+          <StackLayout class="hr-light" backgroundColor="black"></StackLayout>
+          <StackLayout margin="10" :isEnabled="!processing">
+            <Label text="2.Register a new Bemo" class="text" textWrap="true" />
+            <TextField class="UUID" hint="UUID : 26:36:14:78:B5:55" v-model="UUID" margin="10" />
+            <Button text="Scan your new Bemo" class="SelectUUID" @tap="SelectUUID"></Button>
+            <ListView
+              class="list-group"
+              for="item in devices"
+              @itemTap="selectItems"
+              height="180"
+              rowHeight="50"
+              margin="10"
+            >
+              <v-template>
+                <FlexboxLayout flexDirection="row" class="list-group-item">
+                  <Label
+                    :text="'UUID : '+item.uuid +' distance : ' + item.distance"
+                    class="list-group-item-heading"
+                    style="width: 100%"
+                    :isEnabled="!processing"
+                  />
+                </FlexboxLayout>
+              </v-template>
+            </ListView>
+          </StackLayout>
+          <StackLayout class="hr-light" backgroundColor="black"></StackLayout>
 
-          <Button text="Select UUID" class="SelectUUID" @tap="SelectUUID" :isEnabled="!processing"></Button>
-          <Button
-            text="Take a Picture"
-            class="SelectUUID"
-            @tap="TakePicture"
-            :isEnabled="!processing"
-          ></Button>
-        </StackLayout>
-        <StackLayout margin="10">
-          <Button text="Add Item" class="button" @tap="add_item" :isEnabled="!processing"></Button>
-          <Button text="Back" class="button" @tap="Back" :isEnabled="!processing"></Button>
+          <StackLayout margin="10" :isEnabled="!processing">
+            <Label text="3.Please Take a Picture" class="text" textWrap="true" />
+            <ActivityIndicator :busy="processing" rowspan="3" color="red" width="30" height="30"></ActivityIndicator>
+            <Image
+              :src="cameraImage"
+              class="image"
+              stretch="aspectFit"
+              margin="10"
+              :isEnabled="!processing"
+            />
+            <Button text="Take a Picture" class="SelectUUID" @tap="TakePicture"></Button>
+          </StackLayout>
+          <StackLayout class="hr-light" backgroundColor="black"></StackLayout>
+          <StackLayout margin="10" height="130" :isEnabled="!processing">
+            <Button text="Save" class="button" @tap="add_item"></Button>
+            <Button text="Back" class="button" @tap="Back"></Button>
+          </StackLayout>
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -63,7 +77,7 @@ import { log } from "util";
 var firebase = require("nativescript-plugin-firebase");
 import bluetooth, { isBluetoothEnabled } from "nativescript-bluetooth";
 import * as Bluetooth from "../Bluetooth";
-import myDevices from "./myDevices";
+import bemo from "./bemo";
 import { device } from "tns-core-modules/platform/platform";
 import * as geolocation from "nativescript-geolocation";
 var dialogs = require("tns-core-modules/ui/dialogs");
@@ -75,10 +89,11 @@ import {
 import { Page } from "tns-core-modules/ui/page";
 import { View } from "tns-core-modules/ui/core/view";
 import { takePicture, requestPermissions } from "nativescript-camera";
-
+import { store } from "../store/store";
 export default {
   props: ["email"],
   // name: ["item_id"],
+  store,
   data() {
     return {
       processing: false,
@@ -95,10 +110,13 @@ export default {
       cameraImage: null,
       labelText: "",
       link: "",
-      checkdata: []
+      checkdata: [],
+      dataInStore: []
     };
   },
   mounted() {
+    this.dataInStore = this.$store.getters.dataAboutUser;
+
     geolocation.isEnabled().then(
       function(isEnabled) {
         if (!isEnabled) {
@@ -137,7 +155,9 @@ export default {
   },
   methods: {
     Back: function() {
-      this.$navigateBack(myDevices);
+      this.$navigateTo(bemo, {
+        props: { user: this.dataInStore, indexChangeTap: 0, text: "3" }
+      });
     },
     add_item: async function() {
       console.log("add item");
@@ -207,6 +227,10 @@ export default {
                           console.log("found id in items...." + doc.id);
                           dialogs.alert("Add Items success").then(function() {
                             console.log("Dialog closed!");
+                            instance.name = "";
+                            instance.UUID = "";
+                            instance.cameraImage = null;
+                            instance.devices = [];
                             instance.processing = false;
                             console.log(this.processing);
                           });
@@ -260,7 +284,7 @@ export default {
       this.devices = [];
       Bluetooth.StartScan(device => {
         // console.log("..........." + device.distance);
-        if (device.distance <= 0.3) {
+        if (device.distance <= 0.1) {
           this.devices.push(device);
         } else {
           console.log(device.distance);
@@ -386,5 +410,8 @@ ActionBar {
 }
 :disabled {
   opacity: 0.5;
+}
+.text {
+  font-size: 18;
 }
 </style>

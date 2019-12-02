@@ -1,7 +1,10 @@
 <template>
   <ScrollView>
     <StackLayout>
-      <StackLayout margin="20">
+      <StackLayout height="50" horizontalAlignment="center" margin="20">
+        <Label text="My Profile" textWrap="true" class="profile" />
+      </StackLayout>
+      <StackLayout>
         <Image :src="this.detail.photoURL" width="50%" height="50%" class="images" />
         <StackLayout margin="20" horizontalAlignment="center">
           <Label
@@ -20,6 +23,7 @@
   </ScrollView>
 </template>
 <script>
+import { log } from "util";
 import noti from "./notification";
 var firebase = require("nativescript-plugin-firebase");
 import login from "./login";
@@ -72,5 +76,9 @@ export default {
   font-size: 16px;
   margin: 4px 2px;
   border-radius: 50%;
+}
+.profile {
+  font-size: 22px;
+  color: #0000;
 }
 </style>

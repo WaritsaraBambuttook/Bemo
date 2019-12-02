@@ -1,9 +1,13 @@
 <template>
   <ScrollView>
     <StackLayout class="home-panel">
-      <CircularProgressBar :size="size" :progress="progress" :num="num" margin="20" />
-
-      <Button class="button" text="Start Scan" dock="bottom" @tap="startScan" margin="20" />
+      <StackLayout height="30"></StackLayout>
+      <StackLayout height="330" orientation="center">
+        <CircularProgressBar :size="size" :progress="progress" :num="num" margin="20" />
+      </StackLayout>
+      <StackLayout>
+        <Button class="button" text="Start Scan" dock="bottom" @tap="startScan" />
+      </StackLayout>
     </StackLayout>
   </ScrollView>
 </template>
@@ -88,12 +92,10 @@ export default {
   background-color: #304451;
   border: none;
   color: white;
-  padding: 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
   border-radius: 50%;
 }
 </style>

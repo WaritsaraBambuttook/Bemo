@@ -109,9 +109,18 @@ export default {
           this.$user = result;
           // console.log(this.$user);
           // this.$navigateTo(username, {props: {user:this.$user}});
-          this.$navigateTo(bemo, { props: { user: this.$user } });
+          this.$navigateTo(bemo, {
+            props: { user: this.$user, indexChangeTap: 0, text: "3" }
+          });
         })
-        .catch(error => console.log("google :" + error));
+        .catch(error => {
+          console.log("google :" + error);
+          dialogs
+            .alert("email and password incorrect" + error)
+            .then(function() {
+              console.log("Dialog closed!");
+            });
+        });
 
       // try {
       //   console.log("dasdasdas");

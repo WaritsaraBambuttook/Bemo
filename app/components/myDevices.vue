@@ -17,7 +17,7 @@
             </FlexboxLayout>
           </v-template>
         </ListView>
-        <Button class="but" text="Add" @tap="addDevices" />
+        <Button class="but" text="Add new Bemo" @tap="addDevices" margin="10" />
       </StackLayout>
     </ScrollView>
   </StackLayout>
