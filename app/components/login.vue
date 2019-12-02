@@ -1,6 +1,6 @@
 <script>
-import { login } from "nativescript-plugin-firebase";
-// import { __values } from 'tslib';
+import { login, fetchSignInMethodsForEmail } from "nativescript-plugin-firebase";
+
 
 // Initialize Firebase
 var config = {
@@ -29,7 +29,7 @@ firebase.initializeApp(config);
         </GridLayout>
         <Button text="Sign In" @tap="login" class="btn btn-primary m-t-20 login"></Button>
         <Button text="Sign In With Google" class="google" @tap="google"></Button>
-        <!-- <Label text="New User Register" class="register" @tap="regis()"></Label> -->
+        
       </StackLayout>
     </FlexboxLayout>
   </Page>
@@ -48,10 +48,19 @@ export default {
       password: ""
     };
   },
+  mounted() {
+     console.log("mounted")
+       firebase.getCurrentUser()
+      .then(user => {
+          console.log("User uid: " + user.uid)
+          this.$navigateTo(bemo, {
+            props: { user: user, indexChangeTap: 0, text: "3" }
+          });
+      })
+      .catch(error => console.log("Trouble in paradise: " + error));
+  },
   methods: {
-    // goToSecond() {
-    //     this.$navigateTo(Second)
-    // },
+    
     login: function() {
       console.log("login");
 
@@ -64,12 +73,10 @@ export default {
           }
         })
         .then(result => {
-          // Vue.prototype.$result = JSON.stringify(result);
-          //console.log(JSON.stringify(result));
+          
 
           this.$user = result;
-          //console.log(this.$user);
-          // this.$navigateTo(username, {props: {user:this.$user}});
+          
           this.$navigateTo(bemo, {
             props: { user: this.$user, indexChangeTap: 0, text: "3" }
           });
@@ -82,11 +89,15 @@ export default {
           });
         });
     },
-    // regis: function() {
-    //   console.log("regis");
+    async mounted() {
+        console.log("mounted")
+       firebase.getCurrentUser()
+      .then(user => console.log("User uid: " + user.uid))
+      .catch(error => console.log("Trouble in paradise: " + error));
 
-    //   this.$navigateTo(regis);
-    // },
+  
+  },
+    
     google: async function() {
       console.log("googleeeeeeee");
       firebase
@@ -102,13 +113,9 @@ export default {
         .then(result => {
           var data = JSON.stringify(result);
           console.log("RESULT " + JSON.stringify(result));
-          // dialogs.alert("data :" + data).then(function() {
-          //   console.log("Dialog closed!");
-          // });
-          // var toast = Toast.makeText(JSON.stringify(result));
+          
           this.$user = result;
-          // console.log(this.$user);
-          // this.$navigateTo(username, {props: {user:this.$user}});
+          
           this.$navigateTo(bemo, {
             props: { user: this.$user, indexChangeTap: 0, text: "3" }
           });
@@ -122,21 +129,7 @@ export default {
             });
         });
 
-      // try {
-      //   console.log("dasdasdas");
-      //   const user = await firebase.login({
-      //     type: firebase.LoginType.GOOGLE,
-      //     googleOptions: {
-      //       scopes: [
-      //         "https://www.googleapis.com/auth/userinfo.email",
-      //         "https://www.googleapis.com/auth/userinfo.profile"
-      //       ]
-      //     }
-      //   });
-      //   console.log(user);
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      
     }
   }
 };
