@@ -6,6 +6,7 @@ var firebase = require("nativescript-plugin-firebase");
 import RadGauge from "nativescript-ui-gauge/vue";
 var dialogs = require("tns-core-modules/ui/dialogs");
 import { store } from "./store/store";
+
 // import NSVueGlobalDrawer from "nativescript-vue-global-drawer";
 // Vue.use(NSVueGlobalDrawer);
 // Test commit
@@ -66,32 +67,6 @@ firebase
           });
         }
       }
-
-
-      
-
-      // if(){}
-
-      // if your server passed a custom property called 'foo', then do this:
-      // console.log("Value of 'foo': " + message.data.foo);
-      // const confirmOptions = {
-      //   title: message.title,
-      //   message: message.body,
-      //   okButtonText: "Scan",
-      //   cancelButtonText: "Cancel"
-      // };
-      // dialogs.confirm(confirmOptions).then(result => {
-      //   console.log(result);
-      //   if (result == true) {
-      //     console.log("scan button");
-      //     Vue.prototype.$navigateTo(bemo);
-
-      //     // this.$navigateTo(pageApp);
-      //     //this.changePage = pageApp;
-      //   } else {
-      //     console.log("cancel button");
-      //   }
-      // });
     },
     
     // onAuthStateChanged: function(data) { 
@@ -124,20 +99,55 @@ firebase
     }
   })
  
-  
-  .then(
-    function () {
-      console.log("firebase.init done 555");
-      // let dataInStore = store.getters.dataAboutUser;
-      // console.log(dataInStore);
-      firebase
-        .subscribeToTopic("news")
-        .then(() => console.log("Subscribed to topic"));
-    },
-    function (error) {
-      console.log("firebase.init error: " + error);
+  firebase.init({
+    onAuthStateChanged: function(data) { // optional but useful to immediately re-logon the user when they re-visit your app
+      console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
+      if (data.loggedIn == true) {
+        Vue.prototype.$navigateTo(bemo);
+        
+      }else{
+        Vue.prototype.$navigateTo(login);
+      }
     }
-  );
+  });
+  var listener = {
+    onAuthStateChanged: function(data) {
+      console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
+      if (data.loggedIn == true) {
+        console.log("User info", data.user);
+      }
+    },
+    thisArg: this
+  };
+
+  // add the listener:
+  firebase.addAuthStateListener(listener);
+  
+  // stop listening to auth state changes:
+  firebase.removeAuthStateListener(listener);
+  
+  // check if already listening to auth state changes
+  firebase.hasAuthStateListener(listener);
+  
+
+
+  firebase.getCurrentUser()
+.then(user => console.log("User uid: " + user.uid))
+.catch(error => console.log("Trouble in paradise: " + error));
+  
+  // .then(
+  //   function () {
+  //     console.log("firebase.init done 555");
+  //     // let dataInStore = store.getters.dataAboutUser;
+  //     // console.log(dataInStore);
+  //     firebase
+  //       .subscribeToTopic("news")
+  //       .then(() => console.log("Subscribed to topic"));
+  //   },
+  //   function (error) {
+  //     console.log("firebase.init error: " + error);
+  //   }
+  // );
   // firebase.auth.onAuthStateChanged(function(user) {
   //   if (user) {
   //     Vue.prototype.$navigateTo(bemo);
@@ -172,7 +182,10 @@ if (TNS_ENV !== "production") {
 }
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = TNS_ENV === "production";
-
 new Vue({
+ 
   render: h => h("frame", [h(login)])
 }).$start();
+
+
+
